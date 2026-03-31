@@ -1797,7 +1797,7 @@
                     <li>4 MCP 서버 분리</li>
                     <li>도구 선택형 에이전트</li>
                     <li>NL2SQL 5단계 파이프라인</li>
-                    <li>호출 기록 추적</li>
+                    <li>운영 기록 정리</li>
                   </ul>
                 </div>
 
@@ -1898,9 +1898,9 @@
                     <ul>
                       <li>4개 MCP 서버 구조 설계와 에이전트 연결</li>
                       <li>DT 서버의 NL2SQL 5단계 흐름 설계와 구현</li>
-                      <li>KnowhowGraph 기반 노하우 조회 흐름 구현</li>
-                      <li>FastMCP 3.x 기반 서버 분리와 배포 구성</li>
-                      <li>호출 기록 수집과 피드백 흐름 연결</li>
+                      <li>노하우 조회 흐름 구현</li>
+                      <li>서버 분리와 배포 구성</li>
+                      <li>운영 기록과 피드백 흐름 연결</li>
                     </ul>
                   </section>
 
@@ -1908,9 +1908,9 @@
                     <h4>핵심 구현</h4>
                     <ul>
                       <li>엔티티와 의도를 나눠 뽑는 2단계 파서 구성</li>
-                      <li>4개 서버를 HTTP 기반 MCP로 분리</li>
-                      <li>로컬 LLM(qwen3:8b) 추론 환경 구성</li>
-                      <li>호출 기록과 피드백 수집 체계 연결</li>
+                      <li>4개 서버를 MCP 기반으로 분리</li>
+                      <li>로컬 LLM 추론 환경 구성</li>
+                      <li>운영 기록과 피드백 수집 체계 연결</li>
                     </ul>
                   </section>
                 </div>
@@ -2275,12 +2275,12 @@
                       질문을 두 단계로 해석하고, 실패 시 키워드 방식으로 폴백
                     </li>
                     <li>
-                      QuerySpec JSON → ORM 빌더 → 파라미터화 SQL
+                      구조화된 조건을 SQL로 조합
                     </li>
                     <li>
-                      설비 테이블 (가열로 / 압연 / 냉각대 / 스풀러)
+                      설비 데이터 테이블 조회
                     </li>
-                    <li>FAISS 기반 컬럼 후보 보강</li>
+                    <li>컬럼 후보 보강과 결과 정리</li>
                   </ul>
                   <p class="summary-line">
                     질문을 단계별로 확인하면서 SQL로 바꾸는 흐름입니다.
@@ -2430,9 +2430,9 @@
                 <section class="skill-column">
                   <h3>AI · 인프라</h3>
                   <ul class="skill-list">
-                    <li>LLM / RAG / FastMCP</li>
+                    <li>LLM / RAG / MCP</li>
                     <li>LangChain / LangGraph / Streamlit</li>
-                    <li>Ollama / FAISS / Langfuse</li>
+                    <li>벡터 검색 / 운영 기록</li>
                     <li>n8n / Docker / Kubernetes / AWS</li>
                   </ul>
                 </section>
