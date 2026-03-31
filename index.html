@@ -313,6 +313,10 @@
         max-height: 72mm;
       }
 
+      html[data-export="pdf"] .asset-diagram-emphasis {
+        max-height: 108mm;
+      }
+
       html[data-export="pdf"] .asset-support-diagram {
         max-width: 100%;
         max-height: 64mm;
@@ -321,6 +325,10 @@
       html[data-export="pdf"] .asset-reference-portrait {
         max-width: 100%;
         max-height: 102mm;
+      }
+
+      html[data-export="pdf"] .asset-reference-portrait-emphasis {
+        max-height: 153mm;
       }
 
       html[data-export="pdf"] .asset-reference-landscape {
@@ -333,9 +341,17 @@
         max-height: 56mm;
       }
 
+      html[data-export="pdf"] .asset-workflow-emphasis {
+        max-height: 84mm;
+      }
+
       html[data-export="pdf"] .asset-result {
         max-width: 100%;
         max-height: 78mm;
+      }
+
+      html[data-export="pdf"] .asset-result-emphasis {
+        max-height: 117mm;
       }
 
       html[data-export="pdf"] .project-block {
@@ -857,6 +873,11 @@
         max-height: clamp(280px, 30vw, 390px);
       }
 
+      .asset-diagram-emphasis {
+        max-width: min(100%, 1120px);
+        max-height: clamp(420px, 42vw, 585px);
+      }
+
       .asset-support-diagram {
         max-width: min(100%, 780px);
         max-height: clamp(240px, 24vw, 320px);
@@ -866,6 +887,12 @@
         width: min(100%, 1060px);
         max-width: 1060px;
         max-height: 884px;
+      }
+
+      .asset-reference-portrait-emphasis {
+        width: min(100%, 1320px);
+        max-width: 1320px;
+        max-height: 1320px;
       }
 
       .asset-reference-landscape {
@@ -879,9 +906,20 @@
         max-height: 380px;
       }
 
+      .asset-workflow-emphasis {
+        width: min(100%, 1180px);
+        max-width: 1180px;
+        max-height: 570px;
+      }
+
       .asset-result {
         max-width: min(100%, 460px);
         max-height: 500px;
+      }
+
+      .asset-result-emphasis {
+        max-width: min(100%, 690px);
+        max-height: 750px;
       }
 
       .figure-portrait .project-caption,
@@ -1857,7 +1895,7 @@
                     <img
                       src="assets/portfolio/project-agent-actual.png"
                       alt="철강 제조 AI 어시스턴트 전체 설계 문서"
-                      class="asset-reference-portrait"
+                      class="asset-reference-portrait asset-reference-portrait-emphasis"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1872,7 +1910,7 @@
                     <img
                       src="assets/portfolio/diagram-steel-architecture.svg"
                       alt="4개 MCP 서버와 LangChain ReAct 에이전트 아키텍처"
-                      class="asset-diagram"
+                      class="asset-diagram asset-diagram-emphasis"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1942,7 +1980,7 @@
                     <img
                       src="assets/portfolio/project-indexing-actual.png"
                       alt="멀티모달 인덱싱 구조 설계 자료"
-                      class="asset-reference-portrait"
+                      class="asset-reference-portrait asset-reference-portrait-emphasis"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1982,7 +2020,7 @@
                       <img
                         src="assets/portfolio/research-d2t-poc-result.png"
                         alt="표와 본문 일부를 읽고 메타데이터와 설명을 만든 D2T 결과"
-                        class="asset-result"
+                        class="asset-result asset-result-emphasis"
                         decoding="async"
                       />
                       <figcaption class="project-caption">
@@ -1995,7 +2033,7 @@
                       <img
                         src="assets/portfolio/research-d2t-poc-result-2.png"
                         alt="앞뒤 문맥을 반영해 설명 텍스트를 만든 D2T 결과"
-                        class="asset-result"
+                        class="asset-result asset-result-emphasis"
                         decoding="async"
                       />
                       <figcaption class="project-caption">
@@ -2083,7 +2121,7 @@
                     <img
                       src="assets/portfolio/project-query-actual-crop-c.png"
                       alt="질의 구조화 설계 흐름"
-                      class="asset-reference-portrait"
+                      class="asset-reference-portrait asset-reference-portrait-emphasis"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2096,7 +2134,7 @@
                     <img
                       src="assets/portfolio/project-search-workflow.png"
                       alt="질의 구조화 n8n 검색 워크플로우"
-                      class="asset-workflow"
+                      class="asset-workflow asset-workflow-emphasis"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2186,7 +2224,7 @@
                     <img
                       src="assets/portfolio/system-three-tier-actual.png"
                       alt="3계층 인덱싱 구조 설계 자료"
-                      class="asset-reference-portrait"
+                      class="asset-reference-portrait asset-reference-portrait-emphasis"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
@@ -2245,7 +2283,7 @@
                     <img
                       src="assets/portfolio/system-four-stage-actual.png"
                       alt="질의를 단계별로 나눠 처리한 설계 자료"
-                      class="asset-reference-portrait"
+                      class="asset-reference-portrait asset-reference-portrait-emphasis"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
