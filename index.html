@@ -39,7 +39,11 @@
         --radius-xl: 34px;
         --radius-lg: 26px;
         --radius-md: 18px;
-        --max: 186mm;
+        --page-max-web: 1120px;
+        --page-max-pdf: 190mm;
+        --page-max: var(--page-max-web);
+        --page-gutter: 40px;
+        --page-gutter-mobile: 24px;
         --nav-h: 68px;
       }
 
@@ -58,6 +62,11 @@
       html[data-export="pdf"],
       html[data-export="pdf"] body {
         background: #ffffff;
+      }
+
+      html[data-export="pdf"] {
+        --page-max: var(--page-max-pdf);
+        --page-gutter: 0px;
       }
 
       html[data-export="pdf"] .site-header,
@@ -123,11 +132,15 @@
       }
 
       html[data-export="pdf"] .pdf-summary {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 5mm;
         margin-top: 6mm;
         padding-top: 5mm;
         border-top: 1px solid rgba(17, 17, 17, 0.14);
+      }
+
+      html[data-export="pdf"] .pdf-summary div:last-child {
+        grid-column: 1 / -1;
       }
 
       html[data-export="pdf"] .pdf-summary div {
@@ -151,9 +164,13 @@
 
       html[data-export="pdf"] .pdf-project-list {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 4mm;
         margin-top: 6mm;
+      }
+
+      html[data-export="pdf"] .pdf-project-list article:last-child {
+        grid-column: 1 / -1;
       }
 
       html[data-export="pdf"] .pdf-project-list article {
@@ -370,7 +387,7 @@
       }
 
       .container {
-        width: min(var(--max), calc(100% - 40px));
+        width: min(var(--page-max), calc(100% - var(--page-gutter)));
         margin: 0 auto;
       }
 
@@ -479,7 +496,7 @@
       .hero-inner {
         position: relative;
         z-index: 2;
-        width: min(var(--max), calc(100% - 40px));
+        width: min(var(--page-max), calc(100% - var(--page-gutter)));
         margin: 0 auto;
         display: grid;
         grid-template-columns: 1fr;
@@ -691,8 +708,22 @@
 
       .project-diagram-full img,
       .system-diagram-full img {
-        width: 100%;
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: clamp(320px, 38vw, 460px);
         height: auto;
+        margin: 0 auto;
+      }
+
+      .project-evidence-wide img,
+      .system-evidence-wide img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: clamp(260px, 30vw, 360px);
+        height: auto;
+        margin: 0 auto;
       }
 
       .topic-overview {
@@ -1187,7 +1218,7 @@
 
       @media (max-width: 760px) {
         .container {
-          width: min(var(--max), calc(100% - 24px));
+          width: min(var(--page-max), calc(100% - var(--page-gutter-mobile)));
         }
 
         .nav-shell {
@@ -1228,7 +1259,7 @@
       @media print {
         @page {
           size: A4;
-          margin: 12mm;
+          margin: 10mm;
         }
 
         :root {
@@ -1240,6 +1271,8 @@
           --ink-faint: #555555;
           --line: rgba(17, 17, 17, 0.16);
           --line-strong: rgba(17, 17, 17, 0.3);
+          --page-max: var(--page-max-pdf);
+          --page-gutter: 0px;
         }
 
         * {
@@ -1306,11 +1339,15 @@
         }
 
         .pdf-summary {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 5mm;
           margin-top: 6mm;
           padding-top: 5mm;
           border-top: 1px solid rgba(17, 17, 17, 0.14);
+        }
+
+        .pdf-summary div:last-child {
+          grid-column: 1 / -1;
         }
 
         .pdf-summary div {
@@ -1334,9 +1371,13 @@
 
         .pdf-project-list {
           display: grid !important;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 4mm;
           margin-top: 6mm;
+        }
+
+        .pdf-project-list article:last-child {
+          grid-column: 1 / -1;
         }
 
         .pdf-project-list article {
