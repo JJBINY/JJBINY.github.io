@@ -308,49 +308,53 @@
         max-height: 74mm;
       }
 
-      html[data-export="pdf"] .asset-diagram {
+      html[data-export="pdf"] img.asset-diagram {
         max-width: 100%;
         max-height: 72mm;
       }
 
-      html[data-export="pdf"] .asset-diagram-emphasis {
+      html[data-export="pdf"] img.asset-diagram-emphasis {
         max-height: 108mm;
       }
 
-      html[data-export="pdf"] .asset-support-diagram {
+      html[data-export="pdf"] img.asset-support-diagram {
         max-width: 100%;
         max-height: 64mm;
       }
 
-      html[data-export="pdf"] .asset-reference-portrait {
+      html[data-export="pdf"] img.asset-reference-portrait {
         max-width: 100%;
         max-height: 102mm;
       }
 
-      html[data-export="pdf"] .asset-reference-portrait-emphasis {
+      html[data-export="pdf"] img.asset-reference-portrait-emphasis {
         max-height: 153mm;
       }
 
-      html[data-export="pdf"] .asset-reference-landscape {
+      html[data-export="pdf"] img.asset-reference-portrait-medium {
+        max-height: 86mm;
+      }
+
+      html[data-export="pdf"] img.asset-reference-landscape {
         max-width: 100%;
         max-height: 48mm;
       }
 
-      html[data-export="pdf"] .asset-workflow {
+      html[data-export="pdf"] img.asset-workflow {
         max-width: 100%;
         max-height: 56mm;
       }
 
-      html[data-export="pdf"] .asset-workflow-emphasis {
+      html[data-export="pdf"] img.asset-workflow-emphasis {
         max-height: 84mm;
       }
 
-      html[data-export="pdf"] .asset-result {
+      html[data-export="pdf"] img.asset-result {
         max-width: 100%;
         max-height: 78mm;
       }
 
-      html[data-export="pdf"] .asset-result-emphasis {
+      html[data-export="pdf"] img.asset-result-emphasis {
         max-height: 117mm;
       }
 
@@ -868,56 +872,62 @@
         object-fit: contain;
       }
 
-      .asset-diagram {
+      img.asset-diagram {
         max-width: min(100%, 860px);
         max-height: clamp(280px, 30vw, 390px);
       }
 
-      .asset-diagram-emphasis {
+      img.asset-diagram-emphasis {
         max-width: min(100%, 1120px);
         max-height: clamp(420px, 42vw, 585px);
       }
 
-      .asset-support-diagram {
+      img.asset-support-diagram {
         max-width: min(100%, 780px);
         max-height: clamp(240px, 24vw, 320px);
       }
 
-      .asset-reference-portrait {
+      img.asset-reference-portrait {
         width: min(100%, 1060px);
         max-width: 1060px;
         max-height: 884px;
       }
 
-      .asset-reference-portrait-emphasis {
+      img.asset-reference-portrait-emphasis {
         width: min(100%, 1320px);
         max-width: 1320px;
         max-height: 1320px;
       }
 
-      .asset-reference-landscape {
+      img.asset-reference-portrait-medium {
+        width: min(100%, 760px);
+        max-width: 760px;
+        max-height: 760px;
+      }
+
+      img.asset-reference-landscape {
         max-width: min(100%, 760px);
         max-height: 300px;
       }
 
-      .asset-workflow {
+      img.asset-workflow {
         width: min(100%, 900px);
         max-width: 900px;
         max-height: 380px;
       }
 
-      .asset-workflow-emphasis {
+      img.asset-workflow-emphasis {
         width: min(100%, 1180px);
         max-width: 1180px;
         max-height: 570px;
       }
 
-      .asset-result {
+      img.asset-result {
         max-width: min(100%, 460px);
         max-height: 500px;
       }
 
-      .asset-result-emphasis {
+      img.asset-result-emphasis {
         max-width: min(100%, 690px);
         max-height: 750px;
       }
@@ -1890,18 +1900,6 @@
                     </figcaption>
                   </figure>
 
-                  <figure class="evidence-detail print-only figure-portrait">
-                    <span class="figure-label">전체 설계 문서</span>
-                    <img
-                      src="assets/portfolio/project-agent-actual.png"
-                      alt="철강 제조 AI 어시스턴트 전체 설계 문서"
-                      class="asset-reference-portrait asset-reference-portrait-emphasis"
-                      decoding="async"
-                    />
-                    <figcaption class="project-caption">
-                      전체 구성을 한 장에 모아 둔 설명 자료
-                    </figcaption>
-                  </figure>
                 </div>
 
                 <div class="project-diagram-full">
@@ -1980,7 +1978,7 @@
                     <img
                       src="assets/portfolio/project-indexing-actual.png"
                       alt="멀티모달 인덱싱 구조 설계 자료"
-                      class="asset-reference-portrait asset-reference-portrait-emphasis"
+                      class="asset-reference-portrait asset-reference-portrait-medium"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2121,7 +2119,7 @@
                     <img
                       src="assets/portfolio/project-query-actual-crop-c.png"
                       alt="질의 구조화 설계 흐름"
-                      class="asset-reference-portrait asset-reference-portrait-emphasis"
+                      class="asset-reference-portrait asset-reference-portrait-medium"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2224,7 +2222,7 @@
                     <img
                       src="assets/portfolio/system-three-tier-actual.png"
                       alt="3계층 인덱싱 구조 설계 자료"
-                      class="asset-reference-portrait asset-reference-portrait-emphasis"
+                      class="asset-reference-portrait asset-reference-portrait-medium"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
@@ -2283,7 +2281,7 @@
                     <img
                       src="assets/portfolio/system-four-stage-actual.png"
                       alt="질의를 단계별로 나눠 처리한 설계 자료"
-                      class="asset-reference-portrait asset-reference-portrait-emphasis"
+                      class="asset-reference-portrait asset-reference-portrait-medium"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
