@@ -308,6 +308,31 @@
         max-height: 74mm;
       }
 
+      html[data-export="pdf"] .asset-diagram {
+        max-width: 100%;
+        max-height: 72mm;
+      }
+
+      html[data-export="pdf"] .asset-support-diagram {
+        max-width: 100%;
+        max-height: 64mm;
+      }
+
+      html[data-export="pdf"] .asset-reference-portrait {
+        max-width: 100%;
+        max-height: 58mm;
+      }
+
+      html[data-export="pdf"] .asset-reference-landscape {
+        max-width: 100%;
+        max-height: 48mm;
+      }
+
+      html[data-export="pdf"] .asset-result {
+        max-width: 100%;
+        max-height: 60mm;
+      }
+
       html[data-export="pdf"] .project-block {
         padding-top: 12px;
       }
@@ -708,22 +733,8 @@
 
       .project-diagram-full img,
       .system-diagram-full img {
-        display: block;
-        width: auto;
-        max-width: 100%;
-        max-height: clamp(240px, 24vw, 320px);
+        width: 100%;
         height: auto;
-        margin: 0 auto;
-      }
-
-      .project-evidence-wide img,
-      .system-evidence-wide img {
-        display: block;
-        width: auto;
-        max-width: 100%;
-        max-height: clamp(200px, 18vw, 250px);
-        height: auto;
-        margin: 0 auto;
       }
 
       .topic-overview {
@@ -828,6 +839,31 @@
         max-height: 320px;
         margin: 0 auto;
         object-fit: contain;
+      }
+
+      .asset-diagram {
+        max-width: min(100%, 860px);
+        max-height: clamp(280px, 30vw, 390px);
+      }
+
+      .asset-support-diagram {
+        max-width: min(100%, 780px);
+        max-height: clamp(240px, 24vw, 320px);
+      }
+
+      .asset-reference-portrait {
+        max-width: min(100%, 560px);
+        max-height: 430px;
+      }
+
+      .asset-reference-landscape {
+        max-width: min(100%, 760px);
+        max-height: 300px;
+      }
+
+      .asset-result {
+        max-width: min(100%, 460px);
+        max-height: 380px;
       }
 
       .project-evidence video {
@@ -1739,6 +1775,7 @@
                     <img
                       src="assets/portfolio/project-agent-actual-crop-k.png"
                       alt="철강 제조 AI 어시스턴트 에이전트 계층 구조"
+                      class="asset-reference-landscape"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1788,6 +1825,7 @@
                     <img
                       src="assets/portfolio/project-agent-actual.png"
                       alt="철강 제조 AI 어시스턴트 전체 설계 문서"
+                      class="asset-reference-portrait"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1802,6 +1840,7 @@
                     <img
                       src="assets/portfolio/diagram-steel-architecture.svg"
                       alt="4개 MCP 서버와 LangChain ReAct 에이전트 아키텍처"
+                      class="asset-diagram"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1871,6 +1910,7 @@
                     <img
                       src="assets/portfolio/project-indexing-actual.png"
                       alt="멀티모달 인덱싱 구조 설계 자료"
+                      class="asset-reference-portrait"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1883,6 +1923,7 @@
                     <img
                       src="assets/portfolio/project-indexing-workflow.png"
                       alt="멀티모달 인덱싱 n8n 자동화 워크플로우"
+                      class="asset-reference-landscape"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1895,6 +1936,7 @@
                     <img
                       src="assets/portfolio/diagram-d2t-pipeline.svg"
                       alt="PDF를 파싱, OCR, Markdown, LLM 단계로 처리하는 D2T 파이프라인"
+                      class="asset-support-diagram"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1908,6 +1950,7 @@
                       <img
                         src="assets/portfolio/research-d2t-poc-result.png"
                         alt="표와 본문 일부를 읽고 메타데이터와 설명을 만든 D2T 결과"
+                        class="asset-result"
                         decoding="async"
                       />
                       <figcaption class="project-caption">
@@ -1920,6 +1963,7 @@
                       <img
                         src="assets/portfolio/research-d2t-poc-result-2.png"
                         alt="앞뒤 문맥을 반영해 설명 텍스트를 만든 D2T 결과"
+                        class="asset-result"
                         decoding="async"
                       />
                       <figcaption class="project-caption">
@@ -1935,6 +1979,7 @@
                     <img
                       src="assets/portfolio/diagram-indexing-architecture.svg"
                       alt="Document-Chunk-Element 3계층 인덱싱 파이프라인"
+                      class="asset-diagram"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2006,6 +2051,7 @@
                     <img
                       src="assets/portfolio/project-query-actual-crop-c.png"
                       alt="질의 구조화 설계 흐름"
+                      class="asset-reference-portrait"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2018,6 +2064,7 @@
                     <img
                       src="assets/portfolio/project-search-workflow.png"
                       alt="질의 구조화 n8n 검색 워크플로우"
+                      class="asset-reference-landscape"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2107,6 +2154,7 @@
                     <img
                       src="assets/portfolio/system-three-tier-actual.png"
                       alt="3계층 인덱싱 구조 설계 자료"
+                      class="asset-reference-portrait"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
@@ -2121,6 +2169,7 @@
                     <img
                       src="assets/portfolio/diagram-system-three-tier.svg"
                       alt="Document-Chunk-Element 3계층 메타데이터 연결 구조"
+                      class="asset-diagram"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
@@ -2164,6 +2213,7 @@
                     <img
                       src="assets/portfolio/system-four-stage-actual.png"
                       alt="질의를 단계별로 나눠 처리한 설계 자료"
+                      class="asset-reference-portrait"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
@@ -2178,6 +2228,7 @@
                     <img
                       src="assets/portfolio/diagram-system-query-flow.svg"
                       alt="NL2SQL 5단계 파이프라인 컴포넌트 흐름"
+                      class="asset-diagram"
                       decoding="async"
                     />
                     <figcaption class="system-caption">
