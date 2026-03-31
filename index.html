@@ -320,12 +320,17 @@
 
       html[data-export="pdf"] .asset-reference-portrait {
         max-width: 100%;
-        max-height: 58mm;
+        max-height: 66mm;
       }
 
       html[data-export="pdf"] .asset-reference-landscape {
         max-width: 100%;
         max-height: 48mm;
+      }
+
+      html[data-export="pdf"] .asset-workflow {
+        max-width: 100%;
+        max-height: 56mm;
       }
 
       html[data-export="pdf"] .asset-result {
@@ -819,6 +824,12 @@
         box-shadow: 0 14px 32px rgba(18, 19, 22, 0.08);
       }
 
+      .figure-portrait,
+      .figure-workflow {
+        display: grid;
+        justify-items: center;
+      }
+
       .project-media img,
       .project-media video,
       .system-art img,
@@ -852,8 +863,9 @@
       }
 
       .asset-reference-portrait {
-        max-width: min(100%, 560px);
-        max-height: 430px;
+        width: min(100%, 680px);
+        max-width: 680px;
+        max-height: 560px;
       }
 
       .asset-reference-landscape {
@@ -861,9 +873,29 @@
         max-height: 300px;
       }
 
+      .asset-workflow {
+        width: min(100%, 900px);
+        max-width: 900px;
+        max-height: 380px;
+      }
+
       .asset-result {
         max-width: min(100%, 460px);
         max-height: 380px;
+      }
+
+      .figure-portrait .project-caption,
+      .figure-portrait .system-caption {
+        width: min(100%, 680px);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .figure-workflow .project-caption,
+      .figure-workflow .system-caption {
+        width: min(100%, 860px);
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .project-evidence video {
@@ -1770,7 +1802,7 @@
                 </div>
 
                 <div class="project-evidence">
-                  <figure>
+                  <figure class="figure-workflow">
                     <span class="figure-label">에이전트 계층 구조</span>
                     <img
                       src="assets/portfolio/project-agent-actual-crop-k.png"
@@ -1820,7 +1852,7 @@
                     </figcaption>
                   </figure>
 
-                  <figure class="evidence-detail print-only">
+                  <figure class="evidence-detail print-only figure-portrait">
                     <span class="figure-label">전체 설계 문서</span>
                     <img
                       src="assets/portfolio/project-agent-actual.png"
@@ -1905,7 +1937,7 @@
                 </div>
 
                 <div class="project-evidence">
-                  <figure>
+                  <figure class="figure-portrait">
                     <span class="figure-label">인덱싱 구조 설계안</span>
                     <img
                       src="assets/portfolio/project-indexing-actual.png"
@@ -1918,12 +1950,12 @@
                     </figcaption>
                   </figure>
 
-                  <figure class="evidence-detail">
+                  <figure class="evidence-detail figure-workflow">
                     <span class="figure-label">n8n 자동화 워크플로우</span>
                     <img
                       src="assets/portfolio/project-indexing-workflow.png"
                       alt="멀티모달 인덱싱 n8n 자동화 워크플로우"
-                      class="asset-reference-landscape"
+                      class="asset-workflow"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -1945,7 +1977,7 @@
                   </figure>
 
                   <div class="project-evidence-pair result-pair">
-                    <figure>
+                    <figure class="figure-portrait">
                       <span class="figure-label">D2T 결과 1</span>
                       <img
                         src="assets/portfolio/research-d2t-poc-result.png"
@@ -1958,7 +1990,7 @@
                       </figcaption>
                     </figure>
 
-                    <figure>
+                    <figure class="figure-portrait">
                       <span class="figure-label">D2T 결과 2</span>
                       <img
                         src="assets/portfolio/research-d2t-poc-result-2.png"
@@ -2046,7 +2078,7 @@
                 </div>
 
                 <div class="project-evidence">
-                  <figure>
+                  <figure class="figure-portrait">
                     <span class="figure-label">질의 구조화 설계 흐름</span>
                     <img
                       src="assets/portfolio/project-query-actual-crop-c.png"
@@ -2059,12 +2091,12 @@
                     </figcaption>
                   </figure>
 
-                  <figure class="evidence-detail">
+                  <figure class="evidence-detail figure-workflow">
                     <span class="figure-label">n8n 검색 워크플로우</span>
                     <img
                       src="assets/portfolio/project-search-workflow.png"
                       alt="질의 구조화 n8n 검색 워크플로우"
-                      class="asset-reference-landscape"
+                      class="asset-workflow"
                       decoding="async"
                     />
                     <figcaption class="project-caption">
@@ -2149,7 +2181,7 @@
                 </div>
 
                 <div class="system-evidence">
-                  <figure>
+                  <figure class="figure-portrait">
                     <span class="figure-label">3계층 인덱스 설계안</span>
                     <img
                       src="assets/portfolio/system-three-tier-actual.png"
@@ -2208,7 +2240,7 @@
                 </div>
 
                 <div class="system-evidence">
-                  <figure>
+                  <figure class="figure-portrait">
                     <span class="figure-label">질의 처리 설계안</span>
                     <img
                       src="assets/portfolio/system-four-stage-actual.png"
