@@ -39,7 +39,7 @@
         --radius-xl: 34px;
         --radius-lg: 26px;
         --radius-md: 18px;
-        --page-max-web: 980px;
+        --page-max-web: 1120px;
         --page-max-pdf: 190mm;
         --page-max: var(--page-max-web);
         --page-gutter: 40px;
@@ -711,7 +711,7 @@
         display: block;
         width: auto;
         max-width: 100%;
-        max-height: clamp(320px, 38vw, 460px);
+        max-height: clamp(240px, 24vw, 320px);
         height: auto;
         margin: 0 auto;
       }
@@ -721,7 +721,7 @@
         display: block;
         width: auto;
         max-width: 100%;
-        max-height: clamp(260px, 30vw, 360px);
+        max-height: clamp(200px, 18vw, 250px);
         height: auto;
         margin: 0 auto;
       }
@@ -816,6 +816,18 @@
       .system-evidence img {
         width: 100%;
         height: auto;
+      }
+
+      .project-media img,
+      .system-art img,
+      .project-evidence img,
+      .system-evidence img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: 320px;
+        margin: 0 auto;
+        object-fit: contain;
       }
 
       .project-evidence video {
