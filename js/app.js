@@ -5,7 +5,9 @@ import {
 } from "./content.js";
 import { AgentService } from "./agent/service.js";
 import { readCurrentPageContext } from "./agent/page-context.js";
+import { initializeDiagramAttachments } from "./agent/diagram-attachments.js";
 import { renderMermaid } from "./diagrams/mermaid-renderer.js";
+import { formatReleaseStamp } from "./release-stamp.js";
 import {
   initializePortfolioExplorer,
   projectDetailRoute,
@@ -40,6 +42,11 @@ const RETRIEVAL_RELATION_LABELS = Object.freeze({
 function createRetrievalPath(source) {
   const via = source.match?.via;
   if (!via) return null;
+  const relationType = typeof via.type === "string" && via.type.trim()
+    ? via.type.trim()
+    : "related";
+  const relationLabel = RETRIEVAL_RELATION_LABELS[relationType]
+    ?? (relationType === "related" ? "연결 관계" : relationType.replaceAll("_", " "));
 
   const path = createElement("section", "evidence-card__path");
   path.append(
@@ -48,8 +55,8 @@ function createRetrievalPath(source) {
   );
   const steps = document.createElement("ol");
   [
-    ["01", "시작 후보", via.seedId],
-    ["02", RETRIEVAL_RELATION_LABELS[via.type] ?? via.type.replaceAll("_", " "), "그래프 확장"],
+    ["01", "시작 후보", via.seedId ?? "retrieval seed"],
+    ["02", relationLabel, "그래프 확장"],
     ["03", "선택 근거", source.title ?? source.id]
   ].forEach(([index, label, value]) => {
     const step = document.createElement("li");
@@ -65,9 +72,54 @@ function createRetrievalPath(source) {
 }
 
 function renderProfile(site) {
-  const { profile, stats, approachCopy, principles, version = "beta:0.0.1" } = site;
+  const {
+    profile,
+    stats,
+    approachCopy,
+    principles,
+    version = "beta:0.0.1",
+    release = {},
+    runtime = {}
+  } = site;
+  const concurrentInferences = Number.isInteger(runtime.concurrentInferences)
+    ? Math.max(1, runtime.concurrentInferences)
+    : 1;
+  const queueCapacity = Number.isInteger(runtime.queueCapacity)
+    ? Math.max(0, runtime.queueCapacity)
+    : 0;
+  const [expectedMin = 20, expectedMax = 40] = Array.isArray(runtime.expectedSeconds)
+    ? runtime.expectedSeconds
+    : [];
+  const runtimeCapacity = $("[data-runtime-capacity]");
+  const runtimeMetadata = $(".site-runtime");
+  const capacityLabel = `${concurrentInferences} RUN${queueCapacity > 0 ? ` + ${queueCapacity} WAIT` : ""}`;
+  const releaseStamp = formatReleaseStamp(release.releasedAt, {
+    timeZone: release.timeZone
+  });
+
   document.title = `${profile.nameKo} · ${profile.role} · ${version}`;
   setText("[data-site-version]", version);
+  $$("[data-site-released-at]").forEach((element) => {
+    element.hidden = !releaseStamp;
+    if (!releaseStamp) return;
+    element.textContent = releaseStamp;
+    element.setAttribute("datetime", release.releasedAt);
+  });
+  setText("[data-runtime-active]", capacityLabel);
+  setText("[data-runtime-latency]", `≈${expectedMin}–${expectedMax} SEC`);
+  if (runtimeCapacity) {
+    const queueSummary = queueCapacity > 0 ? `, 대기 ${queueCapacity}건` : "";
+    const runtimeSummary = `동시 추론 ${concurrentInferences}건${queueSummary}, 예상 답변 완료 시간 약 ${expectedMin}초에서 ${expectedMax}초`;
+    runtimeCapacity.setAttribute("aria-label", runtimeSummary);
+    runtimeCapacity.title = `현재 공개 데모 측정값 · ${capacityLabel} · 예상 답변 약 ${expectedMin}–${expectedMax}초`;
+  }
+  if (runtimeMetadata) {
+    const releaseSummary = releaseStamp ? `, ${releaseStamp}` : "";
+    runtimeMetadata.setAttribute(
+      "aria-label",
+      `포트폴리오 ${version}${releaseSummary}, ${capacityLabel}, 예상 답변 약 ${expectedMin}–${expectedMax}초`
+    );
+  }
   setText("[data-profile-initials]", profile.initials);
   setText("[data-profile-name]", profile.nameKo);
   setText("[data-profile-role]", profile.role);
@@ -207,7 +259,13 @@ function formatTime(date = new Date()) {
   }).format(date);
 }
 
-function initializeAgent({ agentService, questions, onOpenSource, getPageContext }) {
+function initializeAgent({
+  agentService,
+  questions,
+  onOpenSource,
+  getPageContext,
+  diagramAttachments
+}) {
   const workspace = $("[data-agent-workspace]");
   const transcript = $("[data-agent-transcript]");
   const suggestionsRoot = $("[data-agent-suggestions]");
@@ -721,6 +779,7 @@ function initializeAgent({ agentService, questions, onOpenSource, getPageContext
     const time = $("[data-message-time]", fragment);
     const bodyElement = $("[data-message-body]", fragment);
     const sourcesElement = $("[data-message-sources]", fragment);
+    const attachmentsElement = $("[data-message-attachments]", fragment);
     const traceElement = $("[data-message-trace]", fragment);
 
     article.classList.add(`message--${role}`);
@@ -730,6 +789,7 @@ function initializeAgent({ agentService, questions, onOpenSource, getPageContext
     bodyElement.textContent = body;
 
     renderMessageSources(sourcesElement, sources);
+    diagramAttachments?.render(attachmentsElement, sources);
 
     if (trace) {
       $("pre", traceElement).textContent = JSON.stringify(trace, null, 2);
@@ -744,6 +804,7 @@ function initializeAgent({ agentService, questions, onOpenSource, getPageContext
       article: transcript.lastElementChild,
       body: $("[data-message-body]", transcript.lastElementChild),
       sources: $("[data-message-sources]", transcript.lastElementChild),
+      attachments: $("[data-message-attachments]", transcript.lastElementChild),
       trace: $("[data-message-trace]", transcript.lastElementChild)
     };
   }
@@ -844,6 +905,7 @@ function initializeAgent({ agentService, questions, onOpenSource, getPageContext
       pending.body.textContent = response.answer;
 
       renderMessageSources(pending.sources, response.sources);
+      diagramAttachments?.render(pending.attachments, response.sources);
 
       pending.trace.hidden = false;
       $("pre", pending.trace).textContent = JSON.stringify(response.trace, null, 2);
@@ -975,7 +1037,9 @@ function initializeAgent({ agentService, questions, onOpenSource, getPageContext
     });
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !workspace.hidden) closeWorkspace();
+    if (event.key === "Escape" && !diagramAttachments?.isOpen() && !workspace.hidden) {
+      closeWorkspace();
+    }
   });
 
   resetConversation({ clearSession: false });
@@ -1057,10 +1121,17 @@ async function main() {
       knowledge: agentContent.knowledge,
       systemPrompt: agentContent.systemPrompt
     });
+    const diagramAttachments = initializeDiagramAttachments({
+      projects: portfolioContent.projects,
+      dialog: $("[data-diagram-dialog]"),
+      renderDiagram: renderMermaid,
+      fallbackFocus: () => $("[data-agent-input]")
+    });
     initializeAgent({
       agentService,
       questions: agentContent.questions,
       onOpenSource: explorer.openEvidence,
+      diagramAttachments,
       getPageContext: () => readCurrentPageContext({
         projectsById,
         knowledgeNodesById

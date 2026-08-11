@@ -2,19 +2,23 @@
   "metadata": {
     "schemaVersion": "1.0",
     "visibility": "public-candidate",
-    "generatedAt": "2026-08-11T03:39:19.710Z",
-    "nodeCount": 41,
-    "edgeCount": 47,
-    "manifestDigest": "ad6d6ab6621eee06b15fd9c019b698811601f1aa1a458f7e23a799d21d80cd34",
+    "generatedAt": "2026-08-11T07:16:47.000Z",
+    "nodeCount": 43,
+    "edgeCount": 51,
+    "manifestDigest": "8c4827ac268a776b781644a1e60aa4a51f9c4d630d93f125717108ef38456c40",
     "ontologyDigest": "a364a699cfb7e64e59bed1b5bef00038b341fd533cba803331d196f21f472102",
-    "sourceFingerprint": "ab3e55d1fcef6854123e2ba64b7a7f5c144497c4ea156b82c67da7d8aec14b0f",
+    "sourceFingerprint": "5e64f339b621ac427397c6c82ed0784b3f7e5e9fda08e567085b809f88545faf",
     "upstreamContracts": [
       {
         "label": "Personal Wiki stable ontology",
         "contentDigest": "c81af025023370c80843fa53e8be3b72654d1d41b8dd46946e33ea3dc97c1f97"
+      },
+      {
+        "label": "Steel Assistant KB v2.1 source contract",
+        "contentDigest": "36dc04743461edbf2c53587e9bd861a170d4f5ec507e865363909ebef5d93a75"
       }
     ],
-    "bundleDigest": "303b3a7bf1e6c73c21200f8c1b64c6fc76c53498326633da72ba641ee9f78c72"
+    "bundleDigest": "51e9d0b9ae8c4b6ecbd84ce0bb7301fb06aff302f7f476ef083ed99b7279de2a"
   },
   "ontology": {
     "nodeKinds": [
@@ -380,8 +384,8 @@
       "intent": "routing",
       "kind": "implementation",
       "title": "단계와 계약이 보이는 에이전트 실행 흐름",
-      "answer": "단일 ReAct 프롬프트에 맡기던 흐름을 질의 이해, 계획, 도구 실행, 근거 검증, 응답 단계로 나누고 단계 사이를 스키마로 검증했습니다. 검색 실패와 추론 실패, 응답 생성 실패를 구분해 각 원인을 따로 개선할 수 있게 한 것이 핵심입니다.",
-      "summary": "질의 이해부터 응답까지 단계를 분리하고 경계를 스키마로 검증",
+      "answer": "초기 단일 프롬프트 구조를 질의 이해, 결정론적 capability projection·binding, bounded DAG 실행, 근거 원장과 최종화 단계로 나눴습니다. LLM은 의미와 필요한 근거를 구조화하지만 이미 evidence kind로 결정할 수 있는 실행 경로까지 매번 다시 고르지 않습니다. 실패 시에도 전체 요청을 처음부터 되풀이하기보다 결함을 소유한 경계의 제한된 회복 경로로 돌아갑니다. 따라서 단계 분리는 trace를 얻기 위한 장치에 그치지 않고, 추론이 실제로 경로를 바꿀 수 있는 구간과 런타임 불변식을 나누는 실행 계약입니다.",
+      "summary": "의미 추론 뒤 결정적 실행을 사용하고 필요한 경계만 제한적으로 재진입",
       "keywords": [
         "ReAct",
         "workflow",
@@ -390,26 +394,30 @@
         "스키마",
         "계획",
         "도구 호출",
-        "라우팅"
+        "라우팅",
+        "bounded DAG",
+        "재진입"
       ],
       "tags": [
         "AGENT WORKFLOW",
         "SCHEMA",
-        "OBSERVABILITY"
+        "BOUNDED RECOVERY"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "derived-current-snapshot",
+      "claimMode": "source_confirmed",
+      "asOf": "steel-assistant@c0a2c718",
       "source": {
         "label": "Steel Agent · Schema workflow",
         "href": "#steel-domain-agent-deterministic-boundary"
       },
       "followUps": [
         "모든 질의를 ReAct로 처리하지 않은 이유는 무엇인가요?",
-        "실패 지점을 어떻게 관측했나요?"
+        "추론으로 LLM 호출 횟수를 줄이는 장점은 어떻게 반영했나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "derived-current-snapshot",
         "status": "source-backed",
         "sources": [
           {
@@ -420,6 +428,209 @@
             "status": "source-backed",
             "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
             "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
+          },
+          {
+            "sourceId": "portfolio-current",
+            "label": "기술 포트폴리오 · 2026-08-10",
+            "locator": "1.1 에이전트 아키텍처",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "7448bd66de29f08e801aaa8bec7191081de45787c871cbc0abbfb3804d0be8db",
+            "contentDigest": "8d53377ec3280d764e72d955b6f31b9214e441a7f0fe8eafcb1b3f91ca56dda0"
+          },
+          {
+            "sourceId": "steel-kb-runtime",
+            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
+            "locator": "Runtime의 여섯 단계",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "3f395c85696df4f5c89ea4160e58ef65827b060442e38588bc597ceb4c7b4769",
+            "contentDigest": "8e40a408e035532e0fba0ba3395cce44dd2d13d4f28a53de87f74cb075a98f01"
+          },
+          {
+            "sourceId": "steel-kb-runtime",
+            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
+            "locator": "회복의 현재 범위",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "f219301e6d950b3d103d33fee6a29cadf32a7835796271e875b88e97592c4e0d",
+            "contentDigest": "bdfd41c64ae96d7200f3c306411e1230c76773e5e4d79d9840302cb08d221d48"
+          }
+        ]
+      }
+    },
+    {
+      "id": "architecture.adaptive-agent-routing",
+      "intent": "routing",
+      "kind": "architecture-decision",
+      "title": "예상 총비용으로 ReAct와 결정적 경로를 나누는 판단",
+      "answer": "ReAct를 모든 질의에서 배제한 것이 아니며, traceability도 배제 이유가 아닙니다. trace는 ReAct 실행에서도 남길 수 있습니다. 판단 기준은 질의마다 예상되는 의미 추론, 도구 호출, 재시도와 지연의 총비용입니다. LLM의 선행 추론이 불필요한 도구 호출을 줄일 수 있다는 장점은 인정하고 Query Understanding과 typed mission 내부 판단에 사용합니다. 반면 이미 근거 유형으로 경로가 결정되는 confident·반복 질의에서 매 단계 reasoning pass를 추가하면 그 추론 자체가 호출·지연·분산을 늘릴 수 있습니다. 그래서 Steel runtime은 의미 추론 뒤 fixed capability와 bounded DAG를 실행하고, 실행 결과가 다음 경로를 바꿀 수 있는 capability 경계에서만 제한적으로 회복합니다. 공통 원칙은 추론이 경로를 바꿀 정보가 있을 때만 비용을 쓰는 것입니다. 이는 현재 Steel 구조에서 도출한 설계 해석이며 동일 조건의 호출 수 A/B 결과는 아닙니다.",
+      "summary": "추론의 도구 절감 이점과 reasoning 자체 비용을 함께 계산해 direct·bounded ReAct를 선택",
+      "keywords": [
+        "모든 질의 ReAct",
+        "전부 ReAct",
+        "ReAct 배제 이유",
+        "LLM 호출 횟수",
+        "reasoning pass",
+        "추론 비용",
+        "도구 호출 절감",
+        "adaptive routing",
+        "expected total cost",
+        "traceability"
+      ],
+      "tags": [
+        "PORTFOLIO INFERENCE",
+        "ADAPTIVE ROUTING",
+        "COST-AWARE"
+      ],
+      "status": "source-backed",
+      "authority": "cross-system-derived-inference",
+      "claimMode": "portfolio_inference",
+      "asOf": "steel-assistant@c0a2c718 · portfolio-agent-kb@2.1.0",
+      "source": {
+        "label": "Steel Agent · Adaptive routing rationale",
+        "href": "#steel-domain-agent-deterministic-boundary"
+      },
+      "followUps": [
+        "어떤 질의를 direct path로 보내나요?",
+        "호출 수와 지연은 어떤 조건으로 다시 측정할 계획인가요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "cross-system-derived-inference",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "career-detailed",
+            "label": "경력기술서 상세 · 2026-08-09",
+            "locator": "1.3 실행 흐름 (Agentic Workflow)",
+            "authority": "career-primary",
+            "status": "source-backed",
+            "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
+            "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
+          },
+          {
+            "sourceId": "portfolio-current",
+            "label": "기술 포트폴리오 · 2026-08-10",
+            "locator": "1.1 에이전트 아키텍처",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "7448bd66de29f08e801aaa8bec7191081de45787c871cbc0abbfb3804d0be8db",
+            "contentDigest": "8d53377ec3280d764e72d955b6f31b9214e441a7f0fe8eafcb1b3f91ca56dda0"
+          },
+          {
+            "sourceId": "steel-kb-runtime",
+            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
+            "locator": "Runtime의 여섯 단계",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "3f395c85696df4f5c89ea4160e58ef65827b060442e38588bc597ceb4c7b4769",
+            "contentDigest": "8e40a408e035532e0fba0ba3395cce44dd2d13d4f28a53de87f74cb075a98f01"
+          },
+          {
+            "sourceId": "steel-kb-runtime",
+            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
+            "locator": "실행 DAG와 concurrency",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "ba610a792ba0b2135b2bfb278508dc5b678394818c60ad3efdac22eab1b48503",
+            "contentDigest": "a80439ecd114ce8e2f8620916b56adf564034e2dfa3e687af7e646f7ce666353"
+          },
+          {
+            "sourceId": "steel-kb-principles",
+            "label": "Steel Assistant engineering principles · v2.1 / c0a2c718",
+            "locator": "1. 적재적소의 하이브리드 판별",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "36efa68213f57f79e864f75e641ba60de6ba89ea6564903f757c53f19f04c419",
+            "contentDigest": "0fea2e7cead5569ee282e64cae68e8aeecbd4e2bdf6563ae9550e8f96465b23d"
+          },
+          {
+            "sourceId": "steel-kb-tradeoffs",
+            "label": "Steel Assistant trade-offs · v2.1 / c0a2c718",
+            "locator": "현재 선택이 지불하는 비용",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "4a4bb3c52dba77e763f35863c9b496bf8dd495752c3eb9b11484de2b58aa833a",
+            "contentDigest": "0bab782be44e8298fdb38e00d155c6081b4fb42fef480bb7b40a0857e69dc512"
+          },
+          {
+            "sourceId": "portfolio-kb-react",
+            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
+            "locator": "진입 조건",
+            "authority": "portfolio-agent-contract",
+            "status": "source-backed",
+            "bindingDigest": "a6e1db8d1b014852cafa5cab9fc3b04736106bf7318e0bca603c6e43ff15742d",
+            "contentDigest": "2f01f0c6f5f611a70260f4a65f2b76eac5176c7ac9ca1adc7d2ff5b4b409c801"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.bounded-react-fallback",
+      "intent": "routing",
+      "kind": "knowledge-system",
+      "title": "포트폴리오 에이전트의 bounded ReAct fallback",
+      "answer": "v2.1 포트폴리오 지식베이스에서 ReAct는 direct route가 안전하지 않을 때 쓰도록 정의한 제한된 탐색 계약입니다. low score, 낮은 후보 간격, alias 충돌, 필수 근거 누락, current-drift처럼 다음 확인 대상을 동적으로 골라야 할 때 진입하고, 한 번의 질의 재표현과 제한된 관계 확장 뒤 supported·qualified·clarification·unknown 중 하나로 종료하도록 설계합니다. 이 문서는 Steel 제품 runtime의 구현 사실도, 현재 beta 런타임의 구현 완료 증거도 아닙니다.",
+      "summary": "low·ambiguous·no-hit·current-drift에서만 제한적으로 실행되는 포트폴리오 탐색 루프",
+      "keywords": [
+        "포트폴리오 에이전트",
+        "bounded ReAct",
+        "low score",
+        "ambiguous",
+        "no hit",
+        "current drift",
+        "fallback",
+        "직접 경로"
+      ],
+      "tags": [
+        "PORTFOLIO AGENT",
+        "BOUNDED REACT",
+        "AUTHORITY-SEPARATED"
+      ],
+      "status": "source-backed",
+      "authority": "portfolio-agent-contract",
+      "claimMode": "source_confirmed",
+      "asOf": "portfolio-agent-kb@2.1.0",
+      "source": {
+        "label": "Portfolio Agent · ReAct fallback",
+        "href": "#approach"
+      },
+      "followUps": [
+        "Steel runtime의 bounded recovery와 무엇이 다른가요?",
+        "fallback은 언제 중단하나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "portfolio-agent-contract",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "portfolio-kb-react",
+            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
+            "locator": "진입 조건",
+            "authority": "portfolio-agent-contract",
+            "status": "source-backed",
+            "bindingDigest": "a6e1db8d1b014852cafa5cab9fc3b04736106bf7318e0bca603c6e43ff15742d",
+            "contentDigest": "2f01f0c6f5f611a70260f4a65f2b76eac5176c7ac9ca1adc7d2ff5b4b409c801"
+          },
+          {
+            "sourceId": "portfolio-kb-react",
+            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
+            "locator": "상태 머신",
+            "authority": "portfolio-agent-contract",
+            "status": "source-backed",
+            "bindingDigest": "71d088d0a5cdfb691f404b9eae91bb8e66bc87164fbca97e8215aafe53cb88cb",
+            "contentDigest": "bda177a2eec1bbf8084d92b0787816004fedc0762e36bbfc8e7de851e849e1f2"
+          },
+          {
+            "sourceId": "portfolio-kb-react",
+            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
+            "locator": "중단 조건",
+            "authority": "portfolio-agent-contract",
+            "status": "source-backed",
+            "bindingDigest": "6554d2cd5083e0d61d5f773c7917ba98908a0a7394d627955db9120f39c522c8",
+            "contentDigest": "3f37a3700d23fa3e4273c7bf09d324854264653718ec66aaf1866cddf610a17a"
           }
         ]
       }
@@ -429,7 +640,7 @@
       "intent": "architecture",
       "kind": "architecture-decision",
       "title": "의미 권위와 실행 권위를 나눈 멀티에이전트 구조",
-      "answer": "Query Understanding은 사용자 의미의 단일 권위를 맡고, Mission Compiler와 Coordinator는 의미를 다시 해석하지 않은 채 타입 미션·의존성·예산·fan-out/fan-in을 관리하도록 나눴습니다. Search·Knowhow·DT·Comparison Agent는 각각 검색 충분성, 사례 적용 가능성, 설비 데이터 조회 의미, 비교 연산의 정합성을 판단합니다. peer 간 숨은 직접 호출은 금지하고 추가 근거 요청을 Coordinator로 올려 실행 경로를 추적할 수 있게 했습니다. 최종 응답은 Coordinator가 자유 산문으로 작성하는 것이 아니라, 채택된 사실·해석과 근거 식별자를 ResponsePlan에 묶은 뒤 런타임이 인용 일치를 검증하고 한 번의 종결 응답으로 확정합니다. 현재는 DT의 제한적 재계획 루프가 동작하며 Search·Knowhow의 결과 평가·재탐색 루프는 완전 연결 전입니다.",
+      "answer": "Query Understanding은 사용자 의미의 단일 권위를 맡고, Mission Compiler와 Coordinator는 의미를 다시 해석하지 않은 채 타입 미션·의존성·예산·fan-out/fan-in을 관리하도록 나눴습니다. Search·Knowhow·DT·Comparison Agent는 각각 검색 충분성, 사례 적용 가능성, 설비 데이터 조회 의미, 비교 연산의 정합성을 판단합니다. peer 간 숨은 직접 호출은 금지하고 추가 근거 요청은 owning runtime 경계로 올립니다. 최종 응답은 agent 메시지를 이어 붙이는 대신 채택된 사실·해석과 근거 식별자를 ResponsePlan에 묶고, 런타임이 인용 일치를 검증한 하나의 종결 응답으로 확정합니다.",
       "summary": "Query Understanding·Coordinator와 네 전문 에이전트의 권위·예산·호출 경계를 분리",
       "keywords": [
         "멀티에이전트",
@@ -496,6 +707,15 @@
             "status": "source-backed",
             "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
             "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
+          },
+          {
+            "sourceId": "steel-kb-runtime",
+            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
+            "locator": "Agent는 무엇을 할 수 있는가",
+            "authority": "derived-current-snapshot",
+            "status": "source-backed",
+            "bindingDigest": "f4e842507ac55e086da3f5a8753552dcc1dbab0be4241e70dc550ae36cc2cdaf",
+            "contentDigest": "84ebc4df2334f4e4bb1d67bf710ef2a8935e1263f55377f7c46e263b6f25540f"
           }
         ]
       }
@@ -2151,6 +2371,26 @@
       "from": "workflow.schema-validated-agent",
       "type": "part_of",
       "to": "project.industrial-multi-tool-agent"
+    },
+    {
+      "from": "architecture.llm-runtime-responsibility",
+      "type": "supports",
+      "to": "architecture.adaptive-agent-routing"
+    },
+    {
+      "from": "architecture.adaptive-agent-routing",
+      "type": "supports",
+      "to": "workflow.schema-validated-agent"
+    },
+    {
+      "from": "architecture.adaptive-agent-routing",
+      "type": "demonstrates",
+      "to": "principle.problem-fit-over-method"
+    },
+    {
+      "from": "portfolio-agent.bounded-react-fallback",
+      "type": "demonstrates",
+      "to": "architecture.adaptive-agent-routing"
     },
     {
       "from": "architecture.domain-agent-orchestration",
