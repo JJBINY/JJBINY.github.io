@@ -1,0 +1,243 @@
+[
+  {
+    "id": "steel-domain-agent",
+    "number": "01",
+    "label": "SELECTED CASE · INDUSTRIAL AGENTIC RAG",
+    "title": "Steel-domain AI Agent System",
+    "subtitle": "작업 문서·현장 지식·운영 데이터를 근거 계약으로 연결한 산업 AI 어시스턴트",
+    "description": "단일 프롬프트가 도구 선택과 답변을 모두 담당하던 구조를 질의 이해, 실행 계획, 전문 도구, 근거 검증과 평가가 분리된 실행 흐름으로 재구성했습니다.",
+    "tags": ["LANGGRAPH", "MCP", "HYBRID RAG", "NL2SQL", "LANGFUSE"],
+    "scope": [
+      "Agent orchestration과 단계별 실행 계약 설계",
+      "문서·지식·운영 데이터별 도구 및 검색 경계 구현",
+      "NL2SQL, 근거 검증, 영속 HITL 파이프라인 구현",
+      "회귀 평가, trace, 폐쇄망 로컬 모델 배포 구성"
+    ],
+    "diagrams": [
+      {
+        "id": "evidence-runtime",
+        "label": "SYSTEM FLOW · AGENT RUNTIME",
+        "title": "질문에서 근거 연결 답변까지",
+        "description": "의미 판단과 실행 제어, 데이터별 도구, 근거 검증을 분리한 런타임 흐름입니다.",
+        "question": "한 번의 질문이 어떤 책임 경계를 지나 최종 답변으로 확정되는가?",
+        "takeaway": "LLM은 의미를 판단하지만 실행 순서와 근거 채택, 최종 응답 확정은 검증 가능한 런타임 계약이 담당합니다.",
+        "readingGuide": [
+          {"step": "1", "title": "의미 확정", "body": "질의 이해가 사용자의 목적과 필요한 근거를 정하고, 입력이 부족할 때만 HITL로 보완합니다."},
+          {"step": "2", "title": "실행과 수집", "body": "결정적 계획이 문서·지식그래프·운영 데이터 중 필요한 경로만 호출합니다."},
+          {"step": "3", "title": "근거 검증", "body": "각 결과의 출처와 식별자를 Evidence contract로 묶어 답변에 채택할 수 있는지 판정합니다."},
+          {"step": "4", "title": "응답 확정", "body": "검증된 근거와 주장 ID가 일치할 때만 하나의 최종 응답으로 확정합니다."}
+        ],
+        "scopeNote": "각 전문 에이전트의 내부 재계획 세부보다 시스템 전체의 권위·호출·검증 경계를 설명하는 상위 뷰입니다.",
+        "contextByNodeId": {
+          "architecture.domain-agent-orchestration": {"stage": "1–2 · 의미와 실행 조정", "body": "Query Understanding과 Coordinator의 권위를 분리한 지점을 설명합니다."},
+          "workflow.schema-validated-agent": {"stage": "1–4 · 전체 실행 흐름", "body": "단계 사이의 스키마 계약과 실패 지점 분리를 설명합니다."},
+          "architecture.llm-runtime-responsibility": {"stage": "1–4 · LLM / Runtime 경계", "body": "의미 판단과 결정적 상태 관리의 책임 분리를 설명합니다."},
+          "reliability.provenance-gated-answer": {"stage": "3–4 · 근거 검증과 응답 확정", "body": "채택 근거와 화면 인용이 같은 식별자를 가리키도록 한 계약입니다."}
+        },
+        "source": "flowchart TD\n  Q[\"사용자 질문\"] --> U{\"질의 이해\"}\n  U -->|known workflow| P[\"결정적 실행 계획\"]\n  U -->|ambiguous| H[\"HITL 보완\"]\n  H --> P\n  P --> R{\"필요한 근거\"}\n  R --> D[\"문서 검색\"]\n  R --> K[\"지식 그래프\"]\n  R --> S[\"운영 데이터\"]\n  D --> V[\"Evidence contract\"]\n  K --> V\n  S --> V\n  V --> A[\"근거가 연결된 답변\"]"
+      }
+    ],
+    "decisions": [
+      {
+        "step": "01",
+        "anchor": "deterministic-boundary",
+        "title": "LLM / runtime boundary",
+        "body": "의미와 필요한 근거는 LLM이 판단하고, 식별자·상태·실행 순서·스키마 검증은 런타임이 소유합니다."
+      },
+      {
+        "step": "02",
+        "anchor": "evidence-contract",
+        "title": "Evidence contract",
+        "body": "호출·제공자·원문 digest·위치를 검증한 근거만 채택하고 답변 주장과 화면 인용의 ID를 일치시킵니다."
+      },
+      {
+        "step": "03",
+        "anchor": "graph-retrieval",
+        "title": "Typed retrieval",
+        "body": "BM25와 dense 검색을 결합하고, 조건 조합으로만 참인 사실은 역할이 있는 다항 관계로 보존합니다."
+      },
+      {
+        "step": "04",
+        "anchor": "evaluation-loop",
+        "title": "Evaluation loop",
+        "body": "근거 커버리지와 답변 품질을 나누고 도구 선택·조회·근거 결속·내용 정확도의 회귀를 따로 측정합니다."
+      }
+    ],
+    "resultLabel": "EVALUATION METHOD",
+    "result": "근거 커버리지와 답변 품질을 분리하고, 도구 선택·조회·근거 결속·내용 정확도의 회귀를 각각 확인하는 평가 체계를 구축했습니다.",
+    "note": "과거 스냅샷의 정량 결과는 내려두었으며, 동일 조건으로 재측정한 뒤 추가할 예정입니다."
+  },
+  {
+    "id": "multimodal-document-intelligence",
+    "number": "02",
+    "label": "SELECTED CASE · DOCUMENT AI",
+    "title": "Multimodal Document Intelligence",
+    "subtitle": "문서·청크·표·이미지와 원문 좌표를 잇는 인용 가능한 멀티모달 인덱싱",
+    "description": "파일 단위 처리에서 끊어지던 의미 단위와 원문 위치를 계층 구조로 보존하고, 표와 이미지가 주변 설명을 잃지 않도록 파싱·보강·검색 경로를 설계했습니다.",
+    "tags": ["DOCLING", "OCR", "VLM", "BGE-M3", "OPENSEARCH"],
+    "scope": [
+      "Document·Chunk·Element 계층과 원문 좌표 설계",
+      "OCR·VLM 기반 멀티모달 파싱 모듈 구현",
+      "주변 문맥 기반 Data-to-Text 및 메타데이터 보강",
+      "이벤트 기반 재처리·오류 경로와 OpenSearch 인덱싱"
+    ],
+    "diagrams": [
+      {
+        "id": "document-lineage",
+        "label": "SYSTEM FLOW · DOCUMENT LINEAGE",
+        "title": "문서 계층과 인용 계보",
+        "description": "파싱된 시각 요소가 주변 문맥과 원문 좌표를 잃지 않고 검색 결과로 연결되는 구조입니다.",
+        "question": "표와 이미지가 문서 문맥과 원문 위치를 잃지 않은 채 어떻게 검색 결과가 되는가?",
+        "takeaway": "Data-to-Text는 OCR을 대체하는 단계가 아니라 파싱된 요소에 주변 문맥을 결합해 검색 가능한 설명으로 보강하는 단계입니다.",
+        "readingGuide": [
+          {"step": "1", "title": "Parse", "body": "Docling·OCR·VLM으로 텍스트, 표, 이미지와 페이지 좌표를 추출합니다."},
+          {"step": "2", "title": "Link", "body": "Document–Chunk–Element 계층으로 시각 요소를 상위 문서와 주변 설명에 연결합니다."},
+          {"step": "3", "title": "Enrich", "body": "앞뒤 문맥과 핵심 변화를 반영한 Data-to-Text를 생성하되 원문 좌표와 digest를 유지합니다."},
+          {"step": "4", "title": "Index & cite", "body": "보강 서술과 원문 메타데이터를 함께 색인해 검색 결과가 실제 페이지 위치로 돌아가게 합니다."}
+        ],
+        "scopeNote": "이 그림은 처리 계보를 설명합니다. 문서 유형별 파싱 성공률과 검색 품질 수치는 동일 조건 재측정 후 별도로 공개합니다.",
+        "contextByNodeId": {
+          "document.contextual-data-to-text": {"stage": "3 · Enrich", "body": "파싱 결과를 주변 문맥과 결합해 검색 가능한 서술로 보강하는 단계입니다."},
+          "document.hierarchical-indexing": {"stage": "2 · Link", "body": "Document–Chunk–Element 계층과 원문 좌표의 연결을 설명합니다."},
+          "document.multimodal-context-preservation": {"stage": "2–3 · Link & Enrich", "body": "표·이미지가 주변 설명과 분리되지 않게 하는 설계입니다."}
+        },
+        "source": "flowchart TD\n  F[\"Source file\"] --> P[\"OCR · VLM parsing\"]\n  P --> D[\"Document\"]\n  D --> C[\"Chunk\"]\n  C --> E[\"Table · Image Element\"]\n  C --> L[\"Page · bbox · digest\"]\n  E --> T[\"Context-preserving Data-to-Text\"]\n  T --> I[\"Hybrid index\"]\n  L --> I\n  I --> R[\"Search result + citation\"]"
+      }
+    ],
+    "decisions": [
+      {
+        "step": "01",
+        "anchor": "hierarchy",
+        "title": "Three-level document model",
+        "body": "인용 좌표와 시각 요소의 독립 처리를 함께 만족하는 최소 구조로 Document·Chunk·Element 3계층을 선택했습니다."
+      },
+      {
+        "step": "02",
+        "anchor": "context",
+        "title": "Context-preserving elements",
+        "body": "표·이미지를 주변 설명과 연결하고 앞뒤 문맥을 반영한 Data-to-Text로 단독 요소의 의미 왜곡을 줄였습니다."
+      },
+      {
+        "step": "03",
+        "anchor": "retrieval",
+        "title": "Hybrid retrieval",
+        "body": "정확한 용어와 패러프레이즈를 함께 다루기 위해 희소·밀집 검색을 결합하고 도메인 문맥으로 재정렬했습니다."
+      }
+    ],
+    "resultLabel": "PUBLIC TECHNICAL OUTCOME",
+    "result": "신규 도메인 문서 요청을 1시간 내 반영하는 공통 모듈을 구축하고, 관련 특허 2건 출원과 외부 시연으로 연결했습니다.",
+    "note": "파싱 품질의 corpus별 정량 평가는 다음 보완 과제로 남겨 두었습니다."
+  },
+  {
+    "id": "personal-agent-harness",
+    "number": "03",
+    "label": "PERSONAL R&D · AGENT INFRASTRUCTURE",
+    "title": "Personal Agent Harness",
+    "subtitle": "여러 AI 코딩 에이전트가 절차·도구·지식·권한 경계를 공유하는 로컬 실행 환경",
+    "description": "에이전트마다 달라지던 절차 사본과 도구 설정을 단일 manifest로 수렴시키고, 작업 전 지식 조회·신뢰 상태·접근 정책을 프롬프트가 아닌 실행 계약으로 관리합니다.",
+    "tags": ["CODEX", "MCP", "KNOWLEDGE GRAPH", "POLICY", "PROVENANCE"],
+    "scope": [
+      "단일 정본 manifest와 에이전트별 링크 배포",
+      "Personal Wiki 검색·신뢰 상태·파생 지식그래프 구축",
+      "지식 preflight와 선택·제외 이유 append-only 기록",
+      "데이터 소스별 승인·draft-only·read-only 정책 구성"
+    ],
+    "diagrams": [
+      {
+        "id": "harness-authority",
+        "label": "TRUST BOUNDARY · PERSONAL HARNESS",
+        "title": "지식 정본과 실행 권한의 분리",
+        "description": "에이전트 환경은 하나의 manifest를 공유하지만, 지식이 바로 실행 권한으로 승격되지는 않습니다.",
+        "question": "여러 에이전트가 같은 지식을 쓰면서도 어떻게 낡은 지식과 과도한 권한을 차단하는가?",
+        "takeaway": "단일 manifest는 환경 drift를 줄이고, 별도의 신뢰 게이트와 정책 계층은 지식이 실행 권한으로 자동 승격되는 것을 막습니다.",
+        "readingGuide": [
+          {"step": "1", "title": "환경 정본", "body": "도구와 에이전트 설정을 하나의 canonical manifest에서 배포합니다."},
+          {"step": "2", "title": "지식 파생", "body": "Wiki 정본에서 검색 인덱스와 지식그래프를 재생성합니다."},
+          {"step": "3", "title": "신뢰 판정", "body": "reviewed·verified만 적용 경로로 보내고 draft·observation은 발견 후보로 남깁니다."},
+          {"step": "4", "title": "권한 집행", "body": "별도 정책 설정을 통과한 기능만 실제 에이전트 실행에 연결합니다."}
+        ],
+        "scopeNote": "지식의 추천과 도구 실행 권한을 분리한 운영 경계이며, 특정 에이전트 제품의 UI 흐름을 설명하는 그림은 아닙니다.",
+        "source": "flowchart TD\n  M[\"Canonical manifest\"] --> C[\"Codex\"]\n  M --> L[\"Claude Code\"]\n  M --> T[\"Tool · MCP registry\"]\n  W[\"Wiki Markdown\"] --> I[\"Derived index + KG\"]\n  I --> G{\"Trust gate\"}\n  G -->|reviewed · verified| P[\"Knowledge preflight\"]\n  G -->|draft · observation| O[\"Discovery only\"]\n  P --> E[\"Agent execution\"]\n  A[\"Policy configuration\"] --> E"
+      }
+    ],
+    "decisions": [
+      {
+        "step": "01",
+        "anchor": "single-source",
+        "title": "One canonical source",
+        "body": "에이전트 홈의 사본을 정본으로 만들지 않고 manifest에 등록한 뒤 링크로 배포해 환경 간 drift를 막습니다."
+      },
+      {
+        "step": "02",
+        "anchor": "trust-gate",
+        "title": "Trust-aware knowledge",
+        "body": "Markdown을 정본으로 두고 reviewed·verified만 적용하며 draft·observation은 발견 후보로 분리합니다."
+      },
+      {
+        "step": "03",
+        "anchor": "policy-boundary",
+        "title": "Knowledge is not authority",
+        "body": "지식이 절차를 추천해도 환경·설치·트리거·신뢰 조건을 통과해야 실행되도록 권한 경계를 코드로 강제합니다."
+      }
+    ],
+    "resultLabel": "25-DAY OPERATING SNAPSHOT",
+    "result": "17,574건의 자동 기록과 99.76%의 작업 전 지식 조회 이행률을 관측했습니다.",
+    "note": "조회 계약에 진입한 작업만 측정했으며 시간 절감이나 전체 생산성 개선으로 환산하지 않습니다."
+  },
+  {
+    "id": "supporting-agent-systems",
+    "number": "04",
+    "label": "SUPPORTING CASES · DELIVERY & LLMOPS",
+    "title": "Right-sized Agents & Model Operations",
+    "subtitle": "요구 규모에 맞춘 상담 에이전트와 공통 모델 호출·관측 기반",
+    "description": "산업 시스템의 구조를 작은 데모에 그대로 복사하지 않고 상태 그래프와 단순 검색으로 축소했으며, 서비스마다 달랐던 모델 제공자 호출과 오류 관측 경로는 공통 게이트웨이로 통합했습니다.",
+    "tags": ["LANGGRAPH", "SSE", "LITELLM", "VLLM", "KUBERNETES"],
+    "scope": [
+      "고정 상담 흐름을 5단계 상태 그래프로 구현",
+      "SSE 기반 실행 단계 실시간 시각화와 상태 저장",
+      "LiteLLM 기반 모델 제공자 공통 호출 인터페이스",
+      "Langfuse 요청·지연·오류 관측과 로컬/외부 provider 전환"
+    ],
+    "diagrams": [
+      {
+        "id": "right-sized-delivery",
+        "label": "DELIVERY FLOW · RIGHT-SIZED AGENT",
+        "title": "상태 그래프와 모델 게이트웨이",
+        "description": "작은 데모에는 고정 상태 흐름을 사용하고, 모델 제공자 전환과 관측만 공통 경계로 분리했습니다.",
+        "question": "작은 상담 데모에서 어디까지 고정하고 무엇을 공통 운영 기반으로 분리했는가?",
+        "takeaway": "예측 가능한 상담 흐름은 상태 그래프로 고정하고, 모델 제공자 전환과 관측만 재사용 가능한 게이트웨이로 분리했습니다.",
+        "readingGuide": [
+          {"step": "1", "title": "상태 흐름", "body": "질문을 분류하고 필요한 정보를 검색한 뒤 답변하는 고정 경로를 사용합니다."},
+          {"step": "2", "title": "진행 표시", "body": "각 상태의 진행과 완료를 SSE로 사용자에게 전달합니다."},
+          {"step": "3", "title": "제공자 경계", "body": "로컬 모델과 외부 제공자를 같은 호출 인터페이스 뒤에 둡니다."},
+          {"step": "4", "title": "관측", "body": "요청·지연·오류를 Langfuse 관측 경로에 함께 기록합니다."}
+        ],
+        "scopeNote": "대규모 자율 planner가 필요하지 않은 고정 상담 흐름을 대상으로 한 right-sized 구조입니다.",
+        "source": "flowchart TD\n  Q[\"상담 질문\"] --> C[\"Classify\"]\n  C --> R[\"Retrieve\"]\n  R --> A[\"Respond\"]\n  C --> S[\"SSE trace\"]\n  R --> S\n  A --> S\n  A --> G[\"Provider-neutral gateway\"]\n  G --> L[\"Local vLLM\"]\n  G --> E[\"External provider\"]\n  G --> O[\"Langfuse observability\"]"
+      }
+    ],
+    "decisions": [
+      {
+        "step": "01",
+        "anchor": "right-sized-agent",
+        "title": "Right-sized state graph",
+        "body": "고정적인 상담 흐름에는 동적 planner 대신 상태 그래프를 사용하고 서비스·컨테이너 수를 데모 규모에 맞게 줄였습니다."
+      },
+      {
+        "step": "02",
+        "anchor": "llm-gateway",
+        "title": "Provider-neutral gateway",
+        "body": "로컬 vLLM과 외부 제공자를 공통 호출 경계 뒤에 두고 요청·지연·오류를 같은 관측 경로에 남겼습니다."
+      },
+      {
+        "step": "03",
+        "anchor": "local-deployment",
+        "title": "Local-first deployment",
+        "body": "외부 API가 없는 환경에서도 동작하도록 모델 서빙·검색·도구·관측을 컨테이너 기반 기동 경로로 구성했습니다."
+      }
+    ],
+    "resultLabel": "DESIGN OUTCOME",
+    "result": "상담 데모는 컨테이너 6개 계획을 2개로 줄이면서 실행 단계 관측과 재현성을 유지했고, 모델 호출 경로는 팀 공통 인터페이스로 통합했습니다.",
+    "note": "실제 사용자 수·월 요청량·오류율이 없어 이 기반을 AI Platform이라고 과장하지 않습니다."
+  }
+]
