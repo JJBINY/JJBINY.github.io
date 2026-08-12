@@ -115,6 +115,7 @@ export class MockAgentProvider {
       confidence: retrieval.confidence,
       trace: {
         provider: "mock",
+        followUpMode: "evidence-fallback",
         intent: retrieval.intent,
         bundle: retrieval.bundle,
         retrieved: retrieval.matches.map(({ entry, score, matchType, via }) => ({

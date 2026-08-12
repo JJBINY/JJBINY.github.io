@@ -2,7 +2,7 @@
  * Runtime switches live here so content and provider changes do not leak into UI code.
  * GitHub Pages serves static content itself and sends only LLM chat requests to ngrok.
  */
-export const remoteAgentBaseUrl = "https://8a95-124-56-35-56.ngrok-free.app";
+export const remoteAgentBaseUrl = "https://16e8-124-56-35-56.ngrok-free.app";
 
 export function resolveAgentRuntime(locationLike = globalThis.location) {
   const hostname = locationLike?.hostname?.toLowerCase() ?? "localhost";

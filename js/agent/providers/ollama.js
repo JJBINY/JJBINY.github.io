@@ -87,14 +87,20 @@ export class OllamaAgentProvider {
     this.sessionId = null;
   }
 
-  async generate({ question, pageContext, onToken, onEvent, signal }) {
+  async generate({ question, pageContext, queryScope, preferCachedFollowUps, onToken, onEvent, signal }) {
     const response = await fetch(this.endpoint, {
       method: "POST",
       headers: {
         "Accept": "text/event-stream",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ question, sessionId: this.sessionId, pageContext }),
+      body: JSON.stringify({
+        question,
+        sessionId: this.sessionId,
+        pageContext,
+        queryScope,
+        preferCachedFollowUps: preferCachedFollowUps === true
+      }),
       signal
     });
 

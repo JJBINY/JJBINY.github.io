@@ -1,24 +1,20 @@
 {
   "metadata": {
-    "schemaVersion": "1.0",
+    "schemaVersion": "1.1",
     "visibility": "public-candidate",
-    "generatedAt": "2026-08-11T07:16:47.000Z",
-    "nodeCount": 43,
-    "edgeCount": 51,
-    "manifestDigest": "8c4827ac268a776b781644a1e60aa4a51f9c4d630d93f125717108ef38456c40",
+    "generatedAt": "2026-08-12T19:50:09.125Z",
+    "nodeCount": 51,
+    "edgeCount": 53,
+    "manifestDigest": "a6ccbb4efaaa30b1adcafdf5311a45c4d415b7520e825d2878794282bb1eec0b",
     "ontologyDigest": "a364a699cfb7e64e59bed1b5bef00038b341fd533cba803331d196f21f472102",
-    "sourceFingerprint": "5e64f339b621ac427397c6c82ed0784b3f7e5e9fda08e567085b809f88545faf",
+    "sourceFingerprint": "3ecd7ab456983bbf8cacaabdade0d76c29ea89f631df116a3561c25afa45c94e",
     "upstreamContracts": [
       {
         "label": "Personal Wiki stable ontology",
         "contentDigest": "c81af025023370c80843fa53e8be3b72654d1d41b8dd46946e33ea3dc97c1f97"
-      },
-      {
-        "label": "Steel Assistant KB v2.1 source contract",
-        "contentDigest": "36dc04743461edbf2c53587e9bd861a170d4f5ec507e865363909ebef5d93a75"
       }
     ],
-    "bundleDigest": "51e9d0b9ae8c4b6ecbd84ce0bb7301fb06aff302f7f476ef083ed99b7279de2a"
+    "bundleDigest": "a72d4546c526e46d6899c2c74b8abdd3993162bfd9d0b7662f22f60aac742d8a"
   },
   "ontology": {
     "nodeKinds": [
@@ -75,22 +71,26 @@
       "intent": "profile",
       "kind": "profile",
       "title": "근거 중심 Applied AI Engineer",
-      "answer": "저는 산업 문서와 운영 데이터를 AI가 근거로 활용할 수 있는 구조로 만드는 Applied AI Engineer입니다. AI 에이전트, Document AI, RAG, LLMOps를 중심으로 검색·추론·평가·운영을 연결해 왔습니다.",
-      "summary": "산업 문서와 운영 데이터를 근거로 연결하는 Applied AI Engineer",
+      "answer": "강주빈은 문서와 운영 데이터를 LLM이 활용할 수 있는 구조로 만들고, 자연어 질의를 문서 검색·데이터 조회·도구 실행으로 연결하는 Applied AI Engineer이자 Research Engineer입니다. 도메인 특화 AI Agent와 Agentic RAG를 중심으로 멀티모달 전처리, Document–Chunk–Element 계층형 인덱싱, Cross-modal Retrieval과 NL2SQL을 설계·구현합니다. 또한 vLLM·LiteLLM·Kubernetes 기반 모델 서빙과 Langfuse 기반 Agent Trace·Trajectory 분석을 연결해 실제 서비스의 검색·추론·평가·운영 흐름을 함께 구축해 왔습니다.",
+      "summary": "문서·운영 데이터를 검색·조회·도구 실행으로 연결하고 서비스 운영 경계까지 설계하는 Applied AI Engineer",
       "keywords": [
         "강주빈",
         "자기소개",
-        "어떤 엔지니어",
         "Applied AI",
+        "Research Engineer",
         "AI Agent",
+        "Agentic RAG",
         "Document AI",
-        "RAG",
-        "LLMOps"
+        "Cross-modal Retrieval",
+        "NL2SQL",
+        "vLLM",
+        "LiteLLM",
+        "Kubernetes",
+        "Langfuse"
       ],
       "tags": [
         "PROFILE",
-        "APPLIED AI",
-        "EVIDENCE-DRIVEN"
+        "APPLIED AI"
       ],
       "status": "source-backed",
       "authority": "career-primary",
@@ -99,8 +99,7 @@
         "href": "#profile"
       },
       "followUps": [
-        "대표 프로젝트에서 정확히 무엇을 맡았나요?",
-        "요구 정의부터 배포까지 어떻게 연결했나요?"
+        "대표 프로젝트에서 맡은 범위는 무엇인가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -133,23 +132,16 @@
       "intent": "background",
       "kind": "background",
       "title": "물리학과 컴퓨터공학을 함께 공부한 배경",
-      "answer": "세종대학교에서 물리천문학을 전공하고 컴퓨터공학을 복수전공해, 현상을 모델링하는 관점과 시스템을 구현하는 관점을 함께 익혔습니다. AWS Developer Associate, 정보처리기사, SQLD 자격을 갖추고 있습니다.",
-      "summary": "물리천문학 전공·컴퓨터공학 복수전공과 클라우드·데이터 자격",
+      "answer": "물리천문학과 컴퓨터공학을 함께 공부해 현상을 모델링하는 관점과 시스템으로 구현하는 관점을 같이 익혔습니다.",
+      "summary": "현상 모델링과 시스템 구현을 함께 보는 학제적 배경",
       "keywords": [
         "학력",
-        "학교",
         "전공",
-        "세종대학교",
         "물리천문학",
-        "컴퓨터공학",
-        "자격증",
-        "AWS",
-        "SQLD"
+        "컴퓨터공학"
       ],
       "tags": [
-        "BACKGROUND",
-        "EDUCATION",
-        "CREDENTIAL"
+        "BACKGROUND"
       ],
       "status": "source-backed",
       "authority": "career-primary",
@@ -158,8 +150,7 @@
         "href": "#profile"
       },
       "followUps": [
-        "전공 배경이 AI 시스템 설계에 어떤 영향을 줬나요?",
-        "현재 가장 자신 있는 기술 영역은 무엇인가요?"
+        "전공이 시스템 설계에 어떤 영향을 줬나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -182,23 +173,19 @@
       "id": "capability.end-to-end-delivery",
       "intent": "experience",
       "kind": "capability",
-      "title": "요구 정의부터 배포까지 연결하는 역량",
-      "answer": "연구와 실증 과제에서 요구 정의, 설계, 구현, 평가, 배포를 분리된 역할로 보지 않고 하나의 전달 흐름으로 다뤘습니다. 모델 호출뿐 아니라 데이터 준비, 검색, 백엔드, 관측과 운영 경계까지 함께 설계할 수 있습니다.",
-      "summary": "요구 정의·설계·구현·평가·배포를 잇는 end-to-end 전달 경험",
+      "title": "요구 정의부터 검증 가능한 전달까지 연결",
+      "answer": "요구 정의, 데이터 준비, 설계, 구현, 평가와 배포를 하나의 전달 흐름으로 다룹니다. 모델 호출뿐 아니라 검색·백엔드·근거·관측 경계를 함께 설계합니다.",
+      "summary": "요구·데이터·구현·평가·운영을 연결하는 전달 역량",
       "keywords": [
-        "요구 정의",
-        "설계",
-        "구현",
-        "평가",
-        "배포",
-        "end to end",
+        "역할",
         "담당 범위",
-        "역할"
+        "end to end",
+        "배포",
+        "평가"
       ],
       "tags": [
         "CAPABILITY",
-        "DELIVERY",
-        "ENGINEERING"
+        "DELIVERY"
       ],
       "status": "source-backed",
       "authority": "career-primary",
@@ -207,8 +194,7 @@
         "href": "#work"
       },
       "followUps": [
-        "대표 과제에서 가장 큰 설계 판단은 무엇이었나요?",
-        "운영 단계에서 무엇을 관측했나요?"
+        "가장 큰 설계 판단은 무엇이었나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -231,55 +217,56 @@
       "id": "project.industrial-multi-tool-agent",
       "intent": "project",
       "kind": "project",
-      "title": "산업 지식을 연결한 다중 도구 AI 어시스턴트",
-      "answer": "비정형 작업 문서, 반정형 현장 지식, 관계형 운영 데이터를 하나의 대화 창구에서 조회하는 산업 AI 어시스턴트를 설계하고 구현했습니다. 데이터 종류별 책임은 도구 서비스로 나누고, 런타임은 질의 이해부터 근거 검증과 응답까지 조정하도록 구성했습니다.",
-      "summary": "문서·노하우·운영 데이터를 연결한 산업 도메인 AI 어시스턴트",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "Steel Domain AI Agent",
+      "answer": "PDF 작업표준, 현장 노하우와 Digital Twin 상태를 서로 다른 권위의 지식원으로 구조화하고 질문 해석, 작업 계획, 전문 Agent 실행, 근거 검증과 최종 답변까지 연결했습니다.",
+      "summary": "공식 문서·현장 경험·설비 상태를 근거 계약으로 연결한 제조 AI 시스템",
       "keywords": [
-        "대표 프로젝트",
+        "Steel",
         "철강",
+        "대표 프로젝트",
         "산업 AI",
-        "다중 도구",
-        "멀티 에이전트",
-        "MCP",
-        "무엇을 만들"
+        "멀티 Agent"
       ],
       "tags": [
         "PROJECT",
-        "AGENTIC RAG",
-        "INDUSTRIAL AI"
+        "INDUSTRIAL AI",
+        "AGENTIC RAG"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Selected Work · Steel-domain Agent",
-        "href": "#steel-domain-agent-overview"
+        "label": "Steel Domain AI Agent · Overview",
+        "href": "#case/steel-domain-agent/overview"
       },
       "followUps": [
-        "이 프로젝트에서 본인이 맡은 범위는 무엇인가요?",
-        "왜 하나의 ReAct 에이전트로 두지 않았나요?"
+        "세 지식원의 권위를 어떻게 나눴나요?",
+        "E2E Agent loop를 설명해 주세요."
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1. 산업 도메인용 다중 도구 AI 에이전트 (철강 제조)",
-            "authority": "career-primary",
-            "status": "source-backed",
-            "bindingDigest": "4a26989ca6cd14954e61630788b85710474704e23ee60071dbf2f077b71d4108",
-            "contentDigest": "82837404f2505d6b076a16c47241f7c6fd1f04142d0be56d49a9fc85b0474a0a"
-          },
-          {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "1 · 철강 제조 현장 AI 어시스턴트",
+            "sourceId": "project-docs-steel-portfolio",
+            "label": "Steel Domain AI Agent 포트폴리오 · 2026-08-12",
+            "locator": "프로젝트 개요",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "6563ac71cbd58f00c0829b99517e9a9672bfe7da9405198ec9b035d07c873219",
-            "contentDigest": "a0f1e1a1c323173a7ad876e273d632609745ddff66541faed90c86c0d87b4178"
+            "bindingDigest": "b1d9c4c496ad67a702b9452d1493d0cf9e8c887391f8bb467db1da79c8df7aad",
+            "contentDigest": "d7aa01ef75fe5e5a11b111d4a3ee7637627ee9af7adcb0de6af11f0d28d4b9ca"
+          },
+          {
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "설계 목표",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "615884ca5242487615260ebe7231217f927223bfeb3f453844c575731270bb65",
+            "contentDigest": "a1838d1cdbc0b7a545714daf836bcb8a5af5417b0b32b5b070e89e4688545630"
           }
         ]
       }
@@ -288,45 +275,44 @@
       "id": "architecture.single-backend-tool-boundaries",
       "intent": "architecture",
       "kind": "architecture-decision",
-      "title": "단일 외부 백엔드와 데이터별 도구 경계",
-      "answer": "브라우저가 접근하는 백엔드는 하나로 유지하고, 문서 검색·지식 검색·운영 데이터 조회의 책임만 독립 도구 경계로 분리했습니다. 인증과 세션 처리를 중복하지 않으면서 데이터 소스별 변경 영향을 격리하기 위한 선택입니다.",
-      "summary": "외부 진입점은 하나, 데이터 접근 책임은 소스별 도구로 분리",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "외부 연결과 데이터별 도구 경계",
+      "answer": "런타임 API와 MCP는 서비스 연결을 맡고 문서 검색·노하우 검색·설비 상태 조회는 데이터 권위별 도구로 분리했습니다. 도구는 전체 질문 의미나 답변 정책을 결정하지 않습니다.",
+      "summary": "서비스 연결과 데이터 권위별 도구 책임을 분리",
       "keywords": [
-        "백엔드",
         "서비스 경계",
-        "도구 서비스",
-        "MCP",
-        "책임 분리",
-        "단일 진입점"
+        "도구",
+        "backend",
+        "MCP"
       ],
       "tags": [
         "ARCHITECTURE",
-        "BOUNDARY",
-        "MCP"
+        "TOOLS"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Service boundaries",
-        "href": "#steel-domain-agent-deterministic-boundary"
+        "label": "Steel · Service boundary",
+        "href": "#case/steel-domain-agent/orchestration"
       },
       "followUps": [
-        "MCP는 어디까지 책임지게 했나요?",
-        "LLM과 런타임의 책임은 어떻게 나눴나요?"
+        "MCP를 Agent로 보지 않은 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.2 서비스 구성",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "MCP와 서비스 경계",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "9aad85a51bb541f04f6275ab7b94d8af2c522fef89f0cbcae6336b37be4fb1c5",
-            "contentDigest": "2ef5c2624a62003b868c7e1ea89b0fb4db79a53ab239efcd94259e5f3726ba0d"
+            "bindingDigest": "d3a33e18079b878e6e26be9e539b357f837931ce4709ce4b9a57b6f23ecbbc70",
+            "contentDigest": "86ad4ceb368acd07ffd573384aa9dd3f3e8d9b418c12e25857ab71fd60612e3a"
           }
         ]
       }
@@ -335,302 +321,98 @@
       "id": "architecture.llm-runtime-responsibility",
       "intent": "architecture",
       "kind": "architecture-decision",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
       "title": "LLM과 결정적 런타임의 책임 분리",
-      "answer": "LLM에는 과업 의미와 필요한 근거의 성격을 판단하게 하고, 식별자·실행 순서·상태·스키마 검증은 런타임이 소유하게 했습니다. 의미 변화에는 유연하면서도 동일 요청의 추적과 재현은 안정적으로 유지하기 위한 경계입니다.",
-      "summary": "의미 판단은 LLM, 상태·식별자·검증은 결정적 런타임이 소유",
+      "answer": "LLM은 열린 자연어의 의미와 필요한 근거를 해석하고 schema·revision·실행 순서·budget·근거 commit은 결정적 런타임이 소유합니다.",
+      "summary": "의미 해석은 LLM, 상태와 실행 계약은 런타임이 소유",
       "keywords": [
-        "LLM 책임",
-        "런타임 책임",
+        "LLM runtime",
         "결정적",
-        "비결정적",
-        "스키마 검증",
-        "상태",
-        "재현성"
+        "책임 분리"
       ],
       "tags": [
         "ARCHITECTURE",
-        "DETERMINISTIC RUNTIME",
-        "RELIABILITY"
+        "DETERMINISTIC"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Deterministic boundary",
-        "href": "#steel-domain-agent-deterministic-boundary"
+        "label": "Steel · Runtime boundary",
+        "href": "#case/steel-domain-agent/architecture"
       },
       "followUps": [
-        "스키마 검증 실패는 어떻게 처리했나요?",
-        "이 구조가 프롬프트만 쓰는 방식보다 나은 이유는 무엇인가요?"
+        "규칙만으로 처리하지 않은 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "결정 1 — LLM과 런타임의 책임을 나눈다",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "구성요소별 책임",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "af67dfe4e848854b557a9fe633eb4b748d5e6b4c483bf331a6e0980b549de3ef",
-            "contentDigest": "6bc0a198240857adf4a429f9ea86a94b17f99173c50ab6fe3f0e60874465864c"
+            "bindingDigest": "539c2f54aac8e0e42a272a1020700f0b215b1267167c3769eca2a19c52fde557",
+            "contentDigest": "bf88309883f998e38c44180010dad19126218d14cc1f71cf06274769f4bb1062"
           }
         ]
       }
     },
     {
       "id": "workflow.schema-validated-agent",
-      "intent": "routing",
+      "intent": "architecture",
       "kind": "implementation",
-      "title": "단계와 계약이 보이는 에이전트 실행 흐름",
-      "answer": "초기 단일 프롬프트 구조를 질의 이해, 결정론적 capability projection·binding, bounded DAG 실행, 근거 원장과 최종화 단계로 나눴습니다. LLM은 의미와 필요한 근거를 구조화하지만 이미 evidence kind로 결정할 수 있는 실행 경로까지 매번 다시 고르지 않습니다. 실패 시에도 전체 요청을 처음부터 되풀이하기보다 결함을 소유한 경계의 제한된 회복 경로로 돌아갑니다. 따라서 단계 분리는 trace를 얻기 위한 장치에 그치지 않고, 추론이 실제로 경로를 바꿀 수 있는 구간과 런타임 불변식을 나누는 실행 계약입니다.",
-      "summary": "의미 추론 뒤 결정적 실행을 사용하고 필요한 경계만 제한적으로 재진입",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "단계와 계약이 보이는 E2E Agent 실행 흐름",
+      "answer": "질의 이해, HITL, TaskGraph, ActionGraph, 전문 Agent 실행, 근거 채택과 Answer IR 최종화를 typed contract로 연결했습니다.",
+      "summary": "질의 이해부터 답변 최종화까지 typed handoff로 구성",
       "keywords": [
-        "ReAct",
-        "workflow",
-        "워크플로",
-        "단계 분리",
-        "스키마",
-        "계획",
-        "도구 호출",
-        "라우팅",
-        "bounded DAG",
-        "재진입"
+        "E2E Agent",
+        "TaskGraph",
+        "ActionGraph",
+        "typed handoff"
       ],
       "tags": [
-        "AGENT WORKFLOW",
-        "SCHEMA",
-        "BOUNDED RECOVERY"
+        "WORKFLOW",
+        "AGENT LOOP"
       ],
       "status": "source-backed",
-      "authority": "derived-current-snapshot",
-      "claimMode": "source_confirmed",
-      "asOf": "steel-assistant@c0a2c718",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Schema workflow",
-        "href": "#steel-domain-agent-deterministic-boundary"
+        "label": "Steel · E2E loop",
+        "href": "#case/steel-domain-agent/evidence"
       },
       "followUps": [
-        "모든 질의를 ReAct로 처리하지 않은 이유는 무엇인가요?",
-        "추론으로 LLM 호출 횟수를 줄이는 장점은 어떻게 반영했나요?"
+        "병렬 실행 결과는 어떻게 합치나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "derived-current-snapshot",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.3 실행 흐름 (Agentic Workflow)",
-            "authority": "career-primary",
-            "status": "source-backed",
-            "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
-            "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
-          },
-          {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "1.1 에이전트 아키텍처",
+            "sourceId": "project-docs-steel-portfolio",
+            "label": "Steel Domain AI Agent 포트폴리오 · 2026-08-12",
+            "locator": "E2E Agent Loop",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "7448bd66de29f08e801aaa8bec7191081de45787c871cbc0abbfb3804d0be8db",
-            "contentDigest": "8d53377ec3280d764e72d955b6f31b9214e441a7f0fe8eafcb1b3f91ca56dda0"
+            "bindingDigest": "b8234087683aacc2aa856966a80d4f5d2ae842ac67fd8565dc69858b365d2da4",
+            "contentDigest": "7e1813ef2543371afa0f0c851836bc09db8e45eee132fdb0fd93ea96a406dac0"
           },
           {
-            "sourceId": "steel-kb-runtime",
-            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
-            "locator": "Runtime의 여섯 단계",
-            "authority": "derived-current-snapshot",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "요청 수명주기",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "3f395c85696df4f5c89ea4160e58ef65827b060442e38588bc597ceb4c7b4769",
-            "contentDigest": "8e40a408e035532e0fba0ba3395cce44dd2d13d4f28a53de87f74cb075a98f01"
-          },
-          {
-            "sourceId": "steel-kb-runtime",
-            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
-            "locator": "회복의 현재 범위",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "f219301e6d950b3d103d33fee6a29cadf32a7835796271e875b88e97592c4e0d",
-            "contentDigest": "bdfd41c64ae96d7200f3c306411e1230c76773e5e4d79d9840302cb08d221d48"
-          }
-        ]
-      }
-    },
-    {
-      "id": "architecture.adaptive-agent-routing",
-      "intent": "routing",
-      "kind": "architecture-decision",
-      "title": "예상 총비용으로 ReAct와 결정적 경로를 나누는 판단",
-      "answer": "ReAct를 모든 질의에서 배제한 것이 아니며, traceability도 배제 이유가 아닙니다. trace는 ReAct 실행에서도 남길 수 있습니다. 판단 기준은 질의마다 예상되는 의미 추론, 도구 호출, 재시도와 지연의 총비용입니다. LLM의 선행 추론이 불필요한 도구 호출을 줄일 수 있다는 장점은 인정하고 Query Understanding과 typed mission 내부 판단에 사용합니다. 반면 이미 근거 유형으로 경로가 결정되는 confident·반복 질의에서 매 단계 reasoning pass를 추가하면 그 추론 자체가 호출·지연·분산을 늘릴 수 있습니다. 그래서 Steel runtime은 의미 추론 뒤 fixed capability와 bounded DAG를 실행하고, 실행 결과가 다음 경로를 바꿀 수 있는 capability 경계에서만 제한적으로 회복합니다. 공통 원칙은 추론이 경로를 바꿀 정보가 있을 때만 비용을 쓰는 것입니다. 이는 현재 Steel 구조에서 도출한 설계 해석이며 동일 조건의 호출 수 A/B 결과는 아닙니다.",
-      "summary": "추론의 도구 절감 이점과 reasoning 자체 비용을 함께 계산해 direct·bounded ReAct를 선택",
-      "keywords": [
-        "모든 질의 ReAct",
-        "전부 ReAct",
-        "ReAct 배제 이유",
-        "LLM 호출 횟수",
-        "reasoning pass",
-        "추론 비용",
-        "도구 호출 절감",
-        "adaptive routing",
-        "expected total cost",
-        "traceability"
-      ],
-      "tags": [
-        "PORTFOLIO INFERENCE",
-        "ADAPTIVE ROUTING",
-        "COST-AWARE"
-      ],
-      "status": "source-backed",
-      "authority": "cross-system-derived-inference",
-      "claimMode": "portfolio_inference",
-      "asOf": "steel-assistant@c0a2c718 · portfolio-agent-kb@2.1.0",
-      "source": {
-        "label": "Steel Agent · Adaptive routing rationale",
-        "href": "#steel-domain-agent-deterministic-boundary"
-      },
-      "followUps": [
-        "어떤 질의를 direct path로 보내나요?",
-        "호출 수와 지연은 어떤 조건으로 다시 측정할 계획인가요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "cross-system-derived-inference",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.3 실행 흐름 (Agentic Workflow)",
-            "authority": "career-primary",
-            "status": "source-backed",
-            "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
-            "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
-          },
-          {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "1.1 에이전트 아키텍처",
-            "authority": "portfolio-primary",
-            "status": "source-backed",
-            "bindingDigest": "7448bd66de29f08e801aaa8bec7191081de45787c871cbc0abbfb3804d0be8db",
-            "contentDigest": "8d53377ec3280d764e72d955b6f31b9214e441a7f0fe8eafcb1b3f91ca56dda0"
-          },
-          {
-            "sourceId": "steel-kb-runtime",
-            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
-            "locator": "Runtime의 여섯 단계",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "3f395c85696df4f5c89ea4160e58ef65827b060442e38588bc597ceb4c7b4769",
-            "contentDigest": "8e40a408e035532e0fba0ba3395cce44dd2d13d4f28a53de87f74cb075a98f01"
-          },
-          {
-            "sourceId": "steel-kb-runtime",
-            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
-            "locator": "실행 DAG와 concurrency",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "ba610a792ba0b2135b2bfb278508dc5b678394818c60ad3efdac22eab1b48503",
-            "contentDigest": "a80439ecd114ce8e2f8620916b56adf564034e2dfa3e687af7e646f7ce666353"
-          },
-          {
-            "sourceId": "steel-kb-principles",
-            "label": "Steel Assistant engineering principles · v2.1 / c0a2c718",
-            "locator": "1. 적재적소의 하이브리드 판별",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "36efa68213f57f79e864f75e641ba60de6ba89ea6564903f757c53f19f04c419",
-            "contentDigest": "0fea2e7cead5569ee282e64cae68e8aeecbd4e2bdf6563ae9550e8f96465b23d"
-          },
-          {
-            "sourceId": "steel-kb-tradeoffs",
-            "label": "Steel Assistant trade-offs · v2.1 / c0a2c718",
-            "locator": "현재 선택이 지불하는 비용",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "4a4bb3c52dba77e763f35863c9b496bf8dd495752c3eb9b11484de2b58aa833a",
-            "contentDigest": "0bab782be44e8298fdb38e00d155c6081b4fb42fef480bb7b40a0857e69dc512"
-          },
-          {
-            "sourceId": "portfolio-kb-react",
-            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
-            "locator": "진입 조건",
-            "authority": "portfolio-agent-contract",
-            "status": "source-backed",
-            "bindingDigest": "a6e1db8d1b014852cafa5cab9fc3b04736106bf7318e0bca603c6e43ff15742d",
-            "contentDigest": "2f01f0c6f5f611a70260f4a65f2b76eac5176c7ac9ca1adc7d2ff5b4b409c801"
-          }
-        ]
-      }
-    },
-    {
-      "id": "portfolio-agent.bounded-react-fallback",
-      "intent": "routing",
-      "kind": "knowledge-system",
-      "title": "포트폴리오 에이전트의 bounded ReAct fallback",
-      "answer": "v2.1 포트폴리오 지식베이스에서 ReAct는 direct route가 안전하지 않을 때 쓰도록 정의한 제한된 탐색 계약입니다. low score, 낮은 후보 간격, alias 충돌, 필수 근거 누락, current-drift처럼 다음 확인 대상을 동적으로 골라야 할 때 진입하고, 한 번의 질의 재표현과 제한된 관계 확장 뒤 supported·qualified·clarification·unknown 중 하나로 종료하도록 설계합니다. 이 문서는 Steel 제품 runtime의 구현 사실도, 현재 beta 런타임의 구현 완료 증거도 아닙니다.",
-      "summary": "low·ambiguous·no-hit·current-drift에서만 제한적으로 실행되는 포트폴리오 탐색 루프",
-      "keywords": [
-        "포트폴리오 에이전트",
-        "bounded ReAct",
-        "low score",
-        "ambiguous",
-        "no hit",
-        "current drift",
-        "fallback",
-        "직접 경로"
-      ],
-      "tags": [
-        "PORTFOLIO AGENT",
-        "BOUNDED REACT",
-        "AUTHORITY-SEPARATED"
-      ],
-      "status": "source-backed",
-      "authority": "portfolio-agent-contract",
-      "claimMode": "source_confirmed",
-      "asOf": "portfolio-agent-kb@2.1.0",
-      "source": {
-        "label": "Portfolio Agent · ReAct fallback",
-        "href": "#approach"
-      },
-      "followUps": [
-        "Steel runtime의 bounded recovery와 무엇이 다른가요?",
-        "fallback은 언제 중단하나요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "portfolio-agent-contract",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "portfolio-kb-react",
-            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
-            "locator": "진입 조건",
-            "authority": "portfolio-agent-contract",
-            "status": "source-backed",
-            "bindingDigest": "a6e1db8d1b014852cafa5cab9fc3b04736106bf7318e0bca603c6e43ff15742d",
-            "contentDigest": "2f01f0c6f5f611a70260f4a65f2b76eac5176c7ac9ca1adc7d2ff5b4b409c801"
-          },
-          {
-            "sourceId": "portfolio-kb-react",
-            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
-            "locator": "상태 머신",
-            "authority": "portfolio-agent-contract",
-            "status": "source-backed",
-            "bindingDigest": "71d088d0a5cdfb691f404b9eae91bb8e66bc87164fbca97e8215aafe53cb88cb",
-            "contentDigest": "bda177a2eec1bbf8084d92b0787816004fedc0762e36bbfc8e7de851e849e1f2"
-          },
-          {
-            "sourceId": "portfolio-kb-react",
-            "label": "Portfolio agent bounded ReAct contract · KB v2.1",
-            "locator": "중단 조건",
-            "authority": "portfolio-agent-contract",
-            "status": "source-backed",
-            "bindingDigest": "6554d2cd5083e0d61d5f773c7917ba98908a0a7394d627955db9120f39c522c8",
-            "contentDigest": "3f37a3700d23fa3e4273c7bf09d324854264653718ec66aaf1866cddf610a17a"
+            "bindingDigest": "f598d169d3589706a223c2af99eca7838eee3d8bc3c06983e672324b2bd8b2b9",
+            "contentDigest": "25bb9f5f5592ad3cd9c467d8f3ae48cb66d9e5056c2f37cbbfe0c2f7dc89519f"
           }
         ]
       }
@@ -639,42 +421,29 @@
       "id": "architecture.domain-agent-orchestration",
       "intent": "architecture",
       "kind": "architecture-decision",
-      "title": "의미 권위와 실행 권위를 나눈 멀티에이전트 구조",
-      "answer": "Query Understanding은 사용자 의미의 단일 권위를 맡고, Mission Compiler와 Coordinator는 의미를 다시 해석하지 않은 채 타입 미션·의존성·예산·fan-out/fan-in을 관리하도록 나눴습니다. Search·Knowhow·DT·Comparison Agent는 각각 검색 충분성, 사례 적용 가능성, 설비 데이터 조회 의미, 비교 연산의 정합성을 판단합니다. peer 간 숨은 직접 호출은 금지하고 추가 근거 요청은 owning runtime 경계로 올립니다. 최종 응답은 agent 메시지를 이어 붙이는 대신 채택된 사실·해석과 근거 식별자를 ResponsePlan에 묶고, 런타임이 인용 일치를 검증한 하나의 종결 응답으로 확정합니다.",
-      "summary": "Query Understanding·Coordinator와 네 전문 에이전트의 권위·예산·호출 경계를 분리",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "도구·전문 Agent·Orchestrator의 판단 권위",
+      "answer": "도구는 조회를, 전문 Agent는 typed mission 안의 검색 계획과 후보 검증을, Orchestrator는 dependency·budget·fan-out/fan-in과 실패 조정을 담당합니다.",
+      "summary": "자율성보다 독립적인 판단 책임을 기준으로 Agent 경계를 정의",
       "keywords": [
-        "멀티에이전트",
         "멀티 에이전트",
-        "다중 에이전트",
-        "multi-agent",
-        "multiagent",
-        "Mission Compiler",
-        "Coordinator",
-        "Search Agent",
-        "Knowhow Agent",
-        "DT Agent",
-        "Comparison Agent",
-        "ResponsePlan",
-        "최종 응답",
-        "응답 조립",
-        "에이전트 역할",
-        "에이전트 협업",
-        "오케스트레이션"
+        "Orchestrator",
+        "도구 Agent 차이"
       ],
       "tags": [
-        "MULTI-AGENT",
-        "ORCHESTRATION",
-        "AUTHORITY BOUNDARY"
+        "MULTI AGENT",
+        "ORCHESTRATION"
       ],
       "status": "source-backed",
       "authority": "portfolio-primary",
       "source": {
-        "label": "Steel Agent · Multi-agent roles",
-        "href": "#steel-domain-agent-deterministic-boundary"
+        "label": "Steel · Agent responsibilities",
+        "href": "#case/steel-domain-agent/orchestration"
       },
       "followUps": [
-        "각 전문 에이전트는 무엇을 판단하나요?",
-        "현재 구현과 목표 구조의 차이는 무엇인가요?"
+        "모든 모듈을 Agent라고 부르지 않은 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -682,40 +451,78 @@
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "멀티에이전트",
+            "sourceId": "project-docs-steel-portfolio",
+            "label": "Steel Domain AI Agent 포트폴리오 · 2026-08-12",
+            "locator": "도구·Agent·Orchestrator 구조",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "bd5280b727ee3a05f217f2c1b7bfe0f64df079f8e87c25b3bfcce1c7f018b42d",
-            "contentDigest": "aae9b8c30f560cf1ccd303cebb14d1c5ee9e344035eaf3b975e1ad193d68bc79"
+            "bindingDigest": "4b64618db735ea29cfcd3c289a617f252709e6cc7104cd15f7e50b998c476ba1",
+            "contentDigest": "aec260388e83e573654e17efc8ad6eab5a6eb8993ed926a34753c18614935e7f"
           },
           {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "사용자에게 보이는 실행 추적",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "도구–Agent–Orchestrator 책임 확장",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "7c20fb47de43b0670097a298410c25afcfab85001c3c5d20277107b4ec59b1fe",
+            "contentDigest": "c6f133261a3ad7f195172bc6c8a6df01a1c287a5c34c8f6f53885b46019302f6"
+          }
+        ]
+      }
+    },
+    {
+      "id": "steel.preprocessing-source-lineage",
+      "intent": "technical-detail",
+      "kind": "knowledge-model",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "작업표준과 현장 노하우의 source-bound 전처리",
+      "answer": "PDF는 번호·절·표·그림 구조를 복원하고 현장 노하우는 공정·설비·현상·조치·조건으로 정규화합니다. 검색 Passage와 인용 Source Fragment를 분리해 recall 표현이 원문 위치를 대체하지 않게 했습니다.",
+      "summary": "원천별 구조화 뒤 검색 표현과 인용 locator를 분리",
+      "keywords": [
+        "비정형 전처리",
+        "PDF",
+        "Passage",
+        "Source Fragment",
+        "노하우"
+      ],
+      "tags": [
+        "PREPROCESSING",
+        "LINEAGE"
+      ],
+      "status": "source-backed",
+      "authority": "portfolio-primary",
+      "source": {
+        "label": "Steel · Preprocessing",
+        "href": "#case/steel-domain-agent/preprocessing"
+      },
+      "followUps": [
+        "Passage와 Fragment의 차이는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "portfolio-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-steel-portfolio",
+            "label": "Steel Domain AI Agent 포트폴리오 · 2026-08-12",
+            "locator": "비정형 지식 전처리",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "296113c8af6bfcc0dcac35ecbdf80e744bc965f2fd8b17827980fd4bc4ab9148",
-            "contentDigest": "9f32f74b2a6f083050309da6e488a5721bd13ba3cee1c2cace34fcd42c1ec074"
+            "bindingDigest": "cba199f8877876b2ec31584ff1da7b05b20472480b84d98437b293feff4b6603",
+            "contentDigest": "69871a0cc1467626772b7a3a8d9d540a71742a4581beb40c3b620af60db85506"
           },
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.3 실행 흐름 (Agentic Workflow)",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "검색 표현과 인용 위치의 분리",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "4f28ed238235501e656300f2267941b0280fd4cbf3c9afe6eeb0623c43652aba",
-            "contentDigest": "d377ab422ace2ab21a0a0f9079ad25a7b9d34ec3cd176179fbe7b4075dc8515d"
-          },
-          {
-            "sourceId": "steel-kb-runtime",
-            "label": "Steel Assistant runtime boundary · v2.1 / c0a2c718",
-            "locator": "Agent는 무엇을 할 수 있는가",
-            "authority": "derived-current-snapshot",
-            "status": "source-backed",
-            "bindingDigest": "f4e842507ac55e086da3f5a8753552dcc1dbab0be4241e70dc550ae36cc2cdaf",
-            "contentDigest": "84ebc4df2334f4e4bb1d67bf710ef2a8935e1263f55377f7c46e263b6f25540f"
+            "bindingDigest": "7b25f6d1d500ae5fedd023cb1c32faa42114bf9a28af7f8378b9641668721efd",
+            "contentDigest": "01ee1e88926ee2c6edbc7f33c37d6aca2a6e73668ac7c786754b9fdfec34201a"
           }
         ]
       }
@@ -724,47 +531,44 @@
       "id": "reliability.provenance-gated-answer",
       "intent": "reliability",
       "kind": "reliability-pattern",
-      "title": "출처 검증을 통과한 근거만 답변에 사용",
-      "answer": "도구 결과에 호출 정보, 제공자, 원문 digest와 위치를 연결하고 검증을 통과한 항목만 답변 근거로 채택했습니다. 최종 응답의 주장과 화면 인용이 같은 근거 식별자를 가리킬 때만 응답을 확정합니다.",
-      "summary": "호출·제공자·digest·원문 위치가 검증된 근거만 최종 답변에 채택",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "출처·task·claim을 통과한 근거만 채택",
+      "answer": "Agent의 결과를 바로 답변으로 사용하지 않고 task binding, source locator, 적용 범위와 claim mode를 통과한 결과만 accepted evidence로 기록합니다.",
+      "summary": "근거 자격과 답변 인용을 같은 식별자로 결속",
       "keywords": [
-        "근거",
-        "출처",
-        "인용",
+        "근거 검증",
         "provenance",
-        "digest",
-        "grounding",
-        "검증",
-        "EvidenceBundle"
+        "citation",
+        "evidence ledger"
       ],
       "tags": [
         "EVIDENCE",
-        "PROVENANCE",
-        "GROUNDING"
+        "RELIABILITY"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Evidence contract",
-        "href": "#steel-domain-agent-evidence-contract"
+        "label": "Steel · Evidence ledger",
+        "href": "#case/steel-domain-agent/evidence"
       },
       "followUps": [
-        "근거가 부족하면 어떻게 답하나요?",
-        "인용 오염은 어떻게 막았나요?"
+        "검색 결과와 근거 부족은 어떻게 다른가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "결정 2 — 출처 검증을 통과하지 못한 문장은 전달하지 않는다",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "근거 원장과 최종 답변",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "cf2de095d2b2ac4a505b4b4821e89030cf259fd1953806c9531c694156b11cce",
-            "contentDigest": "e4f55853a714fde85f4b908549c4d164e0c5fdf322a25a98e22cfd13bc7e748c"
+            "bindingDigest": "a523c673c0e002c6112c74414e0df695bd71c768a5759bfdacdbf0f5198807b4",
+            "contentDigest": "7c0c9c98b3e75928c4f4875a3d2e424993914f0134aefd30dbdd798a725be963"
           }
         ]
       }
@@ -773,94 +577,88 @@
       "id": "reliability.named-failure-states",
       "intent": "reliability",
       "kind": "reliability-pattern",
-      "title": "자료 없음과 조회 실패를 구분하는 실패 처리",
-      "answer": "근거가 존재하지 않는 상황, 도구 호출 실패, 인프라 장애, 부분 근거 확보를 서로 다른 상태로 모델링했습니다. 사용자가 질문을 바꿔야 하는지 기다려야 하는지 판단할 수 있고, 운영 측에서도 조용한 장애를 놓치지 않게 합니다.",
-      "summary": "근거 부재·조회 실패·인프라 장애·부분 성공을 다른 상태로 처리",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "자료 없음·조회 실패·근거 부족을 나눈 종료 상태",
+      "answer": "검색 결과 없음, transport·provider 실패, 답변에 사용할 근거 부족을 서로 다른 상태로 보존하고 제한된 재시도 이후 사용자 확인 또는 명시적 종료로 전환합니다.",
+      "summary": "실패의 원인과 다음 행동을 분리한 상태 모델",
       "keywords": [
-        "실패",
-        "graceful degradation",
-        "자료 없음",
-        "조회 실패",
-        "인프라 장애",
-        "부분 응답",
-        "fallback"
+        "검색 결과 없음",
+        "실패 처리",
+        "graceful degradation"
       ],
       "tags": [
-        "FAILURE MODEL",
-        "RELIABILITY",
-        "UX"
+        "FAILURE MODEL"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Failure model",
-        "href": "#steel-domain-agent-evidence-contract"
+        "label": "Steel · Failure handling",
+        "href": "#case/steel-domain-agent/evidence"
       },
       "followUps": [
-        "근거가 일부만 있을 때는 어떻게 하나요?",
-        "조용한 실패를 어떤 방식으로 표면화했나요?"
+        "무한 재검색은 어떻게 막나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "결정 3 — 실패의 종류를 구분한다 (Graceful Degradation)",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "실패 처리",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "05d0f786143ae81dab4e0aa087b6725c51df1ac8d9105357145abc9f76e36689",
-            "contentDigest": "f2cbc73eb0b71e643b76f08b6955531c9129f3eb1cf1454562e3b6df2a38be34"
+            "bindingDigest": "fa826cd8e767c5d2c17b05d0600d35ba0180ede3cf518cd3de9085708365885d",
+            "contentDigest": "a04fba71aa4f5e3bf6cb64f30de6954272eec3bf589aa0158686f5dbf683f32e"
           }
         ]
       }
     },
     {
       "id": "hitl.durable-resume",
-      "intent": "reliability",
+      "intent": "implementation",
       "kind": "implementation",
-      "title": "재시작 후에도 이어지는 Human-in-the-loop",
-      "answer": "부족한 입력을 한 번에 구조화해 확인하고, 승인 대기 상태를 영속화해 프로세스가 재시작돼도 같은 작업을 이어가게 했습니다. 사람의 확인을 별도 대화가 아니라 원래 과업의 상태 전이로 다루는 구조입니다.",
-      "summary": "승인 대기 상태를 영속화하고 같은 과업 ID로 재개하는 HITL",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "질의 이해 경로로 재진입하는 Human-in-the-loop",
+      "answer": "결과를 바꾸는 설비·문서 범위의 모호성만 선택지와 함께 확인하고 사용자 응답을 원질의 episode에 결합해 같은 질의 이해 계약으로 재진입합니다.",
+      "summary": "중요한 모호성만 확인하고 동일 계약으로 재개",
       "keywords": [
         "HITL",
         "사람 승인",
-        "되묻기",
-        "재시작",
-        "resume",
-        "영속화",
-        "clarification"
+        "재개",
+        "멀티턴"
       ],
       "tags": [
         "HITL",
-        "STATE MANAGEMENT",
-        "AGENT"
+        "STATE"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Durable HITL",
-        "href": "#steel-domain-agent-evidence-contract"
+        "label": "Steel · HITL",
+        "href": "#case/steel-domain-agent/evidence"
       },
       "followUps": [
-        "되묻기를 무한 반복하지 않게 어떻게 제한했나요?",
-        "승인 이후 실행 trace는 어떻게 연결했나요?"
+        "어떤 질문만 HITL로 올리나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "결정 4 — 사람 승인은 재시작을 견뎌야 한다 (State Management)",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "요청 수명주기",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "930c38ceb0916a0c09f6d7139a9be6d9199900c0af5dd355139effa92562f60a",
-            "contentDigest": "ba068fc5a423aa49b3f6bfd6ef85987c68984922d2861c6dd1a17972155d81cb"
+            "bindingDigest": "f598d169d3589706a223c2af99eca7838eee3d8bc3c06983e672324b2bd8b2b9",
+            "contentDigest": "25bb9f5f5592ad3cd9c467d8f3ae48cb66d9e5056c2f37cbbfe0c2f7dc89519f"
           }
         ]
       }
@@ -869,45 +667,43 @@
       "id": "architecture.mcp-as-adapter",
       "intent": "architecture",
       "kind": "architecture-decision",
-      "title": "MCP를 실행 단위가 아닌 도구 어댑터로 사용",
-      "answer": "MCP는 도구 스키마와 호출 경계를 제공하는 어댑터로 두고, 실제 실행 단위와 라우팅 책임은 별도 인터페이스와 레지스트리로 분리했습니다. 도구가 늘 때마다 런타임 분기가 증가하거나 상태 책임이 MCP 서버에 섞이는 문제를 줄이기 위한 선택입니다.",
-      "summary": "MCP는 도구 어댑터, 실행과 라우팅은 런타임 계약이 소유",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "MCP를 실행 주체가 아닌 도구 어댑터로 사용",
+      "answer": "MCP는 transport와 도구 노출을 표준화하지만 질의 의미, mission, 실행 budget과 최종 근거를 소유하지 않습니다.",
+      "summary": "transport adapter와 Agent 판단 책임을 분리",
       "keywords": [
         "MCP",
-        "도구 어댑터",
-        "실행 단위",
-        "registry",
-        "레지스트리",
-        "tool interface"
+        "adapter",
+        "Agent 차이"
       ],
       "tags": [
         "MCP",
-        "ADAPTER",
-        "MODULARITY"
+        "BOUNDARY"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · MCP boundary",
-        "href": "#steel-domain-agent-deterministic-boundary"
+        "label": "Steel · MCP boundary",
+        "href": "#case/steel-domain-agent/orchestration"
       },
       "followUps": [
-        "MCP 서버를 직접 외부에 노출하지 않은 이유는 무엇인가요?",
-        "도구가 늘어날 때 런타임은 어떻게 확장되나요?"
+        "MCP 서버가 많으면 멀티 Agent인가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "결정 5 — MCP는 도구 어댑터이지 실행 단위가 아니다",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "MCP와 서비스 경계",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "d5ce5438a378ca518a29da77ba74a057446e30d2ef2897caf705eee532ce5195",
-            "contentDigest": "c8225b5e7c7e656f687caf31a30c1b239d5dfb61ef4d3791e043dfe0f9184654"
+            "bindingDigest": "d3a33e18079b878e6e26be9e539b357f837931ce4709ce4b9a57b6f23ecbbc70",
+            "contentDigest": "86ad4ceb368acd07ffd573384aa9dd3f3e8d9b418c12e25857ab71fd60612e3a"
           }
         ]
       }
@@ -916,47 +712,54 @@
       "id": "retrieval.hybrid-domain-reranking",
       "intent": "retrieval",
       "kind": "capability",
-      "title": "도메인 문맥을 반영한 하이브리드 검색",
-      "answer": "형태 기반 희소 검색과 임베딩 기반 밀집 검색을 결합하고 여러 단계의 재정렬과 도메인 필드 가중을 적용했습니다. 같은 표현이 서로 다른 공정이나 문서 유형에서 다른 의미로 쓰이는 경우를 구분하는 데 초점을 맞췄습니다.",
-      "summary": "BM25와 BGE-M3 dense 검색을 결합하고 도메인 문맥으로 재정렬",
+      "projectIds": [
+        "steel-domain-agent",
+        "multimodal-document-intelligence"
+      ],
+      "title": "canonical node를 복원하는 하이브리드 검색",
+      "answer": "lexical·dense Passage 후보를 결합하되 같은 canonical node의 파생 Passage를 먼저 축약하고 stable ID로 원래 내용과 상위 문맥을 복원합니다.",
+      "summary": "검색 projection을 node 단위로 축약하고 원문 계층을 복원",
       "keywords": [
-        "검색",
-        "RAG",
         "hybrid retrieval",
         "BM25",
-        "BGE-m3",
-        "reranking",
-        "OpenSearch",
-        "임베딩"
+        "dense",
+        "canonical node"
       ],
       "tags": [
-        "RAG",
-        "HYBRID SEARCH",
+        "RETRIEVAL",
         "RERANKING"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Retrieval",
-        "href": "#steel-domain-agent-graph-retrieval"
+        "label": "Multimodal · Precision retrieval",
+        "href": "#case/multimodal-document-intelligence/evidence"
       },
       "followUps": [
-        "왜 희소 검색과 dense 검색을 함께 썼나요?",
-        "BGE-M3를 어떤 역할로 사용했나요?"
+        "같은 node의 Passage를 왜 축약하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "Hybrid Retrieval · Reranking",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "검색 표현과 인용 위치의 분리",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "b1045c8d4b4498b9f8410774c13e600d0d6e16c05af5fc010798708c186fd21c",
-            "contentDigest": "64a5eabdbce8d1396be4daf13bb4ab480f51504c2bfa63c5ce78f596648470a0"
+            "bindingDigest": "7b25f6d1d500ae5fedd023cb1c32faa42114bf9a28af7f8378b9641668721efd",
+            "contentDigest": "01ee1e88926ee2c6edbc7f33c37d6aca2a6e73668ac7c786754b9fdfec34201a"
+          },
+          {
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "정확한 검색과 인용 생성",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "22b54350c96324065e50b06a4c287ab22bd0dc65396616d249d71c44ce2641ec",
+            "contentDigest": "298933159abfeab37038ccf9e1116826c36aadb1dac3de1948d825ebb4024ffb"
           }
         ]
       }
@@ -965,94 +768,88 @@
       "id": "knowledge.nary-conditional-facts",
       "intent": "knowledge",
       "kind": "knowledge-model",
-      "title": "조건 조합을 보존하는 다항 관계 모델",
-      "answer": "여러 조건이 함께 성립할 때만 참인 표의 한 행을 단순한 이항 관계로 쪼개지 않고, 역할이 있는 다항 관계로 모델링했습니다. 재질·두께·기준값처럼 조합의 의미가 중요한 사실을 그래프 탐색 중 잃지 않기 위한 설계입니다.",
-      "summary": "조건 조합으로만 참인 사실을 역할이 있는 hyperedge로 보존",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "설비·공정·현상·조치 조건을 보존하는 관계 모델",
+      "answer": "설비·공정·현상·조치의 관계는 질문 grounding과 지식원 선택에 사용하고 최종 답변 source는 실제 메뉴얼·노하우·Digital Twin 결과로 연결합니다.",
+      "summary": "도메인 관계는 routing을 돕고 최종 source 권위는 원천에 유지",
       "keywords": [
-        "지식 그래프",
-        "온톨로지",
-        "hyperedge",
-        "하이퍼엣지",
-        "n-ary",
-        "다항 관계",
-        "조건 조합"
+        "지식그래프",
+        "조건 관계",
+        "ontology"
       ],
       "tags": [
-        "KNOWLEDGE GRAPH",
-        "ONTOLOGY",
-        "N-ARY FACT"
+        "KNOWLEDGE MODEL"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Steel Agent · Graph modeling",
-        "href": "#steel-domain-agent-graph-retrieval"
+        "label": "Steel · Domain knowledge",
+        "href": "#case/steel-domain-agent/architecture"
       },
       "followUps": [
-        "왜 이항 관계만으로는 부족했나요?",
-        "그래프를 검색 점수에 바로 넣지 않은 이유는 무엇인가요?"
+        "관계 그래프가 답변 근거인가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "조건 조합을 보존하는 지식 모델링",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-portfolio",
+            "label": "Steel Domain AI Agent 포트폴리오 · 2026-08-12",
+            "locator": "활용 지식",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "136a4b76287a097fc8029bc0f86a5872e3914c3fee599ded9bca5821086e817e",
-            "contentDigest": "b1e124909f5191ed912d934900f3616e9adcc39c4d5bb7cb62b884684ecb39d0"
+            "bindingDigest": "67934e6377d52eec21ce1b5ec0daa7637913db80144efe1be4326e15163d9e1d",
+            "contentDigest": "d25ffb67fa13aac40eb6bcb982b60aee63c29cc4dea15dfc4597dc100e743cc0"
           }
         ]
       }
     },
     {
       "id": "data.nl2sql-query-spec",
-      "intent": "data",
+      "intent": "technical-detail",
       "kind": "implementation",
-      "title": "자연어와 SQL 사이의 검증 가능한 중간 표현",
-      "answer": "자연어에서 SQL을 바로 생성하지 않고 설비, 기간, 집계 조건을 담는 구조화된 조회 명세를 중간에 두었습니다. 조건을 항목별로 검증하고 위험한 조회를 실행 전에 차단하며, 오류가 난 단계를 추적할 수 있습니다.",
-      "summary": "자연어와 SQL 사이에 QuerySpec을 두어 조건을 검증하고 실행을 제한",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "자연어와 SQL 사이의 검증 가능한 QuerySpec",
+      "answer": "Digital Twin Agent는 설비·지표·시간 범위를 typed mission과 조회 계약으로 검증해 시점과 dataset이 붙은 artifact를 반환합니다.",
+      "summary": "자연어 의미를 검증 가능한 설비 조회 계약으로 변환",
       "keywords": [
         "NL2SQL",
         "QuerySpec",
-        "SQL",
         "Digital Twin",
-        "디지털 트윈",
-        "ORM",
-        "structured query"
+        "SQL"
       ],
       "tags": [
         "NL2SQL",
-        "DATA",
-        "VALIDATION"
+        "DIGITAL TWIN"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · NL2SQL",
-        "href": "#steel-domain-agent-graph-retrieval"
+        "label": "Steel · Digital Twin",
+        "href": "#case/steel-domain-agent/implementation"
       },
       "followUps": [
-        "자연어에서 SQL을 직접 만들지 않은 이유는 무엇인가요?",
-        "위험한 쿼리는 어떻게 차단했나요?"
+        "자연어에서 SQL로 바로 가지 않은 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.6 설비 데이터 조회 (NL2SQL · Digital Twin)",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "Digital Twin Agent",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "d6be97e7d60b2392f7afae6c6ad3ef5bed50ffa85765d43060caede6b16bdce5",
-            "contentDigest": "da9d89c57c70222519cd17694bfc3a7bae021ad18b7a45a15af578b7c932a449"
+            "bindingDigest": "583a7016bba60e73ffcfe8fe067ff28d1fb54d04d1144ddc852ef41caaf85a7f",
+            "contentDigest": "9e9e79e7b2e7dea1f05bb35a0cbe285b8556145a0e889ef8a57961237fa8f424"
           }
         ]
       }
@@ -1061,47 +858,43 @@
       "id": "evaluation.coverage-and-quality",
       "intent": "evaluation",
       "kind": "evaluation",
-      "title": "커버리지와 품질을 분리한 에이전트 평가",
-      "answer": "답변 점수 하나 대신 필요한 근거를 확보했는지와 확보한 근거로 올바르게 답했는지를 분리해 평가했습니다. 도구 선택, 조회 성공, 근거 결속, 내용 정확도를 별도로 봐 한 단계의 개선이 다른 단계의 회귀를 가리지 않게 했습니다.",
-      "summary": "근거 커버리지와 답변 품질을 나누고 행동 단계별 회귀를 측정",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "근거 커버리지와 답변 품질을 분리한 평가",
+      "answer": "도구 선택·조회·근거 결속·내용 정확도를 분리해 어느 단계의 실패인지 추적하고 커버리지와 최종 답변 품질을 같은 지표로 섞지 않습니다.",
+      "summary": "검색·근거·내용 평가를 단계별로 분리",
       "keywords": [
         "평가",
-        "evaluation",
-        "커버리지",
-        "품질",
-        "도구 선택",
-        "회귀",
-        "F1",
-        "정확도"
+        "coverage",
+        "quality",
+        "회귀"
       ],
       "tags": [
-        "EVALUATION",
-        "REGRESSION",
-        "AGENT QUALITY"
+        "EVALUATION"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Evaluation",
-        "href": "#steel-domain-agent-evaluation-loop"
+        "label": "Steel · Evaluation",
+        "href": "#case/steel-domain-agent/implementation"
       },
       "followUps": [
-        "평가 지표 자체가 틀릴 가능성은 어떻게 확인했나요?",
-        "개선이 다른 도메인의 회귀를 가리지 않게 어떻게 했나요?"
+        "평가 지표 자체는 어떻게 검증하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.7 Agent Evaluation 체계",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "검증 전략",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "7c130ad7dfb61f57778bfb514b527225666a896577116688a00493d93544e875",
-            "contentDigest": "3d42171f05afeb0b194707cabcd351390400a92635fccd891cf7eef55eacfde5"
+            "bindingDigest": "e6b1cd4f981c86f625851554f8adaa3378b4a67a0eb098b75c6b80190e1543c0",
+            "contentDigest": "84d4d04eac3a88bf6df9ff93b453e885ab8bee0aca787024d3a5ab9a33f04bda"
           }
         ]
       }
@@ -1110,478 +903,621 @@
       "id": "evaluation.audit-the-evaluator",
       "intent": "evaluation",
       "kind": "evaluation",
-      "title": "평가 지표 자체도 검증 대상으로 취급",
-      "answer": "성능 저하의 원인이 평가 기준이라고 가정했지만 실패 사례를 전수 재판정해 그 가설을 기각하고 검색 결함을 확인했습니다. 정답 정보가 평가 입력에 섞여 점수를 부풀리던 경로도 제거해, 점수가 내려가더라도 실제 성능을 반영하는 쪽을 택했습니다.",
-      "summary": "평가셋과 측정 경로를 다시 감사하고 데이터 유출을 차단",
+      "projectIds": [
+        "steel-domain-agent"
+      ],
+      "title": "평가 지표도 회귀와 검토의 대상으로 취급",
+      "answer": "절차 순서, 인용 일관성, 내부 명칭 노출 같은 실패 유형을 별도 테스트 자산으로 두고 지표가 실제 품질 경계를 반영하는지 확인합니다.",
+      "summary": "평가기를 고정된 진실이 아니라 검증 대상 계약으로 관리",
       "keywords": [
         "평가 감사",
-        "평가 지표가 잘못",
-        "잘못됐",
-        "측정 결함",
-        "evaluation leakage",
-        "정답 유출",
-        "가설 기각",
-        "원인 분석",
-        "전수 감사"
+        "metric",
+        "회귀 테스트"
       ],
       "tags": [
-        "EVALUATION AUDIT",
-        "INTEGRITY",
-        "ROOT CAUSE"
+        "EVALUATION",
+        "AUDIT"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Steel Agent · Evaluation audit",
-        "href": "#steel-domain-agent-evaluation-loop"
+        "label": "Steel · Evaluation audit",
+        "href": "#case/steel-domain-agent/implementation"
       },
       "followUps": [
-        "점수가 내려가는 수정을 왜 반영했나요?",
-        "측정 결함과 검색 결함을 어떻게 구분했나요?"
+        "어떤 실패를 별도 측정했나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "평가 자체를 검증한 사례",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "검증 전략",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "b35da78cf0728bd480cb4bb4d2265466db2a0e12118642ca57789843ff54b861",
-            "contentDigest": "cac7fc29c2b64b0cf1e977a9afb41ec815ed2ee9cb604cf83d16752b58dcc432"
+            "bindingDigest": "e6b1cd4f981c86f625851554f8adaa3378b4a67a0eb098b75c6b80190e1543c0",
+            "contentDigest": "84d4d04eac3a88bf6df9ff93b453e885ab8bee0aca787024d3a5ab9a33f04bda"
           }
         ]
       }
     },
     {
-      "id": "deployment.air-gapped-local-stack",
-      "intent": "deployment",
-      "kind": "deployment",
-      "title": "폐쇄망에서 동작하는 로컬 AI 스택",
-      "answer": "외부 모델 API를 사용할 수 없는 환경을 전제로 로컬 모델 서빙, 검색, 도구 서비스와 관측 구성요소를 함께 배포했습니다. 컨테이너 기반 단일 기동 경로와 설정의 단일 선언 규칙을 두어 폐쇄망에서도 재현 가능한 운영을 목표로 했습니다.",
-      "summary": "Gemma·Ollama·검색·도구·관측을 폐쇄망 컨테이너 스택으로 구성",
+      "id": "project.multimodal-rag-search",
+      "intent": "project",
+      "kind": "project",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "Multimodal RAG Search",
+      "answer": "PDF의 본문·표·그림·장절 구조를 Document–Chunk–Element로 보존하고 시각 요소를 문맥이 있는 검색 표현으로 바꾸며 Passage 결과를 원문 Fragment와 locator까지 연결했습니다.",
+      "summary": "의미 구조와 원문 위치를 보존하는 멀티모달 문서 검색 기반",
       "keywords": [
-        "폐쇄망",
-        "air-gapped",
-        "로컬 LLM",
-        "Ollama",
-        "Gemma",
-        "Docker",
-        "Kubernetes",
-        "배포"
+        "Multimodal RAG",
+        "Document AI",
+        "PDF",
+        "D2T"
       ],
       "tags": [
-        "AIR-GAPPED",
-        "LOCAL LLM",
-        "DEPLOYMENT"
+        "PROJECT",
+        "DOCUMENT AI"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Supporting Systems · Local deployment",
-        "href": "#supporting-agent-systems-local-deployment"
+        "label": "Multimodal RAG · Overview",
+        "href": "#case/multimodal-document-intelligence/overview"
       },
       "followUps": [
-        "로컬 모델 환경에서 어떤 제약을 고려했나요?",
-        "설정 누락으로 인한 조용한 실패를 어떻게 막았나요?"
+        "Document–Chunk–Element가 필요한 이유는?",
+        "Passage와 Fragment는 어떻게 다른가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.8 배포와 Observability",
-            "authority": "career-primary",
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "프로젝트 개요",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "a395911417dfcda91c2c1c8e4c36ab5d0c8c89860080c81fc52ec10caf569b8e",
-            "contentDigest": "7743bdcc6d7d6fa02796e6ab8338fbe7e8968da76997ad1923b4e3ab6c230b4b"
+            "bindingDigest": "a441de0479b5a53e5777ca37cb16a5e1b2c4d355f8897a2f7c176bef6bba91ff",
+            "contentDigest": "c5ea975d63e4c7a18f2c9b3ef7d4ca523061a7892c40d20f027a21d4dccd32f4"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "설계 범위와 목표",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "75036c14d76d08bf2b628bd31b1655653b12a955d840f7ad8fc19219aa677659",
+            "contentDigest": "d2173f92e3287575b317d5a6d20fe8f2be4e99043868a20cfa946fe3b3be14a0"
           }
         ]
       }
     },
     {
       "id": "document.hierarchical-indexing",
-      "intent": "document",
+      "intent": "technical-detail",
       "kind": "document-ai",
-      "title": "인용 가능한 계층형 문서 인덱싱",
-      "answer": "문서를 문서, 의미 단위 청크, 표·이미지 같은 요소의 계층으로 모델링하고 각 청크에 원문 위치를 보존했습니다. 검색 결과를 원문과 다시 연결하고 시각 요소를 독립적으로 처리할 수 있는 최소 구조로 설계했습니다.",
-      "summary": "Document·Chunk·Element 계층과 원문 좌표를 유지하는 문서 모델",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "Document–Chunk–Element 계층 identity",
+      "answer": "Document는 원본과 전체 메타데이터, Chunk는 주제와 문맥이 응집된 순서 있는 단위, Element는 텍스트·표·그림과 파생 설명의 최소 처리 단위를 맡습니다.",
+      "summary": "처리 단계와 모델이 바뀌어도 원본 대상을 다시 찾는 계층 식별자",
       "keywords": [
-        "Document AI",
+        "Document Chunk Element",
         "계층형 인덱싱",
-        "hierarchical indexing",
-        "chunk",
-        "element",
-        "원문 좌표",
-        "인용"
+        "identity"
       ],
       "tags": [
-        "DOCUMENT AI",
-        "HIERARCHICAL INDEX",
-        "PROVENANCE"
+        "DOCUMENT MODEL",
+        "IDENTITY"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Multimodal Documents · Hierarchy",
-        "href": "#multimodal-document-intelligence-hierarchy"
+        "label": "Multimodal · Identity",
+        "href": "#case/multimodal-document-intelligence/identity"
       },
       "followUps": [
-        "왜 문서와 청크만으로는 부족했나요?",
-        "표와 이미지는 어떻게 주변 문맥과 연결했나요?"
+        "문서와 Chunk만으로 부족한 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "2.2 설계 — Hierarchical Indexing",
-            "authority": "career-primary",
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "Document–Chunk–Element 구조",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "a93c45c9e5081d7cac23c4862b2d9d38fa7a349b3ff1be9e2d0eb4f2b66d7168",
-            "contentDigest": "cfea2e12e84b86a2488024607dbc3cf1c356c107fd2e74339ea062368a24dc94"
+            "bindingDigest": "f60833b3437faa0f776c3455fc4d0791fb80ad17457cc3fd1a8e27210d3fe0e8",
+            "contentDigest": "02de24a37e2e170b843f885014052009086a9152892a31c411c8cb29886f8c04"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "Document–Chunk–Element 모델",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "ad3502317087dcf5aef923c54b0e5b00561cc7c99146c145a91eba05051b1195",
+            "contentDigest": "07729e0120f7551174139eb975f1ab691b2aab97f0e5c6522d79247c5c4aa63e"
           }
         ]
       }
     },
     {
       "id": "document.multimodal-context-preservation",
-      "intent": "document",
+      "intent": "technical-detail",
       "kind": "document-ai",
-      "title": "표와 이미지의 주변 문맥 보존",
-      "answer": "문서 파싱에 OCR과 비전 모델을 조합하고, 표·이미지를 주변 설명 및 문서 관계와 연결해 색인했습니다. 구조화 데이터를 문장으로 바꿀 때도 앞뒤 문맥을 함께 사용해 단독 요소만으로 의미가 왜곡되는 문제를 줄였습니다.",
-      "summary": "OCR·VLM과 Data-to-Text로 시각 요소와 주변 설명의 관계를 보존",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "표와 그림의 구조 문맥 보존",
+      "answer": "시각 요소 설명에 현재 장·절, 상위 제목, 캡션, 인접 문장, OCR·layout 결과와 원본 identity를 결합해 이미지 한 장만 해석할 때의 문맥 손실을 줄였습니다.",
+      "summary": "시각 요소를 상위 구조와 인접 문맥에 연결",
       "keywords": [
-        "멀티모달",
         "표",
+        "그림",
         "이미지",
-        "OCR",
-        "VLM",
-        "Docling",
-        "Data-to-Text",
-        "data2text",
-        "데이터투텍스트",
-        "멀티모달 데이터 변환",
-        "파싱"
+        "문맥",
+        "VLM"
       ],
       "tags": [
         "MULTIMODAL",
-        "OCR",
         "CONTEXT"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Multimodal Documents · Context",
-        "href": "#multimodal-document-intelligence-context"
+        "label": "Multimodal · Context",
+        "href": "#case/multimodal-document-intelligence/d2t"
       },
       "followUps": [
-        "Data-to-Text에 앞뒤 문맥을 넣은 이유는 무엇인가요?",
-        "파싱 품질의 한계는 어떻게 보고 있나요?"
+        "어떤 문맥을 선택하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "2.3 구현",
-            "authority": "career-primary",
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "의미 분할과 Data-to-Text",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "c0ded01db4fa6b6f7235e556892c2aee5dba704683d6fac4fa523b5d6c58c4b0",
-            "contentDigest": "ec77cf7f86b536bdf5e51dfbfb2557b3019cf9f6cb4930821b5d2eec261633e8"
+            "bindingDigest": "f49573fda560c721e370808f14e6b354d31154b74fac3a7748903026d51cd45a",
+            "contentDigest": "e145c4dab80c8995154e5e8d82208cbb90c554fa8a76ba740b7edb26b34c4396"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "구조적 context 선택",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "a3b3069ec9cdcb8eca99a3ff62d24501d055789b7217a11dc46755d0161f805b",
+            "contentDigest": "a5436a0bf18966f37f13684fcf94990b05ddc9382e0c3032ac88cc3fd5e37302"
           }
         ]
       }
     },
     {
       "id": "document.contextual-data-to-text",
-      "intent": "document",
+      "intent": "technical-detail",
       "kind": "document-ai",
-      "title": "검색 문맥을 보존하는 Data-to-Text 파이프라인",
-      "answer": "이 프로젝트의 Data-to-Text는 OCR 자체나 PDF 전체 요약이 아니라, Docling·OCR·VLM으로 파싱한 표·이미지·구조화 요소를 검색 가능한 서술로 보강하는 단계입니다. Document–Chunk–Element 계층에서 요소를 주변 설명과 연결하고 구조화 데이터에는 앞뒤 시점의 핵심 정보를 함께 넣어 변화 방향과 문장 간 맥락을 보존했습니다. 생성된 서술은 출처·원문 좌표·메타데이터와 함께 OpenSearch 색인으로 전달합니다. 다만 PDF 유형별 처리 성공률과 메타데이터 누락률을 동일 조건에서 반복 측정한 공개 수치는 아직 없습니다.",
-      "summary": "파싱된 표·이미지에 주변 설명과 앞뒤 시점을 결합해 검색용 서술로 보강",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "구조 기반 문맥을 사용하는 Data-to-Text",
+      "answer": "D2T는 OCR 자체가 아니라 파싱된 표·그림에 선택된 구조 문맥을 더해 검색 가능한 설명을 생성하고 그 설명을 원본 Element의 파생 표현으로 연결하는 단계입니다.",
+      "summary": "시각 Element를 문서 문맥이 있는 검색 설명으로 보강",
       "keywords": [
         "Data-to-Text",
-        "data to text",
-        "data2text",
-        "d2t",
-        "데이터투텍스트",
-        "데이터 투 텍스트",
-        "구조화 데이터 서술화",
-        "표를 문장으로 변환",
-        "멀티모달 요소 텍스트화",
-        "멀티모달 데이터 변환",
-        "앞뒤 문맥"
+        "D2T",
+        "OCR",
+        "VLM",
+        "설명 생성"
       ],
       "tags": [
-        "DATA-TO-TEXT",
-        "MULTIMODAL",
-        "CONTEXT ENRICHMENT"
+        "D2T",
+        "DOCUMENT AI"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Multimodal Documents · Data-to-Text",
-        "href": "#multimodal-document-intelligence-context"
+        "label": "Multimodal · D2T",
+        "href": "#case/multimodal-document-intelligence/d2t"
       },
       "followUps": [
-        "Data-to-Text와 OCR의 차이는 무엇인가요?",
-        "앞뒤 문맥을 왜 함께 넣었나요?"
+        "D2T와 OCR은 같은가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "2.3 구현",
-            "authority": "career-primary",
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "의미 분할과 Data-to-Text",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "c0ded01db4fa6b6f7235e556892c2aee5dba704683d6fac4fa523b5d6c58c4b0",
-            "contentDigest": "ec77cf7f86b536bdf5e51dfbfb2557b3019cf9f6cb4930821b5d2eec261633e8"
+            "bindingDigest": "f49573fda560c721e370808f14e6b354d31154b74fac3a7748903026d51cd45a",
+            "contentDigest": "e145c4dab80c8995154e5e8d82208cbb90c554fa8a76ba740b7edb26b34c4396"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "D2T 내부 모듈",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "845d550ac387015a571f5561c054a7912a7ec1ad36e759430da6ac3c5c5186e9",
+            "contentDigest": "01da1c65ff089e013792e26a675979d70efc04ca383cddbb4ad5203495806432"
           }
         ]
       }
     },
     {
-      "id": "project.right-sized-consultation-agent",
+      "id": "document.semantic-chunking",
+      "intent": "technical-detail",
+      "kind": "document-ai",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "layout 순서와 주제 경계를 보존한 Semantic Chunking",
+      "answer": "텍스트와 이미지의 원래 layout 순서를 유지하면서 주제 경계로 묶고 header·footer·page number 같은 noise 후보를 분리합니다. 모델 실패의 text fallback은 같은 품질로 간주하지 않습니다.",
+      "summary": "원본 순서와 의미 경계를 유지하는 문서 분할",
+      "keywords": [
+        "semantic chunking",
+        "문서 분할",
+        "layout",
+        "noise"
+      ],
+      "tags": [
+        "CHUNKING",
+        "LAYOUT"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Multimodal · Semantic chunking",
+        "href": "#case/multimodal-document-intelligence/d2t"
+      },
+      "followUps": [
+        "모델 실패 시 어떻게 처리하나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "의미 분할과 Data-to-Text",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "f49573fda560c721e370808f14e6b354d31154b74fac3a7748903026d51cd45a",
+            "contentDigest": "e145c4dab80c8995154e5e8d82208cbb90c554fa8a76ba740b7edb26b34c4396"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "ChunkingGraph",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "8d8fa948b8dbfa9ec266200b73b2bff3bc1a2ea857c303ef46bb67c000686818",
+            "contentDigest": "61556549af8ef92a47e9121ffbefb3503cd580952f2a49909249bd531e7dfd4c"
+          }
+        ]
+      }
+    },
+    {
+      "id": "document.passage-fragment-retrieval",
+      "intent": "retrieval",
+      "kind": "knowledge-model",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "검색 Passage와 인용 Fragment의 역할 분리",
+      "answer": "Passage는 lexical·dense recall을 위한 projection이고 canonical node는 답변 내용을 제공하며 Fragment는 행·셀·문장 span·page+bbox 같은 실제 인용 위치를 제공합니다.",
+      "summary": "검색 recall과 source-bound citation을 서로 다른 단위로 관리",
+      "keywords": [
+        "Passage",
+        "Fragment",
+        "citation",
+        "locator"
+      ],
+      "tags": [
+        "RETRIEVAL",
+        "CITATION"
+      ],
+      "status": "source-backed",
+      "authority": "portfolio-primary",
+      "source": {
+        "label": "Multimodal · Precision RAG",
+        "href": "#case/multimodal-document-intelligence/evidence"
+      },
+      "followUps": [
+        "Passage 적중 후 어떤 객체를 복원하나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "portfolio-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-multimodal-portfolio",
+            "label": "Multimodal RAG Search 포트폴리오 · 2026-08-12",
+            "locator": "정확한 검색과 인용 생성",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "22b54350c96324065e50b06a4c287ab22bd0dc65396616d249d71c44ce2641ec",
+            "contentDigest": "298933159abfeab37038ccf9e1116826c36aadb1dac3de1948d825ebb4024ffb"
+          },
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "정확한 검색과 인용 생성",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "f9c4a339381d239efe808266b93290ec390dc530044b0d6e50fefabdbdd0b78d",
+            "contentDigest": "6ef3db385836d75dfec5cbab51d02dc1a58b99679e5870ca576ab85466f4de3c"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reliability.pipeline-partial-reexecution",
+      "intent": "reliability",
+      "kind": "reliability-pattern",
+      "projectIds": [
+        "multimodal-document-intelligence"
+      ],
+      "title": "오류 위치와 중간 산출물을 보존하는 부분 재실행",
+      "answer": "PipelineGraph는 앞 단계 오류 시 뒤 단계를 중단하고 상태와 오류 위치를 남깁니다. 중간 산출물과 stable identity를 이용해 전체 문서를 처음부터 반복하지 않고 실패 지점 이후를 재처리할 수 있게 설계했습니다.",
+      "summary": "단계별 실패와 부분 재처리를 지원하는 pipeline state",
+      "keywords": [
+        "PipelineGraph",
+        "재시도",
+        "부분 재실행",
+        "오류 처리"
+      ],
+      "tags": [
+        "PIPELINE",
+        "RELIABILITY"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Multimodal · Failure handling",
+        "href": "#case/multimodal-document-intelligence/architecture"
+      },
+      "followUps": [
+        "best-effort indexing의 한계는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-multimodal-design",
+            "label": "Multimodal RAG Search 설계 문서 · 2026-08-12",
+            "locator": "오류, 재시도, 부분 재실행",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "ff48909b644cc729f91d4ad66495b68e56ac0e2dae618dbc38357e34844ecc73",
+            "contentDigest": "6cc389521e4b90ebce160e0b852652c35ca4451a78dec41a9a6e8a7f4fbc51cd"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project.personal-agent-harness",
       "intent": "project",
       "kind": "project",
-      "title": "요구 규모에 맞게 축소한 상담 에이전트",
-      "answer": "상담 데모에서는 대규모 산업 시스템의 구조를 그대로 복사하지 않고 고정된 상담 흐름에 맞춘 상태 그래프와 단순한 검색 구조를 선택했습니다. 독립 서비스와 컨테이너 수를 줄이면서도 SSE로 실행 단계를 실시간 표시하고 대화 상태와 실행 이력을 재현 가능하게 남겼습니다.",
-      "summary": "고정 상담 흐름에 맞춰 상태 그래프·희소 검색·2개 컨테이너로 축소",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "Personal Agent Harness",
+      "answer": "검토된 개인 지식을 Personal Wiki에, 반복 가능한 실행 절차를 Skill에 축적하고 manifest·reconcile·policy로 Codex·Claude Code·Gemini 환경에 투영하는 개인 AI 협업 시스템입니다.",
+      "summary": "개인 지식·절차·설정 권한을 여러 Agent가 공유하는 로컬 하네스",
       "keywords": [
-        "뷰티",
-        "상담 에이전트",
-        "LangGraph",
-        "상태 그래프",
-        "SSE",
-        "React Flow",
-        "데모",
-        "컨테이너"
+        "Personal Agent Harness",
+        "Codex",
+        "Claude Code",
+        "Gemini",
+        "Skill"
       ],
       "tags": [
-        "RIGHT-SIZED AGENT",
-        "LANGGRAPH",
-        "SSE"
+        "PROJECT",
+        "AGENT INFRASTRUCTURE"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Supporting Systems · Right-sized Agent",
-        "href": "#supporting-agent-systems-right-sized-agent"
+        "label": "Harness · Overview",
+        "href": "#case/personal-agent-harness/overview"
       },
       "followUps": [
-        "왜 철강 프로젝트 구조를 그대로 쓰지 않았나요?",
-        "실행 단계는 어떻게 실시간 시각화했나요?"
+        "Wiki와 Skill은 어떻게 다른가요?",
+        "설정 drift를 어떻게 막나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "3. 상담 도메인 AI 에이전트 데모 (뷰티테크)",
-            "authority": "career-primary",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "프로젝트 개요",
+            "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "a01929994c1b0c4e0a26b0d4a483b6529035751ace261f874344c5628dd4eaf4",
-            "contentDigest": "ecb3bab3a2c555cde3f03e87586cf6fb7cfe1b992773c66367fa90e794005ac8"
-          }
-        ]
-      }
-    },
-    {
-      "id": "platform.llm-gateway-observability",
-      "intent": "llmops",
-      "kind": "platform-capability",
-      "title": "모델 제공자를 통합한 LLM 호출 게이트웨이",
-      "answer": "서비스마다 달랐던 모델 호출 규격을 공통 인터페이스로 통합하고 로컬 모델과 외부 제공자 경로를 교체 가능하게 구성했습니다. 요청, 지연과 오류를 공통 관측 경로에 남겨 모델 호출 실패의 원인을 추적할 수 있게 했습니다.",
-      "summary": "LiteLLM 기반 공통 호출 인터페이스와 Langfuse 관측 경로",
-      "keywords": [
-        "LLM gateway",
-        "LiteLLM",
-        "vLLM",
-        "Bedrock",
-        "Langfuse",
-        "모델 서빙",
-        "LLMOps",
-        "게이트웨이"
-      ],
-      "tags": [
-        "LLMOPS",
-        "MODEL GATEWAY",
-        "OBSERVABILITY"
-      ],
-      "status": "source-backed",
-      "authority": "career-primary",
-      "source": {
-        "label": "Supporting Systems · LLM Gateway",
-        "href": "#supporting-agent-systems-llm-gateway"
-      },
-      "followUps": [
-        "왜 이것을 AI Platform이라고 부르지 않나요?",
-        "모델 제공자를 어떻게 교체 가능하게 했나요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "career-primary",
-        "status": "source-backed",
-        "sources": [
+            "bindingDigest": "dd0fede0b8b8df6a17942204d7a3f89311e6c9adad026bf598b919eb146169b8",
+            "contentDigest": "d5bb174db2e221cdeb228b1fc9f18da9040b4470cee307c9da7c21e807e0dec8"
+          },
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "4. LLM 호출 게이트웨이와 운영 지표 수집",
-            "authority": "career-primary",
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "설계 목표",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "5f172b38610f2fe3b86f937ffb60a3cf1d0a86d4148287204300290416d3a49b",
-            "contentDigest": "7fcb05f79912fc85626a9bde2ce14f3678e1082740088d075b0dfe2618e689d8"
+            "bindingDigest": "cfe9420b4c90f5325a9fe44d9dcf310bb26b23491afb664dc25ce9f3d38a5bea",
+            "contentDigest": "0937d5a0e0f4e33c183f39678ea5568f91777f709e7992717e155d2d3603956d"
           }
         ]
       }
     },
     {
       "id": "harness.single-source-configuration",
-      "intent": "harness",
-      "kind": "personal-project",
-      "title": "여러 코딩 에이전트가 공유하는 단일 정본",
-      "answer": "여러 AI 코딩 에이전트에 흩어진 절차와 도구 설정을 선언형 manifest의 단일 정본으로 관리하고 각 에이전트 환경에는 링크로 배포했습니다. 한쪽만 수정돼 사본이 서로 달라지는 문제를 구성 동기화로 방지합니다.",
-      "summary": "절차와 MCP 설정을 단일 manifest에서 관리해 여러 에이전트에 배포",
+      "intent": "architecture",
+      "kind": "knowledge-system",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "하나의 manifest와 Agent별 capability projection",
+      "answer": "Skill·MCP·data source의 canonical source를 manifest에 등록하고 각 Agent가 실제로 지원하는 범위만 adapter를 통해 투영해 여러 사본의 drift를 줄입니다.",
+      "summary": "단일 정본과 Agent별 비대칭성을 함께 관리",
       "keywords": [
-        "개인 하네스",
-        "personal harness",
-        "Codex",
-        "Claude Code",
         "manifest",
-        "단일 정본",
-        "skill",
-        "MCP"
+        "single source",
+        "projection",
+        "설정"
       ],
       "tags": [
-        "PERSONAL R&D",
-        "AGENT HARNESS",
-        "SSOT"
+        "MANIFEST",
+        "PROJECTION"
       ],
       "status": "source-backed",
-      "authority": "portfolio-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Agent Harness · Overview",
-        "href": "#personal-agent-harness-overview"
+        "label": "Harness · Manifest",
+        "href": "#case/personal-agent-harness/architecture"
       },
       "followUps": [
-        "개인 하네스가 해결한 문제는 무엇인가요?",
-        "지식과 실행 권한은 어떻게 분리했나요?"
+        "모든 Agent에 같은 구조를 강제하지 않은 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "portfolio-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "2. 시스템 구성",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "통합 관리 기준",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "246299df4cf3986d325a5462d40b9dae7890016ac921e020a5f54c1398728ab7",
-            "contentDigest": "5f6348cd188f332d03cf99df0cbc05e231f38ace223fd46a8ac268bd3ab655af"
+            "bindingDigest": "a3c77207ab318cf6e6b4e901f4560a9d8e9a86791579b32952f3303f6272c8b0",
+            "contentDigest": "d5d88664ddd947828c7ffa24aacc428b3138b8344d68753c712dc2e2bb1ce6a6"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "Manifest 계약",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "ff1eedb13286d39bc21e00296ae253cfa12ce7306d5c529fcf24501ed2907eeb",
+            "contentDigest": "4338b2e05a559398e627bfb34f7064c88155c45de6446654e8ed6ebadae47634"
           }
         ]
       }
     },
     {
       "id": "harness.policy-as-configuration",
-      "intent": "harness",
+      "intent": "safety",
       "kind": "safety-architecture",
-      "title": "프롬프트가 아니라 구성으로 강제하는 접근 정책",
-      "answer": "데이터 소스마다 주권, 보관 위치와 접근 정책을 선언해 조직 데이터의 쓰기는 승인 뒤에만 가능하도록 구성했습니다. 메일처럼 되돌리기 어려운 작업은 초안 작성까지만 허용해 에이전트가 바뀌어도 권한 경계가 유지됩니다.",
-      "summary": "데이터 소스별 권한과 승인 범위를 선언형 구성으로 강제",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "프롬프트가 아니라 설정으로 강제하는 데이터 접근 정책",
+      "answer": "data source마다 소유 범위·저장 위치·read·write·approval·draft-only 정책을 manifest에 선언하고 실제 도구 연결 전에 검증합니다.",
+      "summary": "지식 추천과 외부 데이터 실행 권한을 별도 정책으로 관리",
       "keywords": [
-        "접근 정책",
-        "권한",
-        "승인 게이트",
-        "데이터 주권",
-        "메일 초안",
-        "safety",
-        "prompt injection"
+        "policy",
+        "승인",
+        "draft only",
+        "read only"
       ],
       "tags": [
         "POLICY",
-        "SAFETY",
-        "GOVERNANCE"
+        "SAFETY"
       ],
       "status": "source-backed",
-      "authority": "portfolio-primary",
+      "authority": "design-primary",
       "source": {
-        "label": "Agent Harness · Policy boundary",
-        "href": "#personal-agent-harness-policy-boundary"
+        "label": "Harness · Data policy",
+        "href": "#case/personal-agent-harness/evidence"
       },
       "followUps": [
-        "왜 프롬프트만으로 권한을 제한하지 않았나요?",
-        "공개 에이전트에 도구를 붙일 때 어떤 경계를 두나요?"
+        "외부 write는 어떻게 승인하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "portfolio-primary",
+        "authority": "design-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "데이터 소스별 접근 정책",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "데이터와 보안 경계",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "aaa4b35e5b6fbbc98181151592135e9b56712aca02bcefe7a13f72093bc8d647",
-            "contentDigest": "53c7b0baf44426e99e64f20eda654838c3f85007fd1b5872e0ef46c350435249"
+            "bindingDigest": "cab2c3d573879a7f60fb7e32ae5189a8a3b880dfdce417769932417c3b34edd7",
+            "contentDigest": "db1b7c088c41c1676628f9d026e0bcafee109b74c366ef6479a761f0a9cfc53f"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "Data source 정책",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "15df8b8df69aded29f51d40d45b81186858e24c8801646b54ff4d8f52e4a1c94",
+            "contentDigest": "959d7e2b603379dc86ccbe123c0a7361053ec042622814cb9d1fab197f89022b"
           }
         ]
       }
     },
     {
       "id": "harness.knowledge-preflight-ledger",
-      "intent": "harness",
+      "intent": "knowledge",
       "kind": "knowledge-system",
-      "title": "작업 전 지식 조회와 선택 이유 기록",
-      "answer": "비단순 작업을 시작하기 전에 과거 결정과 검토된 절차를 조회하도록 하고, 어떤 후보를 선택하거나 제외했는지 이유를 append-only 기록으로 남깁니다. 기록을 에이전트의 성실성에 맡기지 않고 조회 도구의 계약에 포함한 것이 핵심입니다.",
-      "summary": "지식 preflight와 선택·제외 이유를 append-only 원장에 자동 기록",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "작업 전 지식 조회와 선택·제외 이유 기록",
+      "answer": "새 작업 전에 keyword·semantic·status·환경 조건으로 관련 지식을 찾고 selected와 excluded를 분리해 어떤 맥락을 사용했는지 append-only outcome과 결정 기록에 남깁니다.",
+      "summary": "작업 전 지식 선택과 사용 결과를 추적",
       "keywords": [
-        "지식베이스",
         "preflight",
-        "선행 조회",
-        "append-only",
-        "원장",
-        "선택 이유",
-        "회수"
+        "사전 조회",
+        "selected",
+        "excluded",
+        "ledger"
       ],
       "tags": [
         "KNOWLEDGE",
-        "PROVENANCE",
-        "LEDGER"
+        "PROVENANCE"
       ],
       "status": "source-backed",
       "authority": "portfolio-primary",
       "source": {
-        "label": "Agent Harness · Knowledge ledger",
-        "href": "#personal-agent-harness-trust-gate"
+        "label": "Harness · Knowledge preflight",
+        "href": "#case/personal-agent-harness/wiki-skill"
       },
       "followUps": [
-        "왜 선택하지 않은 후보의 이유도 기록하나요?",
-        "지식 조회가 형식적인 절차가 되지 않게 어떻게 했나요?"
+        "선택되지 않은 지식도 기록하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -1589,48 +1525,54 @@
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "3. 지식 자동 기록 — 계약으로 강제한다",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "Personal Wiki 등록과 조회",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "5ac42375ccd5ddfa9be7062af6fe27b1b97fac00705d79cc72ccc55f4e0084e7",
-            "contentDigest": "0509abf96299572387fe4fd995c0fb2ea4741a7412b1c3d116dd1b0c73c25d41"
+            "bindingDigest": "3ec2969c6fc2b8c899c665eaa778a8e3c12d33113f0de4d1525e6d8c1b42c4e8",
+            "contentDigest": "a801e12d27d904c984c980f6013b46d5c10060dda9a0bb826b648d8393f669d9"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "조회·적용 경로",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "b2d1eec00d8097100a1e55a5047685ba831fcffe0bd7aa76df26afb97990d0bc",
+            "contentDigest": "3784e34609b1cb57dcb52a73204be9221463249b5c9aebde1da36130e921f389"
           }
         ]
       }
     },
     {
       "id": "harness.trust-state-and-file-authority",
-      "intent": "harness",
+      "intent": "knowledge",
       "kind": "knowledge-system",
-      "title": "파일 권위와 지식 신뢰 상태",
-      "answer": "Markdown과 메타데이터를 지식의 원본으로 두고 검색 색인은 언제든 재생성할 수 있는 파생물로 취급했습니다. 관측, 초안, 검토, 검증, 폐기 상태를 나눠 검토된 지식만 작업 컨텍스트로 적용하고 낮은 등급은 발견 후보로만 보여 줍니다.",
-      "summary": "Markdown을 정본으로 두고 신뢰 상태별로 적용과 발견 후보를 분리",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "reviewed·verified와 discovery 지식을 나눈 신뢰 게이트",
+      "answer": "observation·draft는 발견 후보로 유지하고 사람이 검토해 reviewed·verified가 된 지식만 현재 판단과 작업 context에 적용합니다.",
+      "summary": "지식 신뢰 상태와 파일 정본 권위를 함께 확인",
       "keywords": [
-        "지식 신뢰",
         "reviewed",
         "verified",
         "draft",
-        "deprecated",
-        "Markdown",
-        "색인",
-        "authority"
+        "trust gate"
       ],
       "tags": [
-        "KNOWLEDGE GOVERNANCE",
         "TRUST",
-        "DERIVED INDEX"
+        "KNOWLEDGE"
       ],
       "status": "source-backed",
       "authority": "portfolio-primary",
       "source": {
-        "label": "Agent Harness · Trust gate",
-        "href": "#personal-agent-harness-trust-gate"
+        "label": "Harness · Trust gate",
+        "href": "#case/personal-agent-harness/wiki-skill"
       },
       "followUps": [
-        "왜 회수 빈도를 신뢰 등급으로 쓰지 않나요?",
-        "폐기된 지식은 어떻게 다루나요?"
+        "draft가 자동 적용되지 않는 이유는?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -1638,46 +1580,55 @@
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "4. 신뢰 상태 관리 — 게이트가 실제로 걸러낸다",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "Personal Wiki 등록과 조회",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "88d04d28c3a044891dfed1e729061d2e1c79814e83ec5859f27adf397693235b",
-            "contentDigest": "7432f6b7af7332f32c1ebfb1d55b50f7cae9f85d3ebc037298484e8577af4fe3"
+            "bindingDigest": "3ec2969c6fc2b8c899c665eaa778a8e3c12d33113f0de4d1525e6d8c1b42c4e8",
+            "contentDigest": "a801e12d27d904c984c980f6013b46d5c10060dda9a0bb826b648d8393f669d9"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "등록 경로",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "3cbdb7c399714abc5592902a154771a7a8da21644407752c1a3aea54f3080ec4",
+            "contentDigest": "373dfa7108596421f9e5cbd8264541e1816bdabbf9d46c0bafa868ecc71a5d55"
           }
         ]
       }
     },
     {
       "id": "harness.knowledge-not-execution-authority",
-      "intent": "harness",
+      "intent": "safety",
       "kind": "safety-architecture",
-      "title": "지식이 곧 실행 권한이 되지 않는 구조",
-      "answer": "지식 페이지가 특정 절차를 추천하더라도 지원 환경, 설치 상태, 트리거와 신뢰 조건을 통과해야만 실제 절차를 로드합니다. 문서 본문에 도구 이름이 등장했다는 이유만으로 실행되는 경로를 막아 지식 검색과 행동 권한을 분리했습니다.",
-      "summary": "지식 추천과 도구 실행 사이에 결정적 자격 게이트를 둠",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "지식이 실행 권한으로 자동 승격되지 않는 구조",
+      "answer": "Wiki의 문장이 도구를 추천하더라도 canonical source·manifest 등록·Agent 지원·trigger·data policy를 통과하기 전에는 설치나 실행 설정으로 변환하지 않습니다.",
+      "summary": "협업 기억과 실행 권한의 신뢰 경계를 분리",
       "keywords": [
-        "실행 권한",
-        "eligibility gate",
-        "skill routing",
-        "prompt injection",
-        "도구 호출",
-        "지식"
+        "지식 실행 권한",
+        "컴퓨터 조작 권한",
+        "자동 승격",
+        "권위",
+        "skill refs"
       ],
       "tags": [
-        "EXECUTION AUTHORITY",
-        "SAFETY",
-        "SKILL ROUTING"
+        "AUTHORITY",
+        "SAFETY"
       ],
       "status": "source-backed",
       "authority": "portfolio-primary",
       "source": {
-        "label": "Agent Harness · Execution gate",
-        "href": "#personal-agent-harness-policy-boundary"
+        "label": "Harness · Execution authority",
+        "href": "#case/personal-agent-harness/architecture"
       },
       "followUps": [
-        "프롬프트 인젝션이 도구 실행으로 번지는 것을 어떻게 막나요?",
-        "추천과 실행을 분리한 이유는 무엇인가요?"
+        "Wiki와 manifest가 충돌하면 무엇이 우선인가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -1685,13 +1636,648 @@
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "자격 게이트 — 제시와 실행을 분리한다",
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "지식과 실행 설정의 분리",
             "authority": "portfolio-primary",
             "status": "source-backed",
-            "bindingDigest": "be13a806c3027b2a5bf27d1366fb56ff1aaccb924e21fac5e550ce2fcd6b8516",
-            "contentDigest": "2a308e1a2fb7ecef3b5bda1d7087bb0806645f0a71ffc70be2c8e1e8997ef901"
+            "bindingDigest": "6c46c99daf82f34d198560fbd0d909ddd49ae37e2c0fa87b0c42f4b267fc81af",
+            "contentDigest": "461bf1210366bc468b96bc04a91bcf0c531ee6b69339024235347b0ed74b5efe"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "지식 계층과 실행 계층",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "37b0b3ae3aca7e095b92c283019b929289a605027a67124f0c30f1ea626415f5",
+            "contentDigest": "22ba5b4f27beab709a1642f7fd1eb717d9bd0ce190ab7c03a224a32e6a1fa2b3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "harness.wiki-skill-loop",
+      "intent": "architecture",
+      "kind": "knowledge-system",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "Wiki 맥락·Skill 절차·Outcome 학습 루프",
+      "answer": "Wiki는 판단 이유와 사례를, Skill은 실행과 검증 순서를, Outcome은 이번 적용의 helpful·unused·defect 상태를 소유해 다음 조회와 절차 개선에 돌려줍니다.",
+      "summary": "협업 기억과 반복 절차가 결과를 통해 다시 개선되는 루프",
+      "keywords": [
+        "Wiki Skill",
+        "협업 루프",
+        "Outcome",
+        "기억"
+      ],
+      "tags": [
+        "WIKI",
+        "SKILL",
+        "OUTCOME"
+      ],
+      "status": "source-backed",
+      "authority": "portfolio-primary",
+      "source": {
+        "label": "Harness · Wiki–Skill loop",
+        "href": "#case/personal-agent-harness/wiki-skill"
+      },
+      "followUps": [
+        "왜 하나의 prompt로 합치지 않았나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "portfolio-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "Wiki–Skill 협업 루프",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "16e28ee7fac0320c2bffa0fba4ae8c28ebdf50d465cb7e54077a12939095d589",
+            "contentDigest": "937d5c7ae978d07cf499aa5f6efbdbb46e1f43a899c8ad724e602710bd2ea894"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "Wiki–Skill 협업 루프",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "3f7398acc48acc56fe4c751b3698b913b0ad6dcba400531224ba4fb6090bbe3a",
+            "contentDigest": "0fa6be2799cbb1cff3e70001d05055bc2ec1253f8895b564c922d43fbf47be55"
+          }
+        ]
+      }
+    },
+    {
+      "id": "harness.trigger-routing",
+      "intent": "architecture",
+      "kind": "implementation",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "작업 신호에 따른 Skill군 trigger routing",
+      "answer": "명시적 호출, 작업 intent, risk와 artifact 신호를 바탕으로 용어·코드·문서·데이터·운영 Skill군 중 필요한 것만 선택하고 순서화합니다.",
+      "summary": "현재 과제에 필요한 절차만 조합해 context를 제한",
+      "keywords": [
+        "Skill trigger",
+        "routing",
+        "작업 유형",
+        "skill family"
+      ],
+      "tags": [
+        "SKILL ROUTING"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Harness · Trigger routing",
+        "href": "#case/personal-agent-harness/routing"
+      },
+      "followUps": [
+        "모든 Skill을 넣지 않는 이유는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "Skill군과 상황별 Trigger",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "99881d41154868a3ebf72b6fea78bffc420754c0b363f2a24a5b415f1e63a3cb",
+            "contentDigest": "0491afff92e568f0b23a05e2b43a8e6c2780ed63883078ab77c8546d18c40772"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "Skill군과 Trigger Routing",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "cf25a237e4e52e9f6084b7728fc1bac81551fea4c1354b2b83d3b9b2ef009f83",
+            "contentDigest": "23ee9c221424ca1cb1b2fdd2f7de69414810a766d4ab726da7e6af2c9e11df23"
+          }
+        ]
+      }
+    },
+    {
+      "id": "harness.reconcile-safety",
+      "intent": "operations",
+      "kind": "implementation",
+      "projectIds": [
+        "personal-agent-harness"
+      ],
+      "title": "계획·적용·감사로 나눈 안전한 reconcile",
+      "answer": "manifest 검증, 현재 상태 비교, dry-run 변경 계획, file lock과 atomic apply, 사후 status를 분리합니다. 다른 real path를 자동으로 덮어쓰지 않고 conflict로 보고해 source authority를 보존합니다.",
+      "summary": "충돌을 숨기지 않고 적용 전후 상태를 검증하는 설정 reconcile",
+      "keywords": [
+        "reconcile",
+        "status",
+        "dry run",
+        "atomic apply",
+        "conflict"
+      ],
+      "tags": [
+        "OPERATIONS",
+        "SAFETY"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Harness · Reconcile",
+        "href": "#case/personal-agent-harness/evidence"
+      },
+      "followUps": [
+        "충돌을 자동 덮어쓰지 않는 이유는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-harness-portfolio",
+            "label": "Personal Agent Harness 포트폴리오 · 2026-08-12",
+            "locator": "설정 반영 흐름",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "166a276b72c36da33e862449b2e7e0ed2cca29b4ec585b1f430b72a007c18634",
+            "contentDigest": "344eedf25dc33f289205261d1497418fafdb3367b65eb309d1e72fefe7dfc2a6"
+          },
+          {
+            "sourceId": "project-docs-harness-design",
+            "label": "Personal Agent Harness 설계 문서 · 2026-08-12",
+            "locator": "Skill reconcile",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "bb24c585a69daae3c670f0e86ce32da81ef5ad2ae13d9784b4ca24869ef1c8d3",
+            "contentDigest": "a88f3a3850bfd8eefd4028239cd04aa1ad982bb901d2683df77dd43e09bd51f0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project.portfolio-interview-agent",
+      "intent": "project",
+      "kind": "project",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "Portfolio Interview Agent",
+      "answer": "완전한 정적 포트폴리오는 GitHub Pages에서 제공하고 AI 질문만 ngrok을 거쳐 private Node gateway·Ollama로 전달합니다. 현재 페이지·대화에 맞는 공개 근거와 agent-only 판단 요약을 활용하되 사용자 citation은 public allowlist로 제한합니다.",
+      "summary": "GitHub Pages와 ngrok AI runtime을 결합한 근거형 포트폴리오 서비스",
+      "keywords": [
+        "Portfolio Interview Agent",
+        "포트폴리오 에이전트",
+        "GitHub Pages",
+        "ngrok",
+        "Ollama"
+      ],
+      "tags": [
+        "PROJECT",
+        "GITHUB PAGES",
+        "NGROK"
+      ],
+      "status": "source-backed",
+      "authority": "portfolio-primary",
+      "source": {
+        "label": "Portfolio Agent · Overview",
+        "href": "#case/portfolio-interview-agent/overview"
+      },
+      "followUps": [
+        "AI를 선택 기능으로 둔 이유는?",
+        "ngrok과 private Ollama는 어떻게 연결하나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "portfolio-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "프로젝트 개요",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "b52aef7f62cb1af95de39dfd559cdbb01cc77de9c71c6a326da6b2e825496700",
+            "contentDigest": "daab1b3261693ec2e2ce0e0d257c1867369a533c5a27837b744e19ba6a5a285c"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "설계 목표",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "a3b790abdacb75bb2133222f6a702dcb447f9f2a09da5d41efe8446d084800c9",
+            "contentDigest": "07f7905b17338e205bf56db89f8d0a9d33f2c29ba4bf25c6a71ce6888ebab3d7"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.public-agent-only-boundary",
+      "intent": "safety",
+      "kind": "safety-architecture",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "공개 문서와 agent-only 회고 요약의 근거 경계",
+      "answer": "portfolio·design은 공개 source와 인용으로 사용하고 retrospective는 수동 재서술한 server-only 요약으로만 답변에 활용합니다. 원문·locator·링크와 node identity는 사용자 응답에 노출하지 않습니다.",
+      "summary": "답변에 활용할 수 있는 근거와 사용자에게 공개할 source를 분리",
+      "keywords": [
+        "agent-only",
+        "회고",
+        "공개 범위",
+        "privacy"
+      ],
+      "tags": [
+        "VISIBILITY",
+        "PRIVACY"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Evidence visibility",
+        "href": "#case/portfolio-interview-agent/evidence"
+      },
+      "followUps": [
+        "회고만으로 답하면 citation은 어떻게 되나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "공개 지식과 agent-only 근거",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "700153d2c82363fc3c80baf5cdefde64b60ea213055f2fe4d722d6612b36e5df",
+            "contentDigest": "85f24d5884d8595f775557f3f2b5b91fb59c0b8e382b98efc3cc929f162dda4e"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "호출부 계약",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "8bba854295e4f4df9ae4cf38522841de3759d0301b096ffaf3777f9031e2acf6",
+            "contentDigest": "24b74e73471344448019b360e82a9b6e96ab95abd1a4f286d95f24f7ce19014d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.local-first-runtime",
+      "intent": "architecture",
+      "kind": "architecture-decision",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "GitHub Pages와 ngrok AI runtime의 독립된 실패 경계",
+      "answer": "GitHub Pages는 정적 본문과 공개 data를 제공하고 AI 요청만 ngrok HTTPS를 거쳐 private Node gateway로 전달합니다. gateway는 memory·retrieval·prompt·source 검증을 소유하고 Ollama는 loopback으로만 연결하므로 tunnel이나 모델이 중단돼도 포트폴리오 본문은 읽을 수 있습니다.",
+      "summary": "정적 배포와 ngrok 기반 AI runtime을 독립된 실패 경계로 분리",
+      "keywords": [
+        "ngrok gateway",
+        "GitHub Pages",
+        "private Ollama",
+        "deployment runtime"
+      ],
+      "tags": [
+        "DEPLOYMENT",
+        "GATEWAY"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Runtime",
+        "href": "#case/portfolio-interview-agent/architecture"
+      },
+      "followUps": [
+        "browser가 Ollama를 직접 호출하지 않는 이유는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "배포 환경과 레이턴시 최적화",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "8e9ef538e509b4a3b97cf20fd05766aed5863fae46641924e81110fed0d675ba",
+            "contentDigest": "2e46b589dcf0d97901d1c71d626e24cc112c05a645dfaeec144d4f8fc92dbf6c"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "시스템 경계",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "55df7d58b8853176b29a52ec8c1ab735a7824ca771541225ccb8fb4f82a35d1e",
+            "contentDigest": "d5eaebe3d976f09b1393be9e8c015bac0df159c541dea13ed7f8153bb65f3ba9"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.latency-optimization",
+      "intent": "performance",
+      "kind": "reliability-pattern",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "검증 가능한 준비 응답과 bounded cache",
+      "answer": "사람이 검토한 소개 질문의 exact alias는 public bundle digest와 source allowlist를 다시 확인한 뒤 모델 호출 없이 반환합니다. 예상 질문에는 준비된 follow-up을 연결하고 자유 질의의 동적 follow-up만 SHA-256 key와 browser session bounded LRU 최대 24개로 재사용합니다. 공개 knowledge와 BGE-M3 index는 build 시 계산하며 일반 답변의 semantic cache는 두지 않습니다.",
+      "summary": "재사용 안전성이 확인된 단계만 캐시해 반복 모델 호출과 후속 질문 생성을 줄임",
+      "keywords": [
+        "prepared response",
+        "exact cache",
+        "bounded LRU",
+        "latency",
+        "follow-up cache",
+        "adaptive response"
+      ],
+      "tags": [
+        "CACHE",
+        "LATENCY",
+        "SOURCE VALIDATION"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Latency",
+        "href": "#case/portfolio-interview-agent/runtime"
+      },
+      "followUps": [
+        "왜 임의 답변 semantic cache는 두지 않았나요?",
+        "준비 답변은 언제 model 경로로 fallback하나요?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "배포 환경과 레이턴시 최적화",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "8e9ef538e509b4a3b97cf20fd05766aed5863fae46641924e81110fed0d675ba",
+            "contentDigest": "2e46b589dcf0d97901d1c71d626e24cc112c05a645dfaeec144d4f8fc92dbf6c"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "레이턴시 최적화",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "9d60bfeee12228d5036bcb94492a825dc8c2787f1fb27b4f1168382c6e31d1b1",
+            "contentDigest": "5e6f2aa5afa50a8be0e01e0987685bb9491c6782221d5134678d47cd606e4c68"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.source-validated-retrieval",
+      "intent": "retrieval",
+      "kind": "reliability-pattern",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "작은 corpus에 맞춘 검색과 source 검증",
+      "answer": "lexical seed와 typed relation 1-hop을 기본으로 하고 exact dense·RRF는 opt-in으로 사용합니다. query plan은 사실 범위의 초안이며, 검토된 exact alias만 bundle·source 검증 뒤 준비 답변으로 전달합니다. 사용자 citation은 실제 retrieval 또는 검증된 prepared source의 public ID만 허용합니다.",
+      "summary": "설명 가능한 기본 검색과 선택형 dense, 검증된 exact 준비 답변, public source allowlist",
+      "keywords": [
+        "lexical graph",
+        "BGE-M3",
+        "RRF",
+        "source 검증",
+        "query plan",
+        "prepared direct"
+      ],
+      "tags": [
+        "RETRIEVAL",
+        "SOURCE VALIDATION"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Retrieval",
+        "href": "#case/portfolio-interview-agent/retrieval"
+      },
+      "followUps": [
+        "vector database를 쓰지 않은 이유는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "질문에서 근거가 있는 답변까지",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "7dc3e733668272060a712ed6ac417a564bf38507c2fd6f62fa4030fd15cd7d24",
+            "contentDigest": "0cbf28b444e7601fd29a76af826518010fa70909943ddb90b49acd0895e11cc0"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "검색 파이프라인",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "8b6108cc3764df36ed89efc6b3a6fce08487002920e1aeb4066afff501c74f89",
+            "contentDigest": "92586cbe0e7d4140901f0d56ebb9459d9a4d5fe64d5a47511abc42c9e7fa4f5d"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "optional dense retrieval",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "130a0bcaa8f1c86c5106430373eb2ab4d0eadf77b78640f6c267093db88935ec",
+            "contentDigest": "ff9060d98eba89ee71cb935e1ddee661f3bcd395a442bab1e8bf2308b837d54e"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.contextual-session-memory",
+      "intent": "architecture",
+      "kind": "implementation",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "recent·summary·episode와 server-owned page context",
+      "answer": "최근 4문답은 원문으로 유지하고 오래된 대화는 rolling summary와 관련 episode로 나눕니다. route type·project·section ID는 서버의 공개 catalog에서 다시 검증합니다.",
+      "summary": "bounded memory와 검증된 현재 프로젝트·섹션 문맥을 결합",
+      "keywords": [
+        "session memory",
+        "최근 4턴",
+        "rolling summary",
+        "sectionId",
+        "page context"
+      ],
+      "tags": [
+        "MEMORY",
+        "PAGE CONTEXT"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Memory",
+        "href": "#case/portfolio-interview-agent/memory"
+      },
+      "followUps": [
+        "전체 대화를 prompt에 넣지 않는 이유는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "대화 메모리와 현재 화면 문맥",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "3b7b682eeb5033a0ecfc56bfc01b9efe46020c7c8edc3d19580899c1666c8cd2",
+            "contentDigest": "d1e6bbd98d575c99fc5a4041ee0da842efc52737c02a1c44d002e72ea2fe50e3"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "대화 메모리",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "aeea4c0b5a79f4f46353b9166593c98183965ec9deb06e8cd7c8f7d3a00e1285",
+            "contentDigest": "48cc21665118bed8e39c9730988d70819651c95732cabc02ba40de3d72a1000a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.resilient-offline-fallback",
+      "intent": "reliability",
+      "kind": "reliability-pattern",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "오류를 숨기지 않는 공개 지식 fallback",
+      "answer": "network·ngrok·gateway unavailable 또는 Ollama timeout에서만 결정적 public fallback으로 축소합니다. 요청·권한·용량 오류는 그대로 보여주고 partial stream 뒤에는 다른 답변을 붙이지 않습니다.",
+      "summary": "AI 배포 경로의 실제 unavailable 조건만 안전하게 축소하고 요청 오류와 partial stream은 보존",
+      "keywords": [
+        "ngrok fallback",
+        "gateway unavailable",
+        "timeout",
+        "partial stream"
+      ],
+      "tags": [
+        "FALLBACK",
+        "FAILURE MODEL"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Runtime fallback",
+        "href": "#case/portfolio-interview-agent/runtime"
+      },
+      "followUps": [
+        "fallback하지 않는 오류는?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "배포 환경과 레이턴시 최적화",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "8e9ef538e509b4a3b97cf20fd05766aed5863fae46641924e81110fed0d675ba",
+            "contentDigest": "2e46b589dcf0d97901d1c71d626e24cc112c05a645dfaeec144d4f8fc92dbf6c"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "offline fallback",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "382c46740acd68a0fb318d2646599895cefb00caf4c998a0828786b6945b9c6d",
+            "contentDigest": "ccac1ae3294159a0ad4b5f3f9ab7de7c342df7244ed31508e46033d824383864"
+          }
+        ]
+      }
+    },
+    {
+      "id": "portfolio-agent.public-release-allowlist",
+      "intent": "deployment",
+      "kind": "deployment",
+      "projectIds": [
+        "portfolio-interview-agent"
+      ],
+      "title": "정적 파일 allowlist로 만든 public release",
+      "answer": "Pages build는 HTML·CSS·browser JS·공개 data·전처리된 project diagram만 복사합니다. server, source publication, test, embedding index와 agent-only bundle은 배포하지 않습니다.",
+      "summary": "공개 정적 artifact와 server·agent-only 자산을 배포 단계에서 분리",
+      "keywords": [
+        "GitHub Pages",
+        "allowlist",
+        "dist",
+        "배포",
+        "SVG"
+      ],
+      "tags": [
+        "DEPLOYMENT",
+        "ALLOWLIST"
+      ],
+      "status": "source-backed",
+      "authority": "design-primary",
+      "source": {
+        "label": "Portfolio Agent · Public release",
+        "href": "#case/portfolio-interview-agent/evidence"
+      },
+      "followUps": [
+        "public artifact에 포함되지 않는 것은?"
+      ],
+      "visibility": "public-candidate",
+      "provenance": {
+        "authority": "design-primary",
+        "status": "source-backed",
+        "sources": [
+          {
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "배포와 보안 경계",
+            "authority": "design-primary",
+            "status": "source-backed",
+            "bindingDigest": "e2022712584dcaaf9e1a26487282928d9d51a0e4c9593e465d2c15463be807f6",
+            "contentDigest": "79eccdc6d7a043561983a52d1d68c19c672f02ca62a1edbcb7547f91cf7da7a6"
+          },
+          {
+            "sourceId": "project-docs-portfolio-agent-portfolio",
+            "label": "Portfolio Interview Agent 포트폴리오 · 2026-08-12",
+            "locator": "공개 projection과 근거 계보",
+            "authority": "portfolio-primary",
+            "status": "source-backed",
+            "bindingDigest": "fac5070a3bccbd36fd2e5bb01c54f9fa3e02978fbbe234e9c5fe09584ecd168d",
+            "contentDigest": "53ed609fa993ea882b60a923f96d837073c6ab32978d0495a88bd693d051b2c6"
           }
         ]
       }
@@ -1700,33 +2286,25 @@
       "id": "principle.measure-before-improve",
       "intent": "values",
       "kind": "principle",
-      "title": "개선보다 측정 체계를 먼저 만든다",
-      "answer": "개선을 주장하기 전에 현재 상태를 재현할 수 있는 평가 기준과 회귀 방지 하한을 먼저 만듭니다. 지표가 없거나 대조 조건이 없다면 성능이나 생산성이 좋아졌다고 수치로 표현하지 않습니다.",
-      "summary": "측정·재현·회귀 하한이 없는 개선 주장은 하지 않음",
+      "title": "개선보다 측정 경계를 먼저 정의",
+      "answer": "개선 주장을 하기 전에 무엇을 어떤 조건에서 측정했는지와 측정하지 않은 범위를 먼저 밝힙니다.",
+      "summary": "성과와 관측 범위를 분리하는 원칙",
       "keywords": [
-        "가치관",
-        "일하는 방식",
         "측정",
-        "회귀",
-        "재현",
-        "개선",
-        "원칙",
-        "성과"
+        "평가",
+        "개선"
       ],
       "tags": [
-        "WORK PRINCIPLE",
-        "MEASUREMENT",
-        "INTEGRITY"
+        "PRINCIPLE"
       ],
       "status": "source-backed",
       "authority": "career-primary",
       "source": {
-        "label": "Engineering Approach · Measurement",
-        "href": "#approach"
+        "label": "Knowledge · Measurement",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "평가 지표도 검증 대상이라고 보는 이유는 무엇인가요?",
-        "측정하지 못한 것은 포트폴리오에 어떻게 표현하나요?"
+        "프로젝트에서 어떻게 적용했나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
@@ -1749,105 +2327,51 @@
       "id": "principle.problem-fit-over-method",
       "intent": "values",
       "kind": "principle",
-      "title": "방법론보다 문제 규모에 맞는 구조를 선택",
-      "answer": "고위험 산업 시스템과 제한된 데모에는 같은 아키텍처를 적용하지 않습니다. 동적 계획, 서비스 격리와 고비용 검색이 필요하지 않다면 상태 그래프, 모듈 호출과 더 단순한 검색 방식으로 줄입니다.",
-      "summary": "한 방법론을 기본값으로 두지 않고 요구와 제약에 맞게 구조를 축소·확장",
+      "title": "방법론보다 문제 규모에 맞는 구조",
+      "answer": "Steel처럼 지식 권위와 실패 경계가 많은 시스템에는 typed orchestration을 사용하고 작은 portfolio corpus에는 lexical+graph와 exact dense처럼 운영 부담이 작은 구조를 선택합니다.",
+      "summary": "문제 규모·권위·실패 비용에 맞춰 구조를 선택",
       "keywords": [
-        "과잉 설계",
-        "적재적소",
-        "tradeoff",
-        "방법론",
-        "구조 선택",
-        "단순화",
-        "right sizing"
+        "문제 규모",
+        "문제 크기",
+        "다른 구조를 선택한 이유",
+        "과한 설계",
+        "right sized"
       ],
       "tags": [
-        "WORK PRINCIPLE",
-        "RIGHT-SIZING",
-        "TRADE-OFF"
+        "PRINCIPLE",
+        "PROBLEM FIT"
       ],
       "status": "source-backed",
-      "authority": "career-primary",
+      "authority": "portfolio-primary",
       "source": {
-        "label": "Engineering Approach · Problem fit",
-        "href": "#approach"
+        "label": "Knowledge · Problem fit",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "철강 에이전트와 상담 데모의 구조가 왜 달랐나요?",
-        "규칙·ML·LLM은 어떤 기준으로 고르나요?"
+        "두 프로젝트의 선택을 비교해 주세요."
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "career-primary",
+        "authority": "portfolio-primary",
         "status": "source-backed",
         "sources": [
           {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "3.1 설계 판단 — 요구 규모에 맞는 구조를 고른다",
-            "authority": "career-primary",
+            "sourceId": "project-docs-steel-design",
+            "label": "Steel Domain AI Agent 설계 문서 · 2026-08-12",
+            "locator": "설계 결정과 트레이드오프",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "1c8437636d30bf1a281616c8a76f005f20390e10c29d9ef66f463d8e9d89b6f7",
-            "contentDigest": "0c0d83a00c168409a35f472605a9bebff7a47d4d55f1aa86ac488526080eea17"
-          }
-        ]
-      }
-    },
-    {
-      "id": "limitation.explicit-claim-boundaries",
-      "intent": "limitations",
-      "kind": "limitation",
-      "title": "실증·내부 운영과 제품 성과를 구분",
-      "answer": "일부 시스템은 실증이나 내부 운영 단계이며 실제 사용자 규모, 장기 사용성과 생산성 향상을 입증할 대조 데이터는 아직 없습니다. 구현된 현재 구조와 목표 구조를 나누고, 자료 부족이나 검증이 끝나지 않은 항목은 제품 운영 성과처럼 말하지 않습니다.",
-      "summary": "실험·PoC·실증·내부 운영을 구분하고 검증되지 않은 성과를 과장하지 않음",
-      "keywords": [
-        "한계",
-        "아쉬운 점",
-        "부족",
-        "제품",
-        "실증",
-        "PoC",
-        "내부 운영",
-        "사용자 수",
-        "과장"
-      ],
-      "tags": [
-        "LIMITATION",
-        "CLAIM BOUNDARY",
-        "HONESTY"
-      ],
-      "status": "source-backed",
-      "authority": "career-primary",
-      "source": {
-        "label": "Engineering Approach · Limitations",
-        "href": "#approach"
-      },
-      "followUps": [
-        "현재 가장 먼저 보완할 과제는 무엇인가요?",
-        "목표 구조와 현재 구조를 어떻게 구분해 기록하나요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "career-primary",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "career-detailed",
-            "label": "경력기술서 상세 · 2026-08-09",
-            "locator": "1.10 확인된 한계와 다음 과제",
-            "authority": "career-primary",
-            "status": "source-backed",
-            "bindingDigest": "fb574888745365ca8543f2544df2303ca29fbe9da18758c7c42c8f46091699a6",
-            "contentDigest": "702460863543d187bdda792321b49ca71000838875808d8a81e729847c1a1434"
+            "bindingDigest": "2fb117c4c5eb56dd3363150388e9b56dd418e3b32fed8b4d861d11bc41c9782b",
+            "contentDigest": "78b9bf64c7a0600fa658b5c68a6ab82f1b371433ec9d1854944253ffbf0b8490"
           },
           {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "9. 확인된 한계",
-            "authority": "portfolio-primary",
+            "sourceId": "project-docs-portfolio-agent-design",
+            "label": "Portfolio Interview Agent 설계 문서 · 2026-08-12",
+            "locator": "주요 설계 결정과 트레이드오프",
+            "authority": "design-primary",
             "status": "source-backed",
-            "bindingDigest": "4438b64581dcd9e10a4e9b516faddb905c56159740cece0774d85852f27c14c5",
-            "contentDigest": "3c1cc05fd32b96764cfa39b05cbfe98a8852e003bad05e1cab14d1cc251c7940"
+            "bindingDigest": "ee348b81b85b4707181f4d53a86486e87eb91f57708482723141ad864ea0cee1",
+            "contentDigest": "42da24d371b26b9ca3d33597729cf813d50a46c2775b73ebb0030824d500e771"
           }
         ]
       }
@@ -1857,37 +2381,29 @@
       "intent": "values",
       "kind": "principle",
       "title": "속도보다 방향과 정밀도",
-      "answer": "AI와 함께 빠르게 만드는 것보다 이후 확장을 막지 않는 방향과 정밀한 구조를 우선합니다. 명세·결정·테스트·도구를 다음 작업의 기반으로 남겨 축적이 복리로 작동하게 합니다.",
-      "summary": "빠른 생성보다 방향·정밀도·재사용 가능한 자산 축적을 우선",
+      "answer": "빠른 산출보다 문제 정의, 근거 수준과 변경 방향을 먼저 맞추고 검증 가능한 단위로 작업합니다.",
+      "summary": "방향 정렬과 검증 정밀도를 우선",
       "keywords": [
-        "성격",
-        "가치관",
-        "속도",
         "정밀도",
-        "방향",
-        "기술 부채",
-        "복리",
-        "AI 협업"
+        "속도",
+        "협업"
       ],
       "tags": [
-        "VERIFIED PRINCIPLE",
-        "PRECISION",
-        "COMPOUNDING"
+        "PRINCIPLE"
       ],
-      "status": "verified",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Precision principle",
-        "href": "#approach"
+        "label": "Knowledge · Precision",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "이 원칙이 실제 프로젝트 설계에 어떻게 드러났나요?",
-        "속도와 품질이 충돌하면 어떻게 결정하나요?"
+        "실제 작업에서 어떻게 적용하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "verified",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -1906,36 +2422,30 @@
       "intent": "values",
       "kind": "principle",
       "title": "비결정적 AI를 결정적 경계로 감싸기",
-      "answer": "모델 자체를 신뢰하기보다 입력·출력 계약, 권한, 상태 전이, 검증과 복구 경로를 신뢰합니다. AI 실행은 유연하게 두되 외부 결과는 판정하고 복구할 수 있어야 합니다.",
-      "summary": "AI의 유연성은 유지하되 결과와 권한은 결정적 계약으로 통제",
+      "answer": "AI는 열린 의미 판단에 사용하고 schema·권한·상태·source·종료 조건은 코드와 데이터 계약으로 검증합니다.",
+      "summary": "유연한 해석과 결정적 실행·검증 경계를 결합",
       "keywords": [
-        "결정적 외피",
         "deterministic envelope",
-        "계약",
-        "검증",
-        "복구",
-        "멱등성",
-        "상태 머신"
+        "비결정적",
+        "AI 신뢰성"
       ],
       "tags": [
-        "VERIFIED PRINCIPLE",
-        "DETERMINISTIC BOUNDARY",
+        "PRINCIPLE",
         "RELIABILITY"
       ],
-      "status": "verified",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Deterministic envelope",
-        "href": "#approach"
+        "label": "Knowledge · Deterministic envelope",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "이 원칙을 현재 포트폴리오 에이전트에는 어떻게 적용했나요?",
-        "모델이 맡지 않아야 할 판단은 무엇인가요?"
+        "네 프로젝트에서 어떻게 반복되나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "verified",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -1953,37 +2463,32 @@
       "id": "principle.human-understanding",
       "intent": "values",
       "kind": "principle",
-      "title": "이해를 인간 참여의 기반으로 유지",
-      "answer": "AI가 결과를 만드는 속도만 높이지 않고, 사람이 구조와 선택 이유를 이해해 다음 방향을 결정할 수 있게 해야 한다고 봅니다. 코드와 함께 정신 모형을 갱신하는 설명·시각화·검증 근거를 남깁니다.",
-      "summary": "사람이 구조와 선택 이유를 이해해야 다음 변화에 참여할 수 있음",
+      "title": "사람이 이해하고 참여할 수 있는 시스템",
+      "answer": "사용자가 결과뿐 아니라 근거, 실행 단계, 현재 한계와 다음 선택을 확인할 수 있어야 AI 시스템에 실제로 참여할 수 있다고 봅니다.",
+      "summary": "이해 가능성을 사람 참여의 전제로 유지",
       "keywords": [
-        "인간 참여",
-        "정신 모형",
-        "인지 부채",
+        "사람 참여",
         "이해",
-        "설명",
-        "시각화",
-        "협업"
+        "HITL",
+        "설명"
       ],
       "tags": [
-        "VERIFIED PRINCIPLE",
-        "HUMAN IN THE LOOP",
-        "UNDERSTANDING"
+        "PRINCIPLE",
+        "HUMAN"
       ],
-      "status": "verified",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Human understanding",
-        "href": "#approach"
+        "label": "Knowledge · Human understanding",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "실행 trace를 사용자에게 보여주는 이유는 무엇인가요?",
-        "복잡한 구조를 어떻게 설명하나요?"
+        "Inspector와 HITL에 어떻게 반영됐나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "verified",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -1999,39 +2504,33 @@
     },
     {
       "id": "capability.semantic-contract",
-      "intent": "knowledge",
+      "intent": "values",
       "kind": "capability",
-      "title": "용어·분류·온톨로지를 협업 계약으로 설계",
-      "answer": "Terminology는 표기, Glossary는 정의, Taxonomy는 분류, Ontology는 관계와 제약을 담당하도록 분리합니다. 같은 개념 ID로 연결해 사람과 AI가 동일한 의미 경계에서 작업하게 합니다.",
-      "summary": "표기·정의·분류·관계를 구분하고 안정 개념 ID로 연결",
+      "title": "용어와 분류를 협업 계약으로 설계",
+      "answer": "도메인 용어, node kind, relation과 상태 이름을 사람과 Agent가 함께 쓰는 계약으로 관리해 같은 단어의 다른 의미가 실행에 섞이지 않게 합니다.",
+      "summary": "용어·분류·온톨로지를 재사용 가능한 협업 계약으로 관리",
       "keywords": [
-        "terminology",
-        "glossary",
-        "taxonomy",
-        "ontology",
         "용어",
-        "온톨로지",
+        "ontology",
         "semantic contract"
       ],
       "tags": [
-        "VERIFIED CAPABILITY",
-        "ONTOLOGY",
-        "SEMANTIC CONTRACT"
+        "SEMANTICS",
+        "CAPABILITY"
       ],
-      "status": "verified",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Semantic contract",
-        "href": "#approach"
+        "label": "Knowledge · Semantic contract",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "지식그래프와 온톨로지는 어떻게 역할을 나누나요?",
-        "용어 체계가 검색에 어떤 영향을 주나요?"
+        "실행 contract와 어떤 관계인가요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "verified",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -2050,36 +2549,29 @@
       "intent": "values",
       "kind": "principle",
       "title": "과거 판단을 재검증 가능한 가설로 취급",
-      "answer": "이전 답변이나 결정 기록을 현재의 권위로 간주하지 않습니다. 전제·버전·환경이 바뀌었는지 확인하고 경쟁 가설과 반증 조건을 둔 뒤 유지·수정·철회 여부를 결정합니다.",
-      "summary": "과거 결론은 권위가 아니라 현재 조건에서 다시 확인할 가설",
+      "answer": "이전 결정과 평가 결과를 현재 조건에서도 자동으로 참인 규칙으로 보지 않고 revision·source·검증 상태와 함께 다시 확인합니다.",
+      "summary": "과거 판단의 권위와 현재 검증 상태를 분리",
       "keywords": [
-        "인식론적 겸손",
         "재검증",
-        "반증",
-        "전제",
-        "과거 결정",
         "가설",
-        "철회"
+        "판단 변화"
       ],
       "tags": [
-        "REVIEWED PRINCIPLE",
-        "EPISTEMIC HUMILITY",
-        "REASONING"
+        "PRINCIPLE"
       ],
-      "status": "reviewed",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Epistemic humility",
-        "href": "#approach"
+        "label": "Knowledge · Epistemic humility",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "자신의 가설이 틀렸음을 확인한 사례가 있나요?",
-        "오래된 결정을 현재 사실로 오해하지 않게 어떻게 하나요?"
+        "회고를 어떻게 답변에 활용하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "reviewed",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -2098,36 +2590,29 @@
       "intent": "values",
       "kind": "principle",
       "title": "도입 전에 유스케이스 적합성을 검토",
-      "answer": "새 기술이나 자료를 이해하는 일과 실제 프로젝트에 적용할지 결정하는 일을 분리합니다. 현재 방식 대비 이점, 제약, 비용과 적용 범위를 확인한 뒤 도입합니다.",
-      "summary": "기술 이해와 도입 판단을 분리하고 실제 문제 적합성을 먼저 검증",
+      "answer": "새 기술이나 Agent를 추가하기 전에 독립적인 판단 책임, 실패 경계와 측정 가능한 이득이 있는지 확인합니다.",
+      "summary": "기술 채택보다 문제 적합성과 검증 가능성을 먼저 확인",
       "keywords": [
-        "신기술",
-        "도입",
         "feasibility",
-        "적합성",
-        "비용",
-        "제약",
-        "검토"
+        "도입",
+        "Agent 자격"
       ],
       "tags": [
-        "REVIEWED PRINCIPLE",
-        "FEASIBILITY",
-        "TECHNOLOGY FIT"
+        "PRINCIPLE"
       ],
-      "status": "reviewed",
+      "status": "source-backed",
       "authority": "principle-primary",
       "source": {
-        "label": "Personal Wiki · Feasibility first",
-        "href": "#approach"
+        "label": "Knowledge · Feasibility",
+        "href": "#knowledge/principles"
       },
       "followUps": [
-        "새 프레임워크를 채택할 때 어떤 기준을 보나요?",
-        "BGE-M3 같은 모델도 어떻게 평가할 계획인가요?"
+        "Agent와 도구를 나누는 기준은?"
       ],
       "visibility": "public-candidate",
       "provenance": {
         "authority": "principle-primary",
-        "status": "reviewed",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -2143,39 +2628,33 @@
     },
     {
       "id": "capability.decision-ledger",
-      "intent": "harness",
+      "intent": "values",
       "kind": "capability",
-      "title": "기술 결정과 근거를 계층적으로 기록",
-      "answer": "실행에서 관측된 사실, 의미가 부여된 결정 후보, 승인된 결정과 지표를 분리해 기록합니다. 원시 사실은 자동으로 남기되 의미 확정은 검토를 거치고, 정정과 회귀도 삭제하지 않고 계보로 보존합니다.",
-      "summary": "원시 이벤트·결정 후보·확정 기록을 분리하고 정정 계보를 보존",
+      "title": "기술 결정과 결과의 계보 기록",
+      "answer": "결정의 이유, 대안, 적용 결과와 후속 변경을 기록해 다음 작업에서 최종 결론만이 아니라 판단 계보를 다시 검토할 수 있게 합니다.",
+      "summary": "결정·근거·결과·변경을 연결하는 기록 역량",
       "keywords": [
         "decision ledger",
-        "ADR",
-        "의사결정 기록",
-        "provenance",
-        "append-only",
-        "medallion",
-        "계보"
+        "결정 기록",
+        "provenance"
       ],
       "tags": [
-        "REVIEWED CAPABILITY",
-        "DECISION LEDGER",
+        "DECISION",
         "PROVENANCE"
       ],
-      "status": "reviewed",
-      "authority": "supporting-knowledge",
+      "status": "source-backed",
+      "authority": "principle-primary",
       "source": {
         "label": "Personal Wiki · Decision ledger",
-        "href": "#personal-agent-harness-trust-gate"
+        "href": "#case/personal-agent-harness/implementation"
       },
       "followUps": [
-        "왜 도구 실행 사실만으로 결정 이유를 추측하지 않나요?",
-        "정정된 결정은 어떻게 남기나요?"
+        "Harness에서 어떻게 사용하나요?"
       ],
       "visibility": "public-candidate",
       "provenance": {
-        "authority": "supporting-knowledge",
-        "status": "reviewed",
+        "authority": "principle-primary",
+        "status": "source-backed",
         "sources": [
           {
             "sourceId": "personal-wiki",
@@ -2185,167 +2664,6 @@
             "status": "reviewed",
             "bindingDigest": "12071919b469c9ceaf6acb9a46ade79968b506a31f031fb476bc30f34df5ef4e",
             "contentDigest": "2772ee8946ef79d47c32410b62efa45802edbc68324184dd39e15e1a2895c49f"
-          }
-        ]
-      }
-    },
-    {
-      "id": "evidence.steel-evaluation-outcome",
-      "intent": "evidence",
-      "kind": "evidence",
-      "title": "산업 AI 어시스턴트 평가 방식",
-      "answer": "근거 커버리지와 답변 품질을 분리하고, 도구 선택·조회·근거 결속·내용 정확도의 회귀를 각각 확인했습니다. 과거 스냅샷의 정량 결과는 현재 기준과 섞이지 않도록 beta:0.0.1에서 공개하지 않으며, 동일 조건으로 재측정한 뒤 추가할 예정입니다.",
-      "summary": "평가 단계를 분리해 회귀를 추적하고 정량 결과는 재측정 후 공개",
-      "keywords": [
-        "평가",
-        "커버리지",
-        "품질",
-        "정확도",
-        "회귀",
-        "재측정",
-        "테스트"
-      ],
-      "tags": [
-        "EVALUATION METHOD",
-        "REMEASUREMENT PENDING",
-        "PUBLIC BETA"
-      ],
-      "status": "source-backed",
-      "authority": "portfolio-primary",
-      "source": {
-        "label": "Steel Agent · Evaluation method",
-        "href": "#steel-domain-agent-outcome"
-      },
-      "followUps": [
-        "평가 단계를 왜 나눴나요?",
-        "정량 결과를 다시 공개할 조건은 무엇인가요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "portfolio-primary",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "portfolio-current",
-            "label": "기술 포트폴리오 · 2026-08-10",
-            "locator": "검증된 결과",
-            "authority": "portfolio-primary",
-            "status": "source-backed",
-            "bindingDigest": "16d76cda6ba8acd1906db62dc5e047fbe2d64c3e54fcc39e158338b385ea3302",
-            "contentDigest": "55311e9ffc8bc15f2a72357d03c44065496e672d1840ccb3a0703ed18814c3d5"
-          }
-        ]
-      }
-    },
-    {
-      "id": "evidence.harness-operating-outcome",
-      "intent": "evidence",
-      "kind": "evidence",
-      "nodeType": "fact",
-      "layer": "fact",
-      "title": "개인 하네스 25일 운영 관측",
-      "answer": "25일간의 로컬 운영 로그에서 자동 기록 17,574건과 작업 전 지식 조회 이행률 99.76%를 확인했습니다. 이 수치는 조회 계약에 진입한 작업만 관측하므로 생산성 향상이나 전체 작업 커버리지로 확대 해석하지 않습니다.",
-      "summary": "25일간 17,574건 기록, 지식 조회 이행률 99.76%와 계측 한계",
-      "keywords": [
-        "하네스 성과",
-        "25일",
-        "17574",
-        "99.76",
-        "이행률",
-        "운영 로그",
-        "계측"
-      ],
-      "tags": [
-        "MEASURED OUTCOME",
-        "HARNESS",
-        "LIMITATION-AWARE"
-      ],
-      "status": "source-backed",
-      "authority": "portfolio-primary",
-      "source": {
-        "label": "Agent Harness · Operating outcome",
-        "href": "#personal-agent-harness-outcome"
-      },
-      "followUps": [
-        "이행률의 사각지대는 무엇인가요?",
-        "작업 시간 절감은 왜 수치로 주장하지 않나요?"
-      ],
-      "fact": {
-        "predicate": "measured_outcome",
-        "roles": {
-          "subject": "harness.single-source-configuration",
-          "method": "harness.knowledge-preflight-ledger"
-        },
-        "value": {
-          "periodDays": 25,
-          "events": 17574,
-          "preflightCompliance": {
-            "value": 99.76,
-            "unit": "%"
-          }
-        }
-      },
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "portfolio-primary",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "harness-portfolio",
-            "label": "개인 하네스 포트폴리오 · 2026-08-09",
-            "locator": "실측 — 25일간 (2026-07-16 ~ 2026-08-09)",
-            "authority": "portfolio-primary",
-            "status": "source-backed",
-            "bindingDigest": "c0e005879636b02e318aeff1fad484d810dd0f590136f2e5ff68bbe537f2afe2",
-            "contentDigest": "abb432f76b6bd497e0baa67b6b63a011216f364a35a1c7798378e1f8158d296c"
-          }
-        ]
-      }
-    },
-    {
-      "id": "outcome.external-technical-validation",
-      "intent": "evidence",
-      "kind": "outcome",
-      "title": "외부에 제시된 기술 성과",
-      "answer": "문서 AI 관련 특허 2건을 출원했고, AI 경진 프로그램 선발과 산업 AI 전시 시연까지 진행했습니다. 이는 제품 사용 성과가 아니라 연구·실증 결과를 외부 검토와 시연 단계까지 연결한 경험으로 표현하는 것이 정확합니다.",
-      "summary": "특허 2건 출원, AI 경진 프로그램 선발, 산업 AI 전시 시연",
-      "keywords": [
-        "특허",
-        "대회",
-        "AI 챔피언",
-        "전시",
-        "EXPO",
-        "외부 성과",
-        "수상"
-      ],
-      "tags": [
-        "OUTCOME",
-        "PATENT",
-        "DEMONSTRATION"
-      ],
-      "status": "source-backed",
-      "authority": "career-primary",
-      "source": {
-        "label": "Selected Work · External validation",
-        "href": "#multimodal-document-intelligence-outcome"
-      },
-      "followUps": [
-        "특허는 어떤 기술 영역과 관련 있나요?",
-        "실증과 제품 운영을 어떻게 구분하나요?"
-      ],
-      "visibility": "public-candidate",
-      "provenance": {
-        "authority": "career-primary",
-        "status": "source-backed",
-        "sources": [
-          {
-            "sourceId": "career-refined",
-            "label": "경력기술서 개선본 · 2026-08-10",
-            "locator": "멀티모달 RAG · 검색",
-            "authority": "career-primary",
-            "status": "source-backed",
-            "bindingDigest": "ae356c287ee847d2f176417bef2f61661bd48946b5bb13bdf51f4325917248a5",
-            "contentDigest": "aa6ab7c860328c15863ed5cc79e7e1e6941f8b440d520a8e295b480e8c9b558a"
           }
         ]
       }
@@ -2373,34 +2691,14 @@
       "to": "project.industrial-multi-tool-agent"
     },
     {
-      "from": "architecture.llm-runtime-responsibility",
-      "type": "supports",
-      "to": "architecture.adaptive-agent-routing"
-    },
-    {
-      "from": "architecture.adaptive-agent-routing",
-      "type": "supports",
-      "to": "workflow.schema-validated-agent"
-    },
-    {
-      "from": "architecture.adaptive-agent-routing",
-      "type": "demonstrates",
-      "to": "principle.problem-fit-over-method"
-    },
-    {
-      "from": "portfolio-agent.bounded-react-fallback",
-      "type": "demonstrates",
-      "to": "architecture.adaptive-agent-routing"
-    },
-    {
       "from": "architecture.domain-agent-orchestration",
       "type": "part_of",
       "to": "project.industrial-multi-tool-agent"
     },
     {
-      "from": "architecture.domain-agent-orchestration",
-      "type": "supports",
-      "to": "workflow.schema-validated-agent"
+      "from": "steel.preprocessing-source-lineage",
+      "type": "part_of",
+      "to": "project.industrial-multi-tool-agent"
     },
     {
       "from": "reliability.provenance-gated-answer",
@@ -2448,99 +2746,134 @@
       "to": "evaluation.coverage-and-quality"
     },
     {
-      "from": "deployment.air-gapped-local-stack",
-      "type": "part_of",
-      "to": "project.industrial-multi-tool-agent"
-    },
-    {
-      "from": "evidence.steel-evaluation-outcome",
-      "type": "supports",
-      "to": "project.industrial-multi-tool-agent"
-    },
-    {
-      "from": "evidence.steel-evaluation-outcome",
-      "type": "supports",
-      "to": "evaluation.coverage-and-quality"
+      "from": "project.multimodal-rag-search",
+      "type": "demonstrates",
+      "to": "capability.end-to-end-delivery"
     },
     {
       "from": "document.hierarchical-indexing",
-      "type": "demonstrates",
-      "to": "capability.end-to-end-delivery"
+      "type": "part_of",
+      "to": "project.multimodal-rag-search"
     },
     {
       "from": "document.multimodal-context-preservation",
       "type": "part_of",
-      "to": "document.hierarchical-indexing"
+      "to": "project.multimodal-rag-search"
     },
     {
       "from": "document.contextual-data-to-text",
       "type": "part_of",
-      "to": "document.hierarchical-indexing"
+      "to": "project.multimodal-rag-search"
     },
     {
-      "from": "document.contextual-data-to-text",
-      "type": "supports",
-      "to": "document.multimodal-context-preservation"
+      "from": "document.semantic-chunking",
+      "type": "part_of",
+      "to": "project.multimodal-rag-search"
+    },
+    {
+      "from": "document.passage-fragment-retrieval",
+      "type": "part_of",
+      "to": "project.multimodal-rag-search"
+    },
+    {
+      "from": "reliability.pipeline-partial-reexecution",
+      "type": "part_of",
+      "to": "project.multimodal-rag-search"
     },
     {
       "from": "retrieval.hybrid-domain-reranking",
-      "type": "applies_to",
-      "to": "document.hierarchical-indexing"
+      "type": "part_of",
+      "to": "project.multimodal-rag-search"
     },
     {
-      "from": "reliability.provenance-gated-answer",
-      "type": "applies_to",
-      "to": "document.hierarchical-indexing"
-    },
-    {
-      "from": "outcome.external-technical-validation",
-      "type": "supports",
-      "to": "document.hierarchical-indexing"
-    },
-    {
-      "from": "project.right-sized-consultation-agent",
-      "type": "demonstrates",
-      "to": "principle.problem-fit-over-method"
-    },
-    {
-      "from": "platform.llm-gateway-observability",
+      "from": "project.personal-agent-harness",
       "type": "demonstrates",
       "to": "capability.end-to-end-delivery"
     },
     {
-      "from": "deployment.air-gapped-local-stack",
-      "type": "applies_to",
-      "to": "platform.llm-gateway-observability"
+      "from": "harness.single-source-configuration",
+      "type": "part_of",
+      "to": "project.personal-agent-harness"
     },
     {
       "from": "harness.policy-as-configuration",
       "type": "part_of",
-      "to": "harness.single-source-configuration"
+      "to": "project.personal-agent-harness"
     },
     {
       "from": "harness.knowledge-preflight-ledger",
       "type": "part_of",
-      "to": "harness.single-source-configuration"
+      "to": "project.personal-agent-harness"
     },
     {
       "from": "harness.trust-state-and-file-authority",
       "type": "part_of",
-      "to": "harness.single-source-configuration"
+      "to": "project.personal-agent-harness"
     },
     {
       "from": "harness.knowledge-not-execution-authority",
       "type": "part_of",
-      "to": "harness.single-source-configuration"
+      "to": "project.personal-agent-harness"
+    },
+    {
+      "from": "harness.wiki-skill-loop",
+      "type": "part_of",
+      "to": "project.personal-agent-harness"
+    },
+    {
+      "from": "harness.trigger-routing",
+      "type": "part_of",
+      "to": "project.personal-agent-harness"
+    },
+    {
+      "from": "harness.reconcile-safety",
+      "type": "part_of",
+      "to": "project.personal-agent-harness"
     },
     {
       "from": "capability.decision-ledger",
       "type": "applies_to",
-      "to": "harness.single-source-configuration"
+      "to": "project.personal-agent-harness"
     },
     {
-      "from": "evidence.harness-operating-outcome",
-      "type": "supports",
-      "to": "harness.single-source-configuration"
+      "from": "project.portfolio-interview-agent",
+      "type": "demonstrates",
+      "to": "capability.end-to-end-delivery"
+    },
+    {
+      "from": "portfolio-agent.public-agent-only-boundary",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.local-first-runtime",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.latency-optimization",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.source-validated-retrieval",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.contextual-session-memory",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.resilient-offline-fallback",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
+    },
+    {
+      "from": "portfolio-agent.public-release-allowlist",
+      "type": "part_of",
+      "to": "project.portfolio-interview-agent"
     },
     {
       "from": "principle.measure-before-improve",
@@ -2548,17 +2881,17 @@
       "to": "evaluation.coverage-and-quality"
     },
     {
-      "from": "principle.measure-before-improve",
+      "from": "principle.problem-fit-over-method",
       "type": "applies_to",
-      "to": "limitation.explicit-claim-boundaries"
+      "to": "architecture.domain-agent-orchestration"
+    },
+    {
+      "from": "principle.problem-fit-over-method",
+      "type": "applies_to",
+      "to": "portfolio-agent.source-validated-retrieval"
     },
     {
       "from": "principle.deterministic-envelope",
-      "type": "supports",
-      "to": "principle.precision-over-speed"
-    },
-    {
-      "from": "principle.human-understanding",
       "type": "supports",
       "to": "principle.precision-over-speed"
     },
@@ -2568,14 +2901,14 @@
       "to": "principle.deterministic-envelope"
     },
     {
-      "from": "reliability.provenance-gated-answer",
+      "from": "portfolio-agent.public-agent-only-boundary",
       "type": "demonstrates",
       "to": "principle.deterministic-envelope"
     },
     {
-      "from": "capability.semantic-contract",
-      "type": "applies_to",
-      "to": "knowledge.nary-conditional-facts"
+      "from": "harness.knowledge-not-execution-authority",
+      "type": "demonstrates",
+      "to": "principle.deterministic-envelope"
     },
     {
       "from": "capability.semantic-contract",
@@ -2591,11 +2924,6 @@
       "from": "principle.feasibility-first",
       "type": "supports",
       "to": "principle.problem-fit-over-method"
-    },
-    {
-      "from": "limitation.explicit-claim-boundaries",
-      "type": "supports",
-      "to": "profile.applied-ai-engineer"
     },
     {
       "from": "background.interdisciplinary-foundation",

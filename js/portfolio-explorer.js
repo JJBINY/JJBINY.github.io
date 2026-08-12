@@ -1,4 +1,5 @@
 import { renderKnowledgeFocusMap } from "./graph/knowledge-focus-map.js";
+import { enhanceProjectDocument } from "./document-visualizations.js";
 
 const KNOWLEDGE_CATEGORIES = [
   {
@@ -38,12 +39,7 @@ const KNOWLEDGE_CATEGORIES = [
   }
 ];
 
-const PROJECT_KNOWLEDGE_IDS = new Map([
-  ["project.industrial-multi-tool-agent", "steel-domain-agent"],
-  ["project.right-sized-consultation-agent", "supporting-agent-systems"]
-]);
-
-const LANDING_ANCHORS = new Set(["", "profile", "experience", "work", "approach", "interview"]);
+const LANDING_ANCHORS = new Set(["", "profile", "experience", "work", "interview"]);
 
 const RECORD_LABELS = Object.freeze({
   "architecture-decision": "아키텍처 판단",
@@ -62,13 +58,6 @@ const RECORD_LABELS = Object.freeze({
   capability: "역량",
   principle: "설계 원칙",
   project: "프로젝트"
-});
-
-const PROJECT_TAB_LABELS = Object.freeze({
-  overview: "요약",
-  architecture: "구조와 흐름",
-  evidence: "근거 기록",
-  limits: "결과와 한계"
 });
 
 function createElement(tagName, className, text) {
@@ -101,8 +90,19 @@ export function routeForEvidence(nodeId) {
   return `#evidence/${encodeURIComponent(nodeId)}`;
 }
 
+function projectIdForRootNode(node) {
+  const projectId = node?.kind === "project" || node?.kind === "personal-project"
+    ? node.projectIds?.[0]
+    : null;
+  return typeof projectId === "string" ? projectId : null;
+}
+
+function isProjectRootNode(node, projects) {
+  return projects.some(({ knowledgeNodeId }) => knowledgeNodeId === node?.id);
+}
+
 function routeForNode(node) {
-  const projectId = PROJECT_KNOWLEDGE_IDS.get(node?.id);
+  const projectId = projectIdForRootNode(node);
   return projectId ? routeForCase(projectId, "overview") : routeForEvidence(node.id);
 }
 
@@ -141,17 +141,22 @@ function parseRoute(hash = window.location.hash) {
 }
 
 function sourceProjectId(node, projects, edges) {
+  const explicitProject = projects.find((project) => node?.projectIds?.includes?.(project.id));
+  if (explicitProject) return explicitProject.id;
   const href = node?.source?.href ?? "";
   const hrefProject = projects.find((project) => href.startsWith(`#${project.id}`));
   if (hrefProject) return hrefProject.id;
 
-  if (PROJECT_KNOWLEDGE_IDS.has(node?.id)) return PROJECT_KNOWLEDGE_IDS.get(node.id);
+  const rootProject = projects.find(({ knowledgeNodeId }) => knowledgeNodeId === node?.id);
+  if (rootProject) return rootProject.id;
   for (const edge of edges) {
-    if (edge.from === node?.id && PROJECT_KNOWLEDGE_IDS.has(edge.to)) {
-      return PROJECT_KNOWLEDGE_IDS.get(edge.to);
+    const targetProject = projects.find(({ knowledgeNodeId }) => knowledgeNodeId === edge.to);
+    if (edge.from === node?.id && targetProject) {
+      return targetProject.id;
     }
-    if (edge.to === node?.id && PROJECT_KNOWLEDGE_IDS.has(edge.from)) {
-      return PROJECT_KNOWLEDGE_IDS.get(edge.from);
+    const sourceProject = projects.find(({ knowledgeNodeId }) => knowledgeNodeId === edge.from);
+    if (edge.to === node?.id && sourceProject) {
+      return sourceProject.id;
     }
   }
   return null;
@@ -160,7 +165,7 @@ function sourceProjectId(node, projects, edges) {
 function evidenceForProject(project, nodes, edges, projects) {
   return nodes.filter((node) => (
     sourceProjectId(node, projects, edges) === project.id
-    && !PROJECT_KNOWLEDGE_IDS.has(node.id)
+    && !isProjectRootNode(node, projects)
   ));
 }
 
@@ -205,10 +210,14 @@ function appendBreadcrumb(root, items) {
 function appendRouteTabs(root, tabs, activeId, label) {
   const nav = createElement("nav", "case-nav");
   nav.setAttribute("aria-label", label);
+  let activeLink = null;
   tabs.forEach((tab) => {
     const link = createLink("case-nav__item", "", tab.href);
     const active = tab.id === activeId;
-    if (active) link.setAttribute("aria-current", "page");
+    if (active) {
+      link.setAttribute("aria-current", "page");
+      activeLink = link;
+    }
     link.append(
       createElement("strong", "", tab.label),
       createElement("span", "", tab.description)
@@ -216,6 +225,12 @@ function appendRouteTabs(root, tabs, activeId, label) {
     nav.append(link);
   });
   root.append(nav);
+  if (activeLink) {
+    window.requestAnimationFrame(() => {
+      const left = activeLink.offsetLeft - ((nav.clientWidth - activeLink.clientWidth) / 2);
+      nav.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+    });
+  }
 }
 
 function appendEvidenceCard(root, node, {
@@ -239,25 +254,14 @@ function appendEvidenceCard(root, node, {
   const footer = createElement("footer");
   footer.append(
     createElement("span", "", node.authority ?? "supporting"),
-    createElement("span", "", PROJECT_KNOWLEDGE_IDS.has(node.id) ? "프로젝트 열기 ↗" : "기록 열기 ↗")
+    createElement("span", "", projectIdForRootNode(node) ? "프로젝트 열기 ↗" : "기록 열기 ↗")
   );
   link.append(footer);
   root.append(link);
 }
 
-function createProjectAskButton(project) {
-  const button = createElement("button", "button button--secondary", "이 사례를 질문하기 ↗");
-  button.type = "button";
-  button.addEventListener("click", () => {
-    document.dispatchEvent(new CustomEvent("portfolio:open-agent", {
-      detail: { question: `${project.title}에서 맡은 범위와 핵심 설계 판단을 설명해주세요.` }
-    }));
-  });
-  return button;
-}
-
 function createEvidenceAskButton(node) {
-  const button = createElement("button", "button button--secondary", "이 근거를 질문하기 ↗");
+  const button = createElement("button", "button button--secondary", "AI에게 이 근거 질문하기 ↗");
   button.type = "button";
   button.addEventListener("click", () => {
     document.dispatchEvent(new CustomEvent("portfolio:open-agent", {
@@ -425,75 +429,250 @@ function renderProjectEvidence(panel, project, evidence) {
   });
 }
 
-function renderProjectLimits(panel, project, nodes) {
-  const limitNode = nodes.find((node) => node.id === "limitation.explicit-claim-boundaries");
-  const layout = createElement("div", "limits-grid");
-  const current = createElement("article", "detail-surface");
-  current.append(
-    createElement("p", "detail-kicker", "CURRENT CLAIM BOUNDARY"),
-    createElement("h2", "", "현재 확인된 결과"),
-    createElement("p", "", project.result),
-    createElement("small", "", project.note)
-  );
-  layout.append(current);
+const LEGACY_PROJECT_SECTIONS = Object.freeze({
+  overview: "overview",
+  architecture: "architecture",
+  evidence: "evidence",
+  limits: "implementation",
+  verification: "implementation"
+});
 
-  if (limitNode) {
-    const general = createElement("article", "detail-surface");
-    general.append(
-      createElement("p", "detail-kicker", "PORTFOLIO-WIDE LIMIT"),
-      createElement("h2", "", limitNode.title),
-      createElement("p", "", limitNode.answer)
-    );
-    const link = createLink(
-      "quiet-link",
-      "검증 범위 기록 열기 ↗",
-      routeForCaseRecord(project.id, "limits", limitNode.id)
-    );
-    general.append(link);
-    layout.append(general);
-  }
-  panel.append(layout);
+function resolveProjectSection(project, requestedId) {
+  const sectionId = LEGACY_PROJECT_SECTIONS[requestedId] ?? requestedId;
+  return project.sections.find(({ id }) => id === sectionId) ?? project.sections[0];
 }
 
-function renderProjectDetail(root, project, activeTab, context, recordId = "") {
-  const validTabs = new Set(["overview", "architecture", "evidence", "limits"]);
-  const tab = validTabs.has(activeTab) ? activeTab : "overview";
-  const evidence = evidenceForProject(project, context.nodes, context.edges, context.projects);
+function appendTextList(root, items, className = "project-story-list") {
+  if (!Array.isArray(items) || items.length === 0) return;
+  const list = createElement("ul", className);
+  items.forEach((item) => list.append(createElement("li", "", item)));
+  root.append(list);
+}
+
+function appendProjectDiagram(root, project, diagram, renderDiagram) {
+  const article = createElement("article", "project-story-diagram");
+  const header = createElement("header", "project-story-diagram__header");
+  header.append(
+    createElement("p", "detail-kicker", diagram.label),
+    createElement("h3", "", diagram.title),
+    createElement("p", "", diagram.question)
+  );
+  const takeaway = createElement("aside", "diagram-takeaway");
+  takeaway.append(
+    createElement("span", "", "핵심"),
+    createElement("strong", "", diagram.takeaway)
+  );
+  header.append(takeaway);
+
+  const figure = createElement(
+    "figure",
+    diagram.type === "svg"
+      ? "project-svg-surface"
+      : "mermaid-surface mermaid-surface--architecture"
+  );
+  figure.dataset.diagramId = `${project.id}-${diagram.id}`;
+  figure.setAttribute("aria-label", diagram.alt ?? diagram.title);
+  if (diagram.type === "svg") {
+    const image = document.createElement("img");
+    image.src = diagram.src;
+    image.alt = diagram.alt;
+    image.loading = "lazy";
+    image.decoding = "async";
+    figure.append(image);
+  } else {
+    renderDiagram(figure, diagram.source, {
+      id: `${project.id}-${diagram.id}`,
+      label: diagram.title
+    });
+  }
+  figure.append(createElement("figcaption", "diagram-caption", diagram.caption ?? diagram.description));
+
+  const guide = createElement("ol", "project-diagram-guide");
+  diagram.readingGuide.forEach((step) => {
+    const item = document.createElement("li");
+    item.append(
+      createElement("span", "", step.step),
+      createElement("strong", "", step.title),
+      createElement("p", "", step.body)
+    );
+    guide.append(item);
+  });
+  const scope = createElement("aside", "diagram-scope-note");
+  scope.append(
+    createElement("strong", "", "이 그림의 범위"),
+    createElement("p", "", diagram.scopeNote)
+  );
+  article.append(header, figure, guide, scope);
+  root.append(article);
+}
+
+function appendTechnologyGroups(root, technologies = []) {
+  if (!technologies.length) return;
+  const section = createElement("section", "project-technology-groups");
+  section.append(createElement("h3", "", "기술 구성"));
+  const grid = createElement("div", "");
+  technologies.forEach((group) => {
+    const item = createElement("article", "");
+    item.append(createElement("span", "", group.label));
+    appendTextList(item, group.items, "project-technology-list");
+    grid.append(item);
+  });
+  section.append(grid);
+  root.append(section);
+}
+
+function renderProjectStorySection(root, project, section, evidence, context) {
+  const article = createElement("article", "project-story-section");
+  article.id = `project-section-${section.id}`;
+  article.dataset.projectSectionId = section.id;
+
+  const header = createElement("header", "project-story-section__header");
+  header.append(
+    createElement("p", "detail-kicker", section.eyebrow),
+    createElement("h2", "", section.title)
+  );
+  if (section.summary) header.append(createElement("p", "project-story-section__summary", section.summary));
+  article.append(header);
+
+  (section.paragraphs ?? []).forEach((paragraph) => {
+    article.append(createElement("p", "project-story-section__paragraph", paragraph));
+  });
+
+  if (section.facts?.length) {
+    const facts = createElement("dl", "project-story-facts");
+    section.facts.forEach((fact) => {
+      const item = createElement("div", "");
+      item.append(createElement("dt", "", fact.label), createElement("dd", "", fact.value));
+      facts.append(item);
+    });
+    article.append(facts);
+  }
+
+  appendTextList(article, section.bullets);
+
+  if (section.designDetails?.length) {
+    const details = createElement("aside", "project-design-details");
+    details.append(createElement("h3", "", "설계 문서에서 확인한 세부 기준"));
+    appendTextList(details, section.designDetails);
+    article.append(details);
+  }
+
+  const diagramById = new Map(project.diagrams.map((diagram) => [diagram.id, diagram]));
+  (section.diagramIds ?? []).forEach((diagramId) => {
+    const diagram = diagramById.get(diagramId);
+    if (diagram) appendProjectDiagram(article, project, diagram, context.renderDiagram);
+  });
+
+  const sectionEvidence = (section.evidenceNodeIds ?? [])
+    .map((id) => context.nodeById.get(id))
+    .filter((node) => node && evidence.includes(node));
+  if (sectionEvidence.length) {
+    const evidenceSection = createElement("section", "project-story-evidence");
+    const heading = createElement("header", "project-story-evidence__header");
+    heading.append(
+      createElement("span", "", "PUBLIC CLAIMS"),
+      createElement("h3", "", "이 섹션의 공개 근거 기록"),
+      createElement("p", "", "답변과 설계 판단을 지지하는 공개 portfolio·design 근거입니다.")
+    );
+    const grid = createElement("div", "knowledge-record-grid");
+    sectionEvidence.forEach((node) => appendEvidenceCard(grid, node, {
+      projectId: project.id,
+      tab: section.id
+    }));
+    evidenceSection.append(heading, grid);
+    article.append(evidenceSection);
+  }
+
+  if (section.id === "implementation") appendTechnologyGroups(article, project.technologies);
+  root.append(article);
+}
+
+function parseProjectDocument(project) {
+  if (typeof project.documentHtml !== "string" || !project.documentHtml.trim()) return null;
+  const template = document.createElement("template");
+  template.innerHTML = project.documentHtml;
+  const article = template.content.querySelector("article.project-document");
+  const unsafe = template.content.querySelector(
+    "script, iframe, object, embed, foreignObject, [onload], [onclick], [onerror]"
+  );
+  if (!article || unsafe || article.dataset.projectDocumentId !== project.id) return null;
+  return article;
+}
+
+function insertDocumentMermaid(article, project, renderDiagram) {
+  const diagram = project.diagrams.find(({ type }) => type === "mermaid");
+  if (!diagram) return;
+  const section = project.sections.find(({ diagramIds }) => diagramIds?.includes(diagram.id));
+  const heading = section ? article.querySelector(`#project-section-${section.id}`) : null;
+  if (!heading) return;
+
+  const figure = createElement("figure", "project-document__figure project-document__figure--mermaid");
+  const canvas = createElement("div", "project-document__mermaid");
+  const caption = createElement("figcaption", "", diagram.caption ?? diagram.description);
+  figure.append(canvas, caption);
+  heading.insertAdjacentElement("afterend", figure);
+  renderDiagram(canvas, diagram.source, {
+    id: `${project.id}-${diagram.id}`,
+    label: diagram.alt ?? diagram.title
+  });
+}
+
+function renderProjectDocument(root, project, activeSection, context) {
+  const article = parseProjectDocument(project);
+  if (!article) {
+    renderNotFound(root, "프로젝트 문서를 불러오지 못했습니다.", "Selected work에서 다른 사례를 선택해주세요.");
+    return;
+  }
+
+  const toolbar = createElement("div", "project-document-toolbar");
+  toolbar.append(createElement("span", "", "PORTFOLIO.MD · PUBLIC DOCUMENT"));
+
+  const layout = createElement("div", "project-route-shell");
+  const toc = createElement("nav", "project-document-toc");
+  toc.setAttribute("aria-label", "프로젝트 문서 목차");
+  toc.append(createElement("p", "", "이 문서에서"));
+  const list = document.createElement("ol");
+  project.sections.forEach((section, index) => {
+    const item = document.createElement("li");
+    const link = createLink("", "", routeForCase(project.id, section.id));
+    if (section.id === activeSection.id) link.setAttribute("aria-current", "page");
+    link.append(
+      createElement("span", "", String(index + 1).padStart(2, "0")),
+      createElement("strong", "", section.documentHeading)
+    );
+    item.append(link);
+    list.append(item);
+  });
+  toc.append(list);
+
+  const content = createElement("div", "project-route-content");
+  const paper = createElement("div", "project-document-paper");
+  paper.append(article);
+  content.append(toolbar, paper);
+  layout.append(toc, content);
+  root.append(layout);
+  insertDocumentMermaid(article, project, context.renderDiagram);
+  enhanceProjectDocument(article, project);
+  window.requestAnimationFrame(() => {
+    const activeLink = toc.querySelector("[aria-current='page']");
+    if (!activeLink || list.scrollWidth <= list.clientWidth) return;
+    const left = activeLink.offsetLeft - ((list.clientWidth - activeLink.clientWidth) / 2);
+    list.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+  });
+}
+
+function renderProjectDetail(root, project, requestedSectionId, context, recordId = "") {
+  const activeSection = resolveProjectSection(project, requestedSectionId);
 
   const breadcrumb = [
     { label: "포트폴리오", href: "#profile" },
     { label: "Selected work", href: "#work" },
-    tab === "overview"
+    activeSection.id === "overview"
       ? { label: project.title }
       : { label: project.title, href: routeForCase(project.id, "overview") }
   ];
-  if (tab !== "overview") breadcrumb.push({ label: PROJECT_TAB_LABELS[tab] });
+  if (activeSection.id !== "overview") breadcrumb.push({ label: activeSection.documentHeading });
   appendBreadcrumb(root, breadcrumb);
-
-  const hero = createElement("header", "project-detail-hero");
-  const copy = createElement("div");
-  copy.append(
-    createElement("p", "detail-kicker", project.label),
-    createElement("h1", "", project.title),
-    createElement("p", "project-detail-hero__subtitle", project.subtitle),
-    createElement("p", "project-detail-hero__description", project.description)
-  );
-  const aside = createElement("aside", "project-detail-hero__aside");
-  aside.append(
-    createElement("span", "", `현재 챕터 · ${PROJECT_TAB_LABELS[tab]}`),
-    createElement("span", "", "요약 → 구조와 흐름 → 근거 기록 → 결과와 한계"),
-    createProjectAskButton(project)
-  );
-  hero.append(copy, aside);
-  appendTags(copy, project.tags);
-  root.append(hero);
-
-  appendRouteTabs(root, [
-    { id: "overview", label: "요약", description: "문제·역할", href: routeForCase(project.id, "overview") },
-    { id: "architecture", label: "구조와 흐름", description: "아키텍처·해설", href: routeForCase(project.id, "architecture") },
-    { id: "evidence", label: "근거 기록", description: `${evidence.length}개 주장·출처`, href: routeForCase(project.id, "evidence") },
-    { id: "limits", label: "결과와 한계", description: "확인·재측정", href: routeForCase(project.id, "limits") }
-  ], tab, "프로젝트 읽기 순서");
 
   const panel = createElement("div", "detail-panel");
   if (recordId) {
@@ -502,17 +681,15 @@ function renderProjectDetail(root, project, activeTab, context, recordId = "") {
     if (record) {
       renderEvidenceDetail(panel, record, context, {
         embeddedProject: project,
-        returnTab: tab,
+        returnTab: activeSection.id,
         showBreadcrumb: false
       });
     } else {
       renderNotFound(panel, "기록을 찾을 수 없습니다.", "프로젝트 챕터로 돌아가 다른 기록을 선택해주세요.");
     }
   } else {
-    if (tab === "overview") renderProjectOverview(panel, project, evidence);
-    if (tab === "architecture") renderProjectArchitecture(panel, project, context.renderDiagram);
-    if (tab === "evidence") renderProjectEvidence(panel, project, evidence);
-    if (tab === "limits") renderProjectLimits(panel, project, context.nodes);
+    panel.classList.add("detail-panel--document");
+    renderProjectDocument(panel, project, activeSection, context);
   }
   root.append(panel);
   appendProjectPager(root, project, context.projects);
@@ -659,9 +836,12 @@ function renderEvidenceDetail(root, node, context, {
       edge,
       node: context.nodeById.get(edge.from === node.id ? edge.to : edge.from)
     }))
-    .filter((record) => record.node && !PROJECT_KNOWLEDGE_IDS.has(record.node.id));
+    .filter((record) => record.node && !isProjectRootNode(record.node, context.projects));
   const projectId = embeddedProject?.id ?? sourceProjectId(node, context.projects, context.edges);
   const project = embeddedProject ?? context.projects.find((item) => item.id === projectId);
+  const returnSectionLabel = project?.sections?.find(({ id }) => id === returnTab)?.title
+    ?? LEGACY_PROJECT_SECTIONS[returnTab]
+    ?? returnTab;
   const visualContext = diagramContextForNode(project, node.id);
 
   if (showBreadcrumb) {
@@ -672,7 +852,7 @@ function renderEvidenceDetail(root, node, context, {
     if (project) {
       items.push(
         { label: project.title, href: routeForCase(project.id, "overview") },
-        { label: PROJECT_TAB_LABELS[returnTab], href: routeForCase(project.id, returnTab) }
+        { label: returnSectionLabel, href: routeForCase(project.id, returnTab) }
       );
     } else {
       items.push({ label: category.title, href: routeForKnowledge(category.id) });
@@ -685,13 +865,13 @@ function renderEvidenceDetail(root, node, context, {
     const returnBar = createElement("aside", "route-context-bar");
     returnBar.append(createLink(
       "route-context-bar__back",
-      `← ${project.title} · ${PROJECT_TAB_LABELS[returnTab]}`,
+      `← ${project.title} · ${returnSectionLabel}`,
       routeForCase(project.id, returnTab)
     ));
     const location = createElement("div");
     location.append(
       createElement("span", "", "현재 위치"),
-      createElement("strong", "", `${PROJECT_TAB_LABELS[returnTab]} / ${node.title}`)
+      createElement("strong", "", `${returnSectionLabel} / ${node.title}`)
     );
     returnBar.append(location);
     root.append(returnBar);
@@ -852,7 +1032,21 @@ export function initializePortfolioExplorer({ projects, knowledge, renderDiagram
 
     if (route.type === "case") {
       const project = projects.find((item) => item.id === route.projectId);
-      if (project) renderProjectDetail(detailRoot, project, route.tab, context, route.recordId);
+      if (project) {
+        renderProjectDetail(detailRoot, project, route.tab, context, route.recordId);
+        if (!route.recordId) {
+          const activeSection = resolveProjectSection(project, route.tab);
+          window.requestAnimationFrame(() => {
+            const target = activeSection.id === "overview"
+              ? detailRoot.querySelector(".project-document-paper")
+              : document.getElementById(`project-section-${activeSection.id}`);
+            target?.scrollIntoView({
+              behavior: "auto",
+              block: "start"
+            });
+          });
+        }
+      }
       else renderNotFound(detailRoot, "프로젝트를 찾을 수 없습니다.", "Selected work에서 다른 사례를 선택해주세요.");
     }
 
@@ -862,7 +1056,7 @@ export function initializePortfolioExplorer({ projects, knowledge, renderDiagram
 
     if (route.type === "evidence") {
       const node = context.nodeById.get(route.nodeId);
-      const canonicalProjectId = PROJECT_KNOWLEDGE_IDS.get(node?.id);
+      const canonicalProjectId = context.projects.find(({ knowledgeNodeId }) => knowledgeNodeId === node?.id)?.id;
       if (canonicalProjectId) {
         const canonicalRoute = routeForCase(canonicalProjectId, "overview");
         window.history.replaceState(null, "", canonicalRoute);
@@ -880,7 +1074,7 @@ export function initializePortfolioExplorer({ projects, knowledge, renderDiagram
 
   function openEvidence(nodeId) {
     const node = context.nodeById.get(nodeId);
-    const canonicalProjectId = PROJECT_KNOWLEDGE_IDS.get(node?.id);
+    const canonicalProjectId = context.projects.find(({ knowledgeNodeId }) => knowledgeNodeId === node?.id)?.id;
     const relatedProjectId = node ? sourceProjectId(node, projects, edges) : null;
     const next = canonicalProjectId
       ? routeForCase(canonicalProjectId, "overview")

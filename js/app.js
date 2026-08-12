@@ -6,6 +6,8 @@ import {
 import { AgentService } from "./agent/service.js";
 import { readCurrentPageContext } from "./agent/page-context.js";
 import { initializeDiagramAttachments } from "./agent/diagram-attachments.js";
+import { classifyQueryScope, validateNavigationAction } from "./agent/query-scope.js";
+import { createFollowUpCache, createFollowUpCacheKey } from "./agent/follow-up-cache.js";
 import { renderMermaid } from "./diagrams/mermaid-renderer.js";
 import { formatReleaseStamp } from "./release-stamp.js";
 import {
@@ -77,7 +79,7 @@ function renderProfile(site) {
     stats,
     approachCopy,
     principles,
-    version = "beta:0.0.1",
+    version = "beta:0.0.2",
     release = {},
     runtime = {}
   } = site;
@@ -145,17 +147,19 @@ function renderProfile(site) {
   });
 
   const principlesRoot = $("[data-principles-root]");
-  principlesRoot.replaceChildren();
-  principles.forEach((principle) => {
-    const article = createElement("article", "principle reveal-on-scroll");
-    const index = createElement("span", "principle__index", principle.index);
-    const copy = createElement("div", "principle__copy");
-    copy.append(createElement("h3", "", principle.title));
-    copy.append(createElement("p", "", principle.body));
-    const meta = createElement("span", "principle__meta", principle.meta);
-    article.append(index, copy, meta);
-    principlesRoot.append(article);
-  });
+  if (principlesRoot) {
+    principlesRoot.replaceChildren();
+    principles.forEach((principle) => {
+      const article = createElement("article", "principle reveal-on-scroll");
+      const index = createElement("span", "principle__index", principle.index);
+      const copy = createElement("div", "principle__copy");
+      copy.append(createElement("h3", "", principle.title));
+      copy.append(createElement("p", "", principle.body));
+      const meta = createElement("span", "principle__meta", principle.meta);
+      article.append(index, copy, meta);
+      principlesRoot.append(article);
+    });
+  }
 
   const linksRoot = $("[data-profile-links]");
   const profileLinks = profile.links ?? [];
@@ -177,10 +181,10 @@ function renderProjects(projects) {
   root.replaceChildren();
   root.className = "project-card-grid";
 
-  projects.forEach((project, index) => {
+  projects.forEach((project) => {
     const article = createElement("article", "project-card reveal-on-scroll");
-    article.classList.add(index < 2 ? "project-card--flagship" : "project-card--supporting");
     article.dataset.projectId = project.id;
+    article.tabIndex = 0;
 
     const header = createElement("header", "project-card__header");
     header.append(
@@ -198,7 +202,7 @@ function renderProjects(projects) {
     const scope = createElement("section", "project-card__fact");
     scope.append(createElement("span", "", "MY SCOPE"));
     const scopeList = document.createElement("ul");
-    project.scope.slice(0, index < 2 ? 3 : 2).forEach((item) => {
+    project.scope.slice(0, 3).forEach((item) => {
       scopeList.append(createElement("li", "", item));
     });
     scope.append(scopeList);
@@ -220,6 +224,69 @@ function renderProjects(projects) {
     );
     root.append(article);
   });
+}
+
+function initializeContextualAgentCta(projects) {
+  const promptsRoot = $("[data-context-agent-prompts]");
+  const label = $("[data-context-project-label]");
+  const title = $("[data-context-agent-title]");
+  const copy = $("[data-context-agent-copy]");
+  if (!promptsRoot || projects.length === 0) return;
+
+  const projectById = new Map(projects.map((project) => [project.id, project]));
+  let activeProjectId = projects[0].id;
+
+  function render(projectId) {
+    const project = projectById.get(projectId) ?? projects[0];
+    activeProjectId = project.id;
+    label.textContent = project.title.toUpperCase();
+    title.textContent = "궁금해진 설계 판단이 있나요?";
+    title.style.whiteSpace = "pre-line";
+    copy.textContent = "방금 살펴본 구현 경계와 근거를 끊김 없이 이어서 질문할 수 있습니다.";
+    promptsRoot.replaceChildren();
+    (project.agentPrompts ?? []).slice(0, 3).forEach((question, index) => {
+      const button = createElement("button", "context-agent-prompt");
+      button.type = "button";
+      button.append(
+        createElement("span", "", `QUESTION ${String(index + 1).padStart(2, "0")}`),
+        createElement("strong", "", question),
+        createElement("i", "", "↗")
+      );
+      button.addEventListener("click", () => {
+        document.dispatchEvent(new CustomEvent("portfolio:open-agent", {
+          detail: { question, submit: true, projectId: project.id }
+        }));
+      });
+      promptsRoot.append(button);
+    });
+  }
+
+  const cards = $$("[data-project-id]", $("[data-projects-root]"));
+  cards.forEach((card) => {
+    const activate = () => {
+      if (card.dataset.projectId !== activeProjectId) render(card.dataset.projectId);
+    };
+    card.addEventListener("focusin", activate);
+    card.addEventListener("pointerdown", activate, { passive: true });
+  });
+
+  if ("IntersectionObserver" in window) {
+    const visible = new Map();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.set(entry.target, entry.intersectionRatio);
+        else visible.delete(entry.target);
+      });
+      const next = [...visible.entries()]
+        .sort((left, right) => right[1] - left[1])[0]?.[0];
+      if (next?.dataset.projectId && next.dataset.projectId !== activeProjectId) {
+        render(next.dataset.projectId);
+      }
+    }, { threshold: [0.25, 0.5, 0.75], rootMargin: "-15% 0px -25%" });
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  render(activeProjectId);
 }
 
 function initializeReveals() {
@@ -261,6 +328,7 @@ function formatTime(date = new Date()) {
 
 function initializeAgent({
   agentService,
+  projects,
   questions,
   onOpenSource,
   getPageContext,
@@ -287,6 +355,11 @@ function initializeAgent({
   const agentStage = $("[data-agent-stage]");
   const liveStatus = $("[data-agent-live-status]");
   const peekButton = $("[data-peek-agent]");
+  const peekRole = $("[data-agent-peek-role]");
+  const peekStatus = $("[data-agent-peek-status]");
+  const peekMessage = $("[data-agent-peek-message]");
+  const contextLabel = $("[data-agent-context]");
+  const followUpCache = createFollowUpCache({ storage: window.sessionStorage, maxEntries: 24 });
   let isResponding = false;
   let conversationVersion = 0;
   let activeController = null;
@@ -295,7 +368,17 @@ function initializeAgent({
   let traceEvents = 0;
   let finalTrace = null;
   let activeTraceId = null;
+  let activeInlineTrace = null;
   const traceNodes = new Map();
+  const queuedTraceNodes = new Set();
+  let traceTransitionVersion = 0;
+  let traceTransitionChain = Promise.resolve();
+  const navigationTimers = new Set();
+  let peekPreviewState = Object.freeze({
+    role: "AI READY",
+    status: "PUBLIC KNOWLEDGE",
+    message: "포트폴리오의 프로젝트와 설계 판단을 질문해보세요."
+  });
   const traceDefinitions = [
     ["memory", "01", "Memory", "최근 대화와 관련 있는 과거 detail을 불러옵니다."],
     ["classify", "02", "Classify", "질문의 의도와 공개 범위를 판별합니다."],
@@ -304,11 +387,38 @@ function initializeAgent({
     ["generate", "05", "Generate", "선택된 근거 안에서 답변을 생성합니다."],
     ["ground", "06", "Source check", "근거 ID와 공개 범위 allowlist를 검증합니다."]
   ];
+  const traceTransitionDuration = Object.freeze({
+    memory: 1000,
+    classify: 1200,
+    retrieve: 2600,
+    connect: 1800,
+    generate: 1000,
+    ground: 1200
+  });
 
   providerBadge.textContent = agentService.providerLabel;
   providerNotice.textContent = agentService.providerNotice;
-  providerSectionCopy.textContent = agentService.providerSectionCopy;
-  document.body.dataset.interviewState = "closed";
+  if (providerSectionCopy) providerSectionCopy.textContent = agentService.providerSectionCopy;
+  document.body.dataset.interviewState = "peek";
+
+  function currentContext() {
+    return getPageContext?.() ?? null;
+  }
+
+  function updateContextLabel() {
+    const context = currentContext();
+    if (!contextLabel) return;
+    contextLabel.textContent = context?.routeType === "project-detail"
+      ? context.title
+      : "전체 포트폴리오";
+  }
+
+  function updatePeekPreview(update) {
+    peekPreviewState = Object.freeze({ ...peekPreviewState, ...update });
+    peekRole.textContent = peekPreviewState.role;
+    peekStatus.textContent = peekPreviewState.status;
+    peekMessage.textContent = peekPreviewState.message;
+  }
 
   $$('[data-open-agent]').forEach((button) => {
     button.setAttribute("aria-controls", workspace.id);
@@ -352,10 +462,15 @@ function initializeAgent({
       const model = health.ollama?.model ?? "OLLAMA";
 
       if (health.status === "ready") {
+        try {
+          window.sessionStorage.setItem("portfolio-followup-model", model);
+        } catch {
+          // Cache identity remains usable with the configured provider name.
+        }
         setProviderState({
           label: `LOCAL AI · ${model}`,
           status: "LOCAL AGENT · READY",
-          notice: `${model} 로컬 모델이 공개 포트폴리오 근거 안에서 답변합니다. 응답 경로와 근거를 오른쪽에서 확인할 수 있습니다.`,
+          notice: "로컬 AI가 공개 포트폴리오 근거 안에서 답변합니다. 응답 경로와 근거는 오른쪽에서 확인할 수 있습니다.",
           provider: "ollama"
         });
         return;
@@ -401,6 +516,174 @@ function initializeAgent({
     }[status] ?? String(status).toUpperCase();
   }
 
+  function traceDefinition(nodeId) {
+    return traceDefinitions.find(([id]) => id === nodeId);
+  }
+
+  function traceStageFacts(nodeId, state) {
+    const output = state.output ?? {};
+    if (nodeId === "memory") {
+      return [
+        ["RECENT", `${output.recentExchangeCount ?? 0} turns`],
+        ["RECALLED", `${output.recalledEpisodeCount ?? 0} details`],
+        ["CONTEXT", output.pageContext?.title ?? "none"]
+      ];
+    }
+    if (nodeId === "classify") {
+      return [
+        ["INTENT", output.intent ?? "general"],
+        ["SCOPE", output.queryScope?.kind ?? output.queryScope ?? "global"]
+      ];
+    }
+    if (nodeId === "retrieve") {
+      return [
+        ["MODE", output.retrieval?.effectiveMode ?? output.retrieval?.requestedMode ?? "lexical + graph"],
+        ["CONFIDENCE", output.confidence ?? "—"],
+        ["SEEDS", String(output.seeds?.length ?? 0)],
+        ["LATENCY", Number.isFinite(output.durationMs) ? `${output.durationMs} ms` : "—"]
+      ];
+    }
+    if (nodeId === "connect") return [["PATHS", String(output.paths?.length ?? 0)]];
+    if (nodeId === "generate") {
+      return [
+        ["MODE", output.generationMode ?? finalTrace?.generationMode ?? "model"],
+        ["DEPTH", output.responseDepth ?? finalTrace?.responseDepth ?? "—"],
+        ["CEILING", Number.isFinite(output.tokenCeiling ?? finalTrace?.tokenCeiling) ? `${output.tokenCeiling ?? finalTrace.tokenCeiling} tok` : "—"],
+        ["TTFT", Number.isFinite(output.timeToFirstTokenMs) ? `${output.timeToFirstTokenMs} ms` : "—"],
+        ["OUTPUT", Number.isFinite(output.outputTokens) ? `${output.outputTokens} tok` : "—"],
+        ["SPEED", Number.isFinite(output.tokensPerSecond) ? `${output.tokensPerSecond} tok/s` : "—"]
+      ];
+    }
+    if (nodeId === "ground") return [
+      ["PUBLIC SOURCES", String(output.sourceIds?.length ?? 0)],
+      ["FOLLOW-UPS", finalTrace?.followUpMode ?? output.followUpMode ?? "pending"]
+    ];
+    return [];
+  }
+
+  function appendTraceFacts(content, nodeId, state) {
+    const facts = traceStageFacts(nodeId, state).filter(([, value]) => value !== undefined);
+    if (!facts.length || !state.output) return;
+    const grid = createElement("dl", "trace-node__facts");
+    facts.forEach(([label, value]) => {
+      const item = document.createElement("div");
+      item.append(createElement("dt", "", label), createElement("dd", "", value));
+      grid.append(item);
+    });
+    content.append(grid);
+  }
+
+  function renderInlineTrace() {
+    if (!activeInlineTrace?.details?.isConnected) return;
+    const { details, status, count, content } = activeInlineTrace;
+    if (finalTrace) {
+      details.hidden = true;
+      return;
+    }
+    const entries = [...traceNodes.entries()];
+    const current = entries.find(([, state]) => state.status === "running") ?? entries.at(-1);
+    details.hidden = false;
+    details.open = true;
+    if (!current) {
+      count.textContent = "준비";
+      status.textContent = "실행 경로 준비 중";
+      content.replaceChildren();
+      return;
+    }
+    const [id, state] = current;
+    const definition = traceDefinition(id) ?? [id, "—", id, "실행 중입니다."];
+    count.textContent = definition[1];
+    status.textContent = ["error", "cancelled"].includes(state.status)
+      ? `실행 ${traceStatusLabel(state.status).toLocaleLowerCase()}`
+      : `${definition[2]} ${state.status === "running" ? "실행 중" : "완료"}`;
+    content.replaceChildren();
+    const list = createElement("ol", "message-live-trace__steps");
+    const item = createElement("li", "");
+    item.dataset.status = state.status;
+    const heading = createElement("div", "message-live-trace__current");
+    heading.append(
+      createElement("span", "", definition[1]),
+      createElement("strong", "", definition[2]),
+      createElement("em", "", Number.isFinite(state.elapsedMs) ? `${state.elapsedMs} ms` : traceStatusLabel(state.status))
+    );
+    item.append(heading, createElement("p", "", state.detail ?? definition[3]));
+    list.append(item);
+    content.append(list);
+  }
+
+  function settleInlineTrace() {
+    renderInlineTrace();
+  }
+
+  function applyTraceEvent(payload) {
+    const previous = traceNodes.get(payload.node);
+    const startedAtMs = payload.status === "running"
+      ? payload.atMs ?? previous?.startedAtMs
+      : previous?.startedAtMs;
+    const elapsedMs = payload.output?.durationMs ?? (
+      payload.status === "complete" && Number.isFinite(payload.atMs) && Number.isFinite(startedAtMs)
+        ? Math.max(0, payload.atMs - startedAtMs)
+        : undefined
+    );
+    traceNodes.set(payload.node, {
+      status: payload.status ?? "running",
+      detail: payload.detail,
+      output: payload.output,
+      startedAtMs,
+      elapsedMs
+    });
+    renderLiveTrace();
+    renderInlineTrace();
+    if (payload.status === "running") setStage(payload.node.toUpperCase(), payload.detail);
+  }
+
+  function waitForTraceTransition(duration, version) {
+    if (prefersReducedMotion() || duration <= 0 || version !== traceTransitionVersion) {
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      window.setTimeout(resolve, duration);
+    });
+  }
+
+  function queueTraceEvent(payload) {
+    const version = traceTransitionVersion;
+    const definition = traceDefinition(payload.node);
+    const needsRunningPrelude = payload.status === "complete" && !queuedTraceNodes.has(payload.node);
+    queuedTraceNodes.add(payload.node);
+    traceTransitionChain = traceTransitionChain.then(async () => {
+      if (version !== traceTransitionVersion) return;
+      if (needsRunningPrelude) {
+        applyTraceEvent({
+          ...payload,
+          status: "running",
+          detail: definition?.[3] ?? payload.detail,
+          output: undefined
+        });
+        await waitForTraceTransition(traceTransitionDuration[payload.node] ?? 1000, version);
+        if (version !== traceTransitionVersion) return;
+      }
+      applyTraceEvent(payload);
+      if (payload.status === "running") {
+        const requestedDelay = payload.output?.presentationDelayMs;
+        const delay = Number.isFinite(requestedDelay)
+          ? Math.max(0, Math.min(3_000, requestedDelay))
+          : traceTransitionDuration[payload.node] ?? 1000;
+        await waitForTraceTransition(delay, version);
+      }
+    });
+  }
+
+  function cancelTraceTransitions() {
+    traceTransitionVersion += 1;
+    traceTransitionChain = Promise.resolve();
+    queuedTraceNodes.clear();
+  }
+
+  async function finishTraceTransitions() {
+    await traceTransitionChain;
+  }
+
   function renderLiveTrace() {
     traceRoot.replaceChildren();
 
@@ -436,21 +719,17 @@ function initializeAgent({
 
       const content = createElement("div", "trace-node__content");
       const header = createElement("header");
+      const status = createElement("div", "trace-node__status-group");
+      if (Number.isFinite(state.elapsedMs)) {
+        status.append(createElement("span", "trace-node__duration", `${state.elapsedMs} ms`));
+      }
+      status.append(createElement("span", "trace-node__status", traceStatusLabel(state.status)));
       header.append(
         createElement("strong", "", label),
-        createElement("span", "trace-node__status", traceStatusLabel(state.status))
+        status
       );
       content.append(header, createElement("p", "", state.detail ?? caption));
-
-      if (state.output && Object.keys(state.output).length) {
-        const output = document.createElement("details");
-        output.className = "trace-node__output";
-        output.append(createElement("summary", "", "State output"));
-        const pre = document.createElement("pre");
-        pre.textContent = JSON.stringify(state.output, null, 2);
-        output.append(pre);
-        content.append(output);
-      }
+      appendTraceFacts(content, id, state);
 
       node.append(rail, content);
       list.append(node);
@@ -460,15 +739,22 @@ function initializeAgent({
 
     if (finalTrace) {
       const metrics = createElement("section", "live-trace__metrics");
-      metrics.append(createElement("strong", "live-trace__metrics-title", "Inference metrics"));
+      metrics.append(createElement(
+        "strong",
+        "live-trace__metrics-title",
+        finalTrace.generationMode === "prepared-cache" ? "Prepared response metrics" : "Inference metrics"
+      ));
       const grid = createElement("div", "trace-metrics");
       [
+        ["Mode", finalTrace.generationMode ?? "model"],
         ["TTFT", Number.isFinite(finalTrace.timeToFirstTokenMs)
           ? formatLatency({ totalMs: finalTrace.timeToFirstTokenMs })
           : "—"],
         ["Total", formatLatency(finalTrace)],
         ["Prompt", Number.isFinite(finalTrace.promptTokens) ? `${finalTrace.promptTokens} tok` : "—"],
         ["Output", Number.isFinite(finalTrace.outputTokens) ? `${finalTrace.outputTokens} tok` : "—"],
+        ["Depth", finalTrace.responseDepth ?? "—"],
+        ["Ceiling", Number.isFinite(finalTrace.tokenCeiling) ? `${finalTrace.tokenCeiling} tok` : "—"],
         ["Speed", Number.isFinite(finalTrace.tokensPerSecond)
           ? `${finalTrace.tokensPerSecond} tok/s`
           : "—"]
@@ -483,10 +769,12 @@ function initializeAgent({
   }
 
   function resetLiveTrace() {
+    cancelTraceTransitions();
     traceNodes.clear();
     traceEvents = 0;
     finalTrace = null;
     activeTraceId = null;
+    activeInlineTrace = null;
     traceEventCount.textContent = "0";
     renderLiveTrace();
   }
@@ -496,16 +784,13 @@ function initializeAgent({
     if (payload.traceId) activeTraceId = payload.traceId;
     traceEvents += 1;
     traceEventCount.textContent = String(traceEvents);
-    traceNodes.set(payload.node, {
-      status: payload.status ?? "running",
-      detail: payload.detail,
-      output: payload.output
+    const definition = traceDefinitions.find(([id]) => id === payload.node);
+    updatePeekPreview({
+      role: "AI",
+      status: `${definition?.[2] ?? payload.node} · ${payload.status ?? "running"}`.toUpperCase(),
+      message: payload.detail ?? "공개 포트폴리오 근거를 확인하고 있습니다."
     });
-    renderLiveTrace();
-
-    if (payload.status === "running") {
-      setStage(payload.node.toUpperCase(), payload.detail);
-    }
+    queueTraceEvent(payload);
   }
 
   function finalizeLiveTrace(trace) {
@@ -548,6 +833,7 @@ function initializeAgent({
       });
     }
     renderLiveTrace();
+    renderInlineTrace();
   }
 
   function markTraceError(message) {
@@ -555,6 +841,7 @@ function initializeAgent({
     const node = running?.[0] ?? "generate";
     traceNodes.set(node, { status: "error", detail: message });
     renderLiveTrace();
+    renderInlineTrace();
   }
 
   function updateOpenControls(expanded) {
@@ -566,7 +853,14 @@ function initializeAgent({
   function setWorkspaceMode(mode) {
     workspace.dataset.mode = mode;
     document.body.dataset.interviewState = mode === "peek" ? "peek" : isResponding ? "responding" : activeSourceId ? "result" : "open";
-    peekButton.setAttribute("aria-label", mode === "peek" ? "인터뷰 펼치기" : "인터뷰 최소화");
+    peekButton.hidden = mode === "peek";
+    peekButton.setAttribute("aria-label", "AI 대화 최소화");
+    peekButton.textContent = "−";
+    workspace.tabIndex = mode === "peek" ? 0 : -1;
+    workspace.setAttribute("aria-label", mode === "peek" ? "AI에게 질문하기 열기" : "AI에게 질문하기");
+    workspace.setAttribute("role", mode === "peek" ? "button" : "region");
+    if (mode === "peek") workspace.setAttribute("aria-expanded", "false");
+    else workspace.removeAttribute("aria-expanded");
   }
 
   function openWorkspace(opener) {
@@ -579,14 +873,6 @@ function initializeAgent({
       updateSuggestionOverflow();
       input.focus({ preventScroll: true });
     }, prefersReducedMotion() ? 0 : 90);
-  }
-
-  function closeWorkspace() {
-    workspace.hidden = true;
-    workspace.dataset.mode = "full";
-    document.body.dataset.interviewState = "closed";
-    updateOpenControls(false);
-    lastOpener?.focus({ preventScroll: true });
   }
 
   function togglePeek() {
@@ -624,9 +910,9 @@ function initializeAgent({
     }, prefersReducedMotion() ? 0 : 180);
   }
 
-  function selectEvidence(sourceId, { scroll = true } = {}) {
+  function selectEvidence(sourceId, { scroll = true, activate = true } = {}) {
     activeSourceId = sourceId;
-    activateInspectorTab("evidence");
+    if (activate) activateInspectorTab("evidence");
     $$(".evidence-card", evidenceRoot).forEach((card) => {
       const active = card.dataset.sourceId === sourceId;
       card.classList.toggle("is-focused", active);
@@ -763,7 +1049,7 @@ function initializeAgent({
       list.append(card);
     });
     evidenceRoot.append(list);
-    selectEvidence(sources[0].id, { scroll: false });
+    selectEvidence(sources[0].id, { scroll: false, activate: false });
   }
 
   function scrollToLatest() {
@@ -772,7 +1058,7 @@ function initializeAgent({
     });
   }
 
-  function appendMessage({ role, body = "", sources = [], trace = null, pending = false }) {
+  function appendMessage({ role, body = "", sources = [], pending = false }) {
     const fragment = messageTemplate.content.cloneNode(true);
     const article = $(".message", fragment);
     const roleLabel = $("[data-message-role]", fragment);
@@ -781,21 +1067,44 @@ function initializeAgent({
     const sourcesElement = $("[data-message-sources]", fragment);
     const attachmentsElement = $("[data-message-attachments]", fragment);
     const traceElement = $("[data-message-trace]", fragment);
+    const traceStatus = $("[data-message-trace-status]", fragment);
+    const traceCount = $("[data-message-trace-count]", fragment);
+    const traceContent = $("[data-message-trace-content]", fragment);
+    const avatar = $("[data-message-avatar]", fragment);
 
     article.classList.add(`message--${role}`);
     if (pending) article.classList.add("is-pending");
-    roleLabel.textContent = role === "user" ? "YOU" : "JUBIN / AI";
+    roleLabel.textContent = role === "user" ? "YOU" : "PORTFOLIO AI";
+    if (avatar) avatar.hidden = role === "user";
     time.textContent = formatTime();
     bodyElement.textContent = body;
 
     renderMessageSources(sourcesElement, sources);
     diagramAttachments?.render(attachmentsElement, sources);
 
-    if (trace) {
-      $("pre", traceElement).textContent = JSON.stringify(trace, null, 2);
-    } else {
-      traceElement.hidden = true;
+    if (pending) {
+      bodyElement.textContent = "AI가 답변을 생성하고 있습니다.";
+      traceElement.hidden = false;
+      traceElement.dataset.autoToggle = "true";
+      traceElement.open = true;
+      traceElement.addEventListener("toggle", () => {
+        if (traceElement.dataset.autoToggle === "true") return;
+        traceElement.dataset.userToggled = "true";
+      });
+      window.setTimeout(() => delete traceElement.dataset.autoToggle, 0);
     }
+
+    updatePeekPreview(pending
+      ? {
+          role: "AI",
+          status: "RESPONSE STARTED",
+          message: "공개 포트폴리오 근거를 확인하고 있습니다."
+        }
+      : {
+          role: role === "user" ? "YOU" : "AI",
+          status: role === "user" ? "QUESTION SENT" : "READY",
+          message: body
+        });
 
     transcript.append(fragment);
     scrollToLatest();
@@ -805,14 +1114,19 @@ function initializeAgent({
       body: $("[data-message-body]", transcript.lastElementChild),
       sources: $("[data-message-sources]", transcript.lastElementChild),
       attachments: $("[data-message-attachments]", transcript.lastElementChild),
-      trace: $("[data-message-trace]", transcript.lastElementChild)
+      trace: {
+        details: $("[data-message-trace]", transcript.lastElementChild),
+        status: $("[data-message-trace-status]", transcript.lastElementChild),
+        count: $("[data-message-trace-count]", transcript.lastElementChild),
+        content: $("[data-message-trace-content]", transcript.lastElementChild)
+      }
     };
   }
 
   function renderSuggestions(items) {
     suggestionsRoot.replaceChildren();
     suggestionsRoot.scrollLeft = 0;
-    items.slice(0, 5).forEach((question) => {
+    items.slice(0, 3).forEach((question) => {
       const button = createElement("button", "suggestion", question);
       button.type = "button";
       button.addEventListener("click", () => submitQuestion(question));
@@ -832,11 +1146,13 @@ function initializeAgent({
 
   function resetConversation({ clearSession = true } = {}) {
     conversationVersion += 1;
+    navigationTimers.forEach((cancel) => cancel());
+    navigationTimers.clear();
     activeController?.abort();
     activeController = null;
     setBusy(false);
     if (clearSession) void agentService.resetSession();
-    document.body.dataset.interviewState = workspace.hidden ? "closed" : "open";
+    document.body.dataset.interviewState = workspace.dataset.mode === "peek" ? "peek" : "open";
     renderEvidenceEmpty();
     resetLiveTrace();
     activateInspectorTab("trace");
@@ -869,6 +1185,84 @@ function initializeAgent({
     }
   }
 
+  function navigationHref(action) {
+    if (action.target.kind === "landing") return `#${action.target.anchor}`;
+    return projectDetailRoute(action.target.projectId, action.target.sectionId);
+  }
+
+  function renderResponseActions(article, actions, requestVersion) {
+    const validActions = (Array.isArray(actions) ? actions : [])
+      .map((action) => validateNavigationAction(action, projects))
+      .filter(Boolean);
+    if (!validActions.length) return;
+
+    const root = createElement("div", "message-actions");
+    validActions.forEach((action) => {
+      const card = createElement("section", "navigation-action");
+      const copy = createElement("div", "navigation-action__copy");
+      const status = createElement("span", "navigation-action__status");
+      const countdown = createElement("strong", "navigation-action__countdown");
+      const cancelButton = createElement("button", "navigation-action__cancel", "이동 취소");
+      cancelButton.type = "button";
+      const delayMs = action.delayMs;
+      const startedAt = Date.now();
+      let timeoutId;
+      let intervalId;
+      let settled = false;
+
+      copy.append(
+        createElement("span", "", "VERIFIED NAVIGATION"),
+        createElement("strong", "", action.label),
+        createElement("small", "", "허용된 포트폴리오 내부 경로만 실행합니다.")
+      );
+      status.append(countdown, cancelButton);
+      card.append(copy, status);
+      root.append(card);
+
+      function stopTimers() {
+        if (timeoutId) window.clearTimeout(timeoutId);
+        if (intervalId) window.clearInterval(intervalId);
+      }
+
+      function cancel({ silent = false } = {}) {
+        if (settled) return;
+        settled = true;
+        stopTimers();
+        navigationTimers.delete(cancel);
+        card.dataset.status = "cancelled";
+        countdown.textContent = silent ? "중단됨" : "이동 취소됨";
+        cancelButton.remove();
+      }
+
+      function updateCountdown() {
+        const remaining = Math.max(0, delayMs - (Date.now() - startedAt));
+        countdown.textContent = `${Math.max(1, Math.ceil(remaining / 1000))}초 후 이동`;
+      }
+
+      function navigate() {
+        if (settled || requestVersion !== conversationVersion || !article.isConnected) {
+          cancel({ silent: true });
+          return;
+        }
+        settled = true;
+        stopTimers();
+        navigationTimers.delete(cancel);
+        card.dataset.status = "complete";
+        countdown.textContent = "이동 중";
+        cancelButton.remove();
+        setWorkspaceMode("peek");
+        window.location.hash = navigationHref(action);
+      }
+
+      cancelButton.addEventListener("click", () => cancel());
+      updateCountdown();
+      intervalId = window.setInterval(updateCountdown, 200);
+      timeoutId = window.setTimeout(navigate, delayMs);
+      navigationTimers.add(cancel);
+    });
+    article.append(root);
+  }
+
   async function submitQuestion(rawQuestion) {
     const question = rawQuestion.trim();
     if (!question || isResponding) return;
@@ -887,7 +1281,27 @@ function initializeAgent({
     requestAnimationFrame(updateSuggestionOverflow);
 
     const pending = appendMessage({ role: "assistant", pending: true });
+    activeInlineTrace = pending.trace;
+    renderInlineTrace();
     let streamed = "";
+    const pageContext = currentContext();
+    const queryScope = classifyQueryScope(question, pageContext, projects);
+    let cacheKey = null;
+    let cachedFollowUps = null;
+
+    try {
+      const identity = agentService.followUpCacheIdentity;
+      const rememberedModel = window.sessionStorage.getItem("portfolio-followup-model");
+      cacheKey = await createFollowUpCacheKey({
+        question,
+        queryScope,
+        publicBundleDigest: identity.publicBundleDigest,
+        model: rememberedModel ?? identity.model
+      });
+      cachedFollowUps = followUpCache.get(cacheKey);
+    } catch {
+      // Cache lookup never blocks an answer.
+    }
 
     try {
       const responsePromise = agentService.ask(question, (token) => {
@@ -895,21 +1309,25 @@ function initializeAgent({
         streamed += token;
         pending.body.textContent = streamed;
         pending.article.classList.remove("is-pending");
+        updatePeekPreview({ role: "AI", status: "ANSWERING", message: streamed });
         scrollToLatest();
-      }, controller.signal, handleAgentEvent, getPageContext?.());
+      }, controller.signal, handleAgentEvent, pageContext, { cachedFollowUps });
       const response = await responsePromise;
 
+      if (controller.signal.aborted || requestVersion !== conversationVersion) return;
+      await finishTraceTransitions();
       if (controller.signal.aborted || requestVersion !== conversationVersion) return;
 
       pending.article.classList.remove("is-pending");
       pending.body.textContent = response.answer;
+      updatePeekPreview({ role: "AI", status: "ANSWER READY", message: response.answer });
 
       renderMessageSources(pending.sources, response.sources);
       diagramAttachments?.render(pending.attachments, response.sources);
+      renderResponseActions(pending.article, response.actions, requestVersion);
 
-      pending.trace.hidden = false;
-      $("pre", pending.trace).textContent = JSON.stringify(response.trace, null, 2);
       finalizeLiveTrace(response.trace);
+      settleInlineTrace();
       renderEvidencePanel(response);
       setStage(
         response.insufficientEvidence ? "LIMITED EVIDENCE" : "EVIDENCE LINKED",
@@ -925,6 +1343,13 @@ function initializeAgent({
           notice: "이번 답변은 로컬 모델 연결 실패로 검증된 포트폴리오 답변 엔진에서 생성했습니다.",
           provider: "fallback"
         });
+      } else if (response.trace?.provider === "prepared-cache") {
+        setProviderState({
+          label: "PREPARED · VERIFIED",
+          status: "PUBLIC SOURCES · VERIFIED",
+          notice: "검토된 준비 질문을 공개 근거와 다시 결속해 모델 호출 없이 반환했습니다.",
+          provider: "prepared-cache"
+        });
       } else if (response.trace?.provider === "ollama") {
         setProviderState({
           label: `LOCAL AI · ${response.trace.model ?? "OLLAMA"}`,
@@ -933,15 +1358,38 @@ function initializeAgent({
         });
       }
 
+      if (response.trace?.model) {
+        try {
+          window.sessionStorage.setItem("portfolio-followup-model", response.trace.model);
+        } catch {
+          // The current response remains usable without persistence.
+        }
+      }
+      if (response.trace?.followUpMode === "generated" && response.followUps.length >= 2) {
+        try {
+          const identity = agentService.followUpCacheIdentity;
+          const generatedKey = await createFollowUpCacheKey({
+            question,
+            queryScope,
+            publicBundleDigest: identity.publicBundleDigest,
+            model: response.trace?.model ?? identity.model
+          });
+          followUpCache.set(generatedKey, response.followUps);
+        } catch {
+          // Follow-up persistence never blocks rendering.
+        }
+      }
       renderSuggestions(response.followUps.length ? response.followUps : questions);
     } catch (error) {
       if (requestVersion !== conversationVersion) return;
+      cancelTraceTransitions();
       if (error?.name === "AbortError") {
         pending.article.classList.remove("is-pending");
         pending.article.classList.add("message--cancelled");
         pending.body.textContent = streamed.trim()
           ? `${streamed.trim()}\n\n(답변 생성이 취소되었습니다.)`
           : "답변 생성을 취소했습니다.";
+        updatePeekPreview({ role: "AI", status: "CANCELLED", message: pending.body.textContent });
         const runningNode = [...traceNodes.entries()].find(([, state]) => state.status === "running")?.[0];
         if (runningNode) {
           traceNodes.set(runningNode, {
@@ -949,7 +1397,9 @@ function initializeAgent({
             detail: "사용자가 답변 생성을 취소했습니다."
           });
           renderLiveTrace();
+          renderInlineTrace();
         }
+        settleInlineTrace();
         setStage("CANCELLED", "답변 생성을 취소했습니다.");
         renderSuggestions(questions);
         return;
@@ -958,9 +1408,9 @@ function initializeAgent({
       pending.article.classList.add("message--error");
       pending.body.textContent =
         "응답 엔진에 연결하지 못했습니다. 일반 포트폴리오는 계속 살펴볼 수 있습니다. 잠시 후 다시 시도해주세요.";
-      pending.trace.hidden = false;
-      $("pre", pending.trace).textContent = error instanceof Error ? error.message : String(error);
+      updatePeekPreview({ role: "AI", status: "ERROR", message: pending.body.textContent });
       markTraceError(error instanceof Error ? error.message : String(error));
+      settleInlineTrace();
       setStage("ERROR", "답변 생성 중 오류가 발생했습니다.");
       if (!workspace.hidden) document.body.dataset.interviewState = "error";
       renderSuggestions(questions);
@@ -982,7 +1432,7 @@ function initializeAgent({
       if (typeof question === "string" && question.trim()) {
         input.value = question.slice(0, input.maxLength);
         input.dispatchEvent(new Event("input"));
-        input.focus({ preventScroll: true });
+        submitQuestion(input.value);
       }
     });
   });
@@ -993,12 +1443,28 @@ function initializeAgent({
     if (typeof question === "string") {
       input.value = question.slice(0, input.maxLength);
       input.dispatchEvent(new Event("input"));
-      input.focus({ preventScroll: true });
+      if (event.detail?.submit) submitQuestion(input.value);
+      else input.focus({ preventScroll: true });
     }
   });
 
-  $("[data-close-agent]").addEventListener("click", closeWorkspace);
-  peekButton.addEventListener("click", togglePeek);
+  window.addEventListener("hashchange", () => {
+    updateContextLabel();
+    setWorkspaceMode("peek");
+  });
+
+  peekButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    togglePeek();
+  });
+  workspace.addEventListener("click", () => {
+    if (workspace.dataset.mode === "peek") openWorkspace(workspace);
+  });
+  workspace.addEventListener("keydown", (event) => {
+    if (workspace.dataset.mode !== "peek" || !["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    openWorkspace(workspace);
+  });
   $("[data-reset-agent]").addEventListener("click", () => resetConversation());
 
   form.addEventListener("submit", (event) => {
@@ -1038,11 +1504,20 @@ function initializeAgent({
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !diagramAttachments?.isOpen() && !workspace.hidden) {
-      closeWorkspace();
+      setWorkspaceMode("peek");
+      lastOpener?.focus({ preventScroll: true });
     }
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (workspace.dataset.mode !== "full") return;
+    if (workspace.contains(event.target) || event.target.closest?.("[data-open-agent], dialog")) return;
+    setWorkspaceMode("peek");
   });
 
   resetConversation({ clearSession: false });
+  workspace.hidden = false;
+  setWorkspaceMode("peek");
+  updateContextLabel();
   refreshProviderHealth();
 }
 
@@ -1081,6 +1556,7 @@ async function main() {
     portfolioContent = await loadPortfolioContent();
     renderProfile(portfolioContent.site);
     renderProjects(portfolioContent.projects);
+    initializeContextualAgentCta(portfolioContent.projects);
     initializeHeader();
     initializeReveals();
   } catch (error) {
@@ -1119,6 +1595,7 @@ async function main() {
     );
     const agentService = new AgentService({
       knowledge: agentContent.knowledge,
+      projects: portfolioContent.projects,
       systemPrompt: agentContent.systemPrompt
     });
     const diagramAttachments = initializeDiagramAttachments({
@@ -1129,6 +1606,7 @@ async function main() {
     });
     initializeAgent({
       agentService,
+      projects: portfolioContent.projects,
       questions: agentContent.questions,
       onOpenSource: explorer.openEvidence,
       diagramAttachments,

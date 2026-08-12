@@ -20,6 +20,7 @@
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles-glass-refresh.css" />
     <script type="module" src="./js/app.js"></script>
   </head>
 
@@ -38,12 +39,12 @@
         </span>
       </a>
       <div class="site-runtime" aria-label="포트폴리오 버전과 로컬 AI 처리 용량">
-        <span class="site-version" data-site-version>beta:0.0.1</span>
+        <span class="site-version" data-site-version>beta:0.0.2</span>
         <time
           class="site-release-date"
           data-site-released-at
-          datetime="2026-08-11T17:54:05+09:00"
-        >2026.08.11.17.54.05 released</time>
+          datetime="2026-08-13T04:49:05+09:00"
+        >2026.08.13.04.49.05 released</time>
         <span
           class="site-capacity"
           data-runtime-capacity
@@ -58,12 +59,8 @@
       </div>
 
       <nav class="site-nav" aria-label="주요 메뉴">
-        <a class="nav-priority" href="#experience">Experience</a>
-        <a class="nav-priority" href="#work">Selected work</a>
-        <a href="#approach">Approach</a>
-        <button class="nav-interview" type="button" data-open-agent>
-          AI에게 질문
-        </button>
+        <a class="nav-priority" href="#profile">소개</a>
+        <a class="nav-priority" href="#work">프로젝트</a>
       </nav>
     </header>
 
@@ -73,48 +70,52 @@
           <div class="hero__status">
             <span data-profile-status>AI AGENT · DOCUMENT AI · RAG</span>
           </div>
-          <p class="eyebrow" data-profile-eyebrow>PORTFOLIO · beta:0.0.1</p>
+          <p class="eyebrow" data-profile-eyebrow>PORTFOLIO · beta:0.0.2</p>
           <h1 id="hero-title" data-profile-headline>
             복잡한 현장 지식을<br />검증 가능한 AI 시스템으로.
           </h1>
           <p class="hero__summary" data-profile-summary>
-            문서·지식·데이터를 연결하고, 근거와 실행 경로를 확인할 수 있는 Agentic AI 시스템을 설계합니다.
+            문서와 운영 데이터를 LLM이 활용할 수 있는 구조로 만들고, 자연어 질의를 검색·데이터 조회·도구 실행으로 연결합니다.
           </p>
           <div class="hero__actions">
-            <a class="button button--primary" href="#work">경력·프로젝트 보기 <span aria-hidden="true">↓</span></a>
-            <button class="button button--secondary" type="button" data-open-agent>
-              AI에게 먼저 질문하기
+            <button class="button button--primary hero__agent-cta" type="button" data-open-agent>
+              AI에게 질문하기 <span aria-hidden="true">↗</span>
             </button>
           </div>
         </div>
 
-        <aside class="hero-snapshot reveal-on-scroll" aria-label="프로필 요약">
-          <header>
-            <span>PROFILE SNAPSHOT</span>
-            <span>2026 / 08</span>
+        <aside class="hero-agent-preview reveal-on-scroll" aria-label="AI 포트폴리오 대화 미리보기">
+          <header class="hero-agent-preview__header">
+            <div>
+              <i aria-hidden="true"></i>
+              <span>PORTFOLIO AGENT</span>
+            </div>
+            <small>PUBLIC KNOWLEDGE · READY</small>
           </header>
-          <div class="hero-snapshot__lead">
-            <span>FOCUS</span>
-            <strong>Agentic RAG와 Document AI를<br />운영 가능한 시스템으로 연결합니다.</strong>
+          <div class="hero-agent-preview__messages">
+            <article class="hero-agent-preview__message hero-agent-preview__message--user">
+              <span>YOU</span>
+              <p>강주빈은 어떤 엔지니어인가요?</p>
+            </article>
+            <article class="hero-agent-preview__message hero-agent-preview__message--agent">
+              <span class="glass-orb glass-orb--small" aria-hidden="true"><i></i></span>
+              <span>AI</span>
+              <p>문서와 운영 데이터를 LLM이 활용할 수 있는 구조로 만들고, 자연어 질의를 검색·데이터 조회·도구 실행으로 연결합니다. AI Agent·멀티모달 RAG부터 모델 서빙과 Observability까지 서비스 흐름을 함께 설계하는 엔지니어입니다.</p>
+              <div class="hero-agent-preview__trace" aria-label="답변 실행 단계 예시">
+                <span class="is-complete">검색</span>
+                <span class="is-complete">그래프 연결</span>
+                <span class="is-active">근거 검증</span>
+              </div>
+            </article>
           </div>
-          <dl>
-            <div>
-              <dt>DELIVERY</dt>
-              <dd>요구 정의 · 설계 · 구현 · 평가 · 배포</dd>
-            </div>
-            <div>
-              <dt>CORE</dt>
-              <dd>Retrieval · Knowledge Graph · LLMOps</dd>
-            </div>
-            <div>
-              <dt>ENVIRONMENT</dt>
-              <dd>Local · On-premise · Air-gapped AI</dd>
-            </div>
-          </dl>
-          <nav aria-label="대표 사례 바로가기">
-            <a href="#case/steel-domain-agent/overview">산업 AI 에이전트 <span aria-hidden="true">↗</span></a>
-            <a href="#case/multimodal-document-intelligence/overview">멀티모달 문서 인텔리전스 <span aria-hidden="true">↗</span></a>
-          </nav>
+          <button
+            type="button"
+            class="hero-agent-preview__open"
+            data-open-agent
+            data-question="강주빈은 어떤 엔지니어인가요?"
+          >
+            이 대화를 직접 이어가기 <span aria-hidden="true">↗</span>
+          </button>
         </aside>
 
         <div class="hero__stats" aria-label="포트폴리오 요약" data-profile-stats></div>
@@ -139,11 +140,13 @@
           <div class="career-record__role">
             <p>와이즈넛 AI연구소 · 연구원</p>
             <h3>Applied AI Engineer</h3>
+            <p class="career-record__secondary-role">Research Engineer</p>
           </div>
           <div class="career-record__scope">
-            <p>산업 도메인 AI 에이전트</p>
-            <p>멀티모달 문서 처리·인덱싱</p>
-            <p>LLM 호출·평가·관측 공통 기반</p>
+            <p>도메인 특화 AI Agent·Agentic RAG</p>
+            <p>Document AI·멀티모달 계층 검색</p>
+            <p>Query Understanding·NL2SQL·Tool Use/MCP</p>
+            <p>LLM Serving·Kubernetes·Langfuse Observability</p>
           </div>
         </article>
       </section>
@@ -162,49 +165,15 @@
         <div data-projects-root></div>
       </section>
 
-      <section class="approach-section" id="approach" aria-labelledby="approach-title" data-landing-section>
-        <header class="section-heading reveal-on-scroll">
-          <div>
-            <p class="section-number">03 / ENGINEERING APPROACH</p>
-            <h2 id="approach-title">답을 만드는 것보다<br />답을 믿게 만드는 일.</h2>
-          </div>
-          <p data-approach-copy>
-            에이전트의 자율성은 목적이 아닙니다. 반복 가능한 경로는 고정하고, 필요한 순간에만 추론을 확장합니다.
-          </p>
-        </header>
-
-        <div class="approach-list" data-principles-root></div>
-      </section>
-
       <section class="interview-section" id="interview" aria-labelledby="interview-title" data-landing-section>
         <div class="interview-section__copy reveal-on-scroll">
-          <p class="section-number">OPTIONAL / AI INTERVIEW</p>
-          <h2 id="interview-title">더 구체적인 질문이<br />남아 있다면.</h2>
-          <p data-agent-section-copy>
-            이력서와 공개 근거를 검색하는 로컬 AI에게 프로젝트의 세부 구현, 설계 판단과 한계를 질문할 수 있습니다.
-          </p>
-          <button class="button button--primary" type="button" data-open-agent>
-            AI 인터뷰 열기 <span aria-hidden="true">↗</span>
-          </button>
+          <p class="section-number">AFTER READING / ASK THE SYSTEM</p>
+          <span class="interview-section__project" data-context-project-label>STEEL DOMAIN AI AGENT</span>
+          <h2 id="interview-title" data-context-agent-title>읽다가 궁금해진<br />설계 판단이 있나요?</h2>
+          <p data-context-agent-copy>마지막으로 살펴본 프로젝트의 구현 경계와 근거를 이어서 질문할 수 있습니다.</p>
         </div>
 
-        <div class="interview-prompts reveal-on-scroll" aria-label="추천 인터뷰 질문">
-          <button type="button" data-open-agent data-question="Data-to-Text 파이프라인을 구체적으로 설명해주세요.">
-            <span>DOCUMENT AI</span>
-            <strong>Data-to-Text는 어떤 문제를 해결했나요?</strong>
-            <i aria-hidden="true">↗</i>
-          </button>
-          <button type="button" data-open-agent data-question="멀티 에이전트 구조와 각 에이전트의 역할을 설명해주세요.">
-            <span>AGENT ARCHITECTURE</span>
-            <strong>멀티 에이전트의 역할과 경계는?</strong>
-            <i aria-hidden="true">↗</i>
-          </button>
-          <button type="button" data-open-agent data-question="이 프로젝트에서 확인한 한계와 다음 검증 과제는 무엇인가요?">
-            <span>LIMITS</span>
-            <strong>아직 검증하지 못한 것은 무엇인가요?</strong>
-            <i aria-hidden="true">↗</i>
-          </button>
-        </div>
+        <div class="interview-prompts reveal-on-scroll" aria-label="현재 프로젝트 추천 질문" data-context-agent-prompts></div>
       </section>
 
       <section
@@ -219,12 +188,12 @@
     <footer class="site-footer">
       <p>
         <span data-profile-name>강주빈</span> · <span data-profile-role>AI System Engineer</span>
-        · <span class="footer-version" data-site-version>beta:0.0.1</span>
+        · <span class="footer-version" data-site-version>beta:0.0.2</span>
         · <time
           class="footer-release-date"
           data-site-released-at
-          datetime="2026-08-11T17:54:05+09:00"
-        >2026.08.11.17.54.05 released</time>
+          datetime="2026-08-13T04:49:05+09:00"
+        >2026.08.13.04.49.05 released</time>
       </p>
       <nav class="site-footer__links" aria-label="프로필 링크" data-profile-links hidden></nav>
       <p>Local-first · Evidence-linked · Public data only</p>
@@ -234,25 +203,38 @@
       class="interview-workspace"
       id="interview-workspace"
       data-agent-workspace
+      data-mode="peek"
       aria-labelledby="agent-title"
-      hidden
     >
       <div class="agent-shell">
         <header class="agent-header">
           <div class="agent-header__identity">
-            <span class="agent-header__mark">JK</span>
+            <span class="agent-header__mark glass-orb" aria-hidden="true"><i></i></span>
             <div>
-              <p><span class="live-dot" aria-hidden="true"></span> PORTFOLIO INTERVIEW</p>
-              <h2 id="agent-title">강주빈에게 물어보기</h2>
+              <p><span class="live-dot" aria-hidden="true"></span> PORTFOLIO AI</p>
+              <h2 id="agent-title">AI에게 질문하기</h2>
+              <p class="agent-context-breadcrumb" data-agent-context>전체 포트폴리오</p>
             </div>
           </div>
           <div class="agent-header__actions">
             <span class="provider-badge" data-provider-badge>CHECKING</span>
             <button class="icon-button" type="button" data-reset-agent aria-label="대화 초기화">↺</button>
             <button class="icon-button" type="button" data-peek-agent aria-label="인터뷰 최소화">−</button>
-            <button class="icon-button" type="button" data-close-agent aria-label="AI 인터뷰 닫기">×</button>
           </div>
         </header>
+
+        <div class="agent-peek-summary" data-agent-peek-summary>
+          <div class="agent-peek-summary__status">
+            <span data-agent-peek-role>AI READY</span>
+            <i aria-hidden="true"></i>
+            <small data-agent-peek-status>PUBLIC KNOWLEDGE</small>
+          </div>
+          <p data-agent-peek-message>포트폴리오의 프로젝트와 설계 판단을 질문해보세요.</p>
+          <div class="agent-peek-summary__composer" aria-hidden="true">
+            <span>대화를 열어 질문하기</span>
+            <i>↗</i>
+          </div>
+        </div>
 
         <div class="agent-body">
           <section class="agent-conversation" aria-label="AI 인터뷰 대화">
@@ -408,16 +390,20 @@
     <template id="message-template">
       <article class="message">
         <header>
+          <span class="message__avatar glass-orb glass-orb--small" data-message-avatar aria-hidden="true"><i></i></span>
           <span data-message-role></span>
           <time data-message-time></time>
         </header>
+        <details class="message-live-trace" data-message-trace hidden>
+          <summary>
+            <span data-message-trace-status>실행 경로 준비 중</span>
+            <strong data-message-trace-count>0 / 6</strong>
+          </summary>
+          <div class="message-live-trace__content" data-message-trace-content></div>
+        </details>
         <div class="message__body" data-message-body></div>
         <div class="message__sources" data-message-sources></div>
         <div class="message__attachments" data-message-attachments hidden></div>
-        <details class="message__trace" data-message-trace>
-          <summary>응답 경로 상세 보기</summary>
-          <pre></pre>
-        </details>
       </article>
     </template>
   </body>

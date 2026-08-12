@@ -1,22 +1,30 @@
 const MAX_ATTACHMENTS = 3;
 
 const DIAGRAM_BINDINGS = Object.freeze({
-  "project.industrial-multi-tool-agent": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "architecture.adaptive-agent-routing": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "architecture.domain-agent-orchestration": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "workflow.schema-validated-agent": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "architecture.llm-runtime-responsibility": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "reliability.provenance-gated-answer": Object.freeze(["steel-domain-agent/evidence-runtime"]),
-  "document.contextual-data-to-text": Object.freeze(["multimodal-document-intelligence/document-lineage"]),
-  "document.hierarchical-indexing": Object.freeze(["multimodal-document-intelligence/document-lineage"]),
-  "document.multimodal-context-preservation": Object.freeze(["multimodal-document-intelligence/document-lineage"]),
-  "harness.single-source-configuration": Object.freeze(["personal-agent-harness/harness-authority"]),
-  "harness.policy-as-configuration": Object.freeze(["personal-agent-harness/harness-authority"]),
-  "harness.knowledge-preflight-ledger": Object.freeze(["personal-agent-harness/harness-authority"]),
-  "harness.trust-state-and-file-authority": Object.freeze(["personal-agent-harness/harness-authority"]),
-  "harness.knowledge-not-execution-authority": Object.freeze(["personal-agent-harness/harness-authority"]),
-  "project.right-sized-consultation-agent": Object.freeze(["supporting-agent-systems/right-sized-delivery"]),
-  "platform.llm-gateway-observability": Object.freeze(["supporting-agent-systems/right-sized-delivery"])
+  "project.industrial-multi-tool-agent": Object.freeze(["steel-domain-agent/system-architecture"]),
+  "steel.preprocessing-source-lineage": Object.freeze(["steel-domain-agent/unstructured-preprocessing"]),
+  "architecture.domain-agent-orchestration": Object.freeze(["steel-domain-agent/tool-agent-orchestrator"]),
+  "architecture.mcp-as-adapter": Object.freeze(["steel-domain-agent/tool-agent-orchestrator"]),
+  "workflow.schema-validated-agent": Object.freeze(["steel-domain-agent/e2e-agent-loop"]),
+  "architecture.llm-runtime-responsibility": Object.freeze(["steel-domain-agent/system-architecture"]),
+  "reliability.provenance-gated-answer": Object.freeze(["steel-domain-agent/e2e-agent-loop"]),
+  "project.multimodal-rag-search": Object.freeze(["multimodal-document-intelligence/system-architecture"]),
+  "document.hierarchical-indexing": Object.freeze(["multimodal-document-intelligence/identity-model"]),
+  "document.contextual-data-to-text": Object.freeze(["multimodal-document-intelligence/document-to-retrieval"]),
+  "document.multimodal-context-preservation": Object.freeze(["multimodal-document-intelligence/document-to-retrieval"]),
+  "document.passage-fragment-retrieval": Object.freeze(["multimodal-document-intelligence/precision-rag"]),
+  "project.personal-agent-harness": Object.freeze(["personal-agent-harness/system-architecture"]),
+  "harness.single-source-configuration": Object.freeze(["personal-agent-harness/system-architecture"]),
+  "harness.wiki-skill-loop": Object.freeze(["personal-agent-harness/context-skill-loop"]),
+  "harness.knowledge-preflight-ledger": Object.freeze(["personal-agent-harness/context-skill-loop"]),
+  "harness.trigger-routing": Object.freeze(["personal-agent-harness/skill-family-routing"]),
+  "project.portfolio-interview-agent": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.public-agent-only-boundary": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.local-first-runtime": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.source-validated-retrieval": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.contextual-session-memory": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.resilient-offline-fallback": Object.freeze(["portfolio-interview-agent/interview-runtime"]),
+  "portfolio-agent.public-release-allowlist": Object.freeze(["portfolio-interview-agent/interview-runtime"])
 });
 
 const REQUIRED_TEXT_FIELDS = Object.freeze([
@@ -26,8 +34,7 @@ const REQUIRED_TEXT_FIELDS = Object.freeze([
   "description",
   "question",
   "takeaway",
-  "scopeNote",
-  "source"
+  "scopeNote"
 ]);
 
 function isNonEmptyString(value) {
@@ -43,6 +50,10 @@ function isPublicSafeMermaidSource(source) {
     /https?:\/\/|\/\//i.test(source) ||
     /<\s*\/?\s*(?:script|style|iframe|object|embed|foreignObject)\b/i.test(source)
   );
+}
+
+function isPublicSafeSvgPath(source) {
+  return /^assets\/project-diagrams\/[a-z0-9-]+\.svg$/.test(source ?? "");
 }
 
 function freezeReadingGuide(readingGuide) {
@@ -64,7 +75,9 @@ function createTrustedAttachment(project, diagram) {
   if (!project || !diagram) return null;
   if (!isNonEmptyString(project.id) || !isNonEmptyString(project.title)) return null;
   if (!REQUIRED_TEXT_FIELDS.every((field) => isNonEmptyString(diagram[field]))) return null;
-  if (!isPublicSafeMermaidSource(diagram.source)) return null;
+  if (!isNonEmptyString(diagram.type) || !["svg", "mermaid"].includes(diagram.type)) return null;
+  if (diagram.type === "mermaid" && !isPublicSafeMermaidSource(diagram.source)) return null;
+  if (diagram.type === "svg" && !isPublicSafeSvgPath(diagram.src)) return null;
 
   const readingGuide = freezeReadingGuide(diagram.readingGuide);
   if (!readingGuide) return null;
@@ -81,7 +94,10 @@ function createTrustedAttachment(project, diagram) {
     takeaway: diagram.takeaway.trim(),
     readingGuide,
     scopeNote: diagram.scopeNote.trim(),
-    source: diagram.source.trim()
+    type: diagram.type,
+    ...(diagram.type === "svg"
+      ? { src: diagram.src.trim(), alt: (diagram.alt ?? diagram.title).trim() }
+      : { source: diagram.source.trim() })
   });
 }
 
@@ -300,10 +316,13 @@ export function initializeDiagramAttachments({
     dialog.dataset.renderState = "loading";
     focusManager.openFrom(opener);
 
-    void Promise.resolve(renderDiagram(figure, attachment.source, {
-      id: `attachment-${attachment.projectId}-${attachment.diagramId}`,
-      label: attachment.title
-    })).then((result) => {
+    const renderResult = attachment.type === "svg"
+      ? renderSvgAttachment(ownerDocument, figure, attachment)
+      : renderDiagram(figure, attachment.source, {
+        id: `attachment-${attachment.projectId}-${attachment.diagramId}`,
+        label: attachment.title
+      });
+    void Promise.resolve(renderResult).then((result) => {
       if (currentSequence !== renderSequence || !figure.isConnected) return;
       dialog.dataset.renderState = result?.status === "rendered" ? "rendered" : "fallback";
     }).catch(() => {
@@ -316,6 +335,15 @@ export function initializeDiagramAttachments({
       ));
       dialog.dataset.renderState = "error";
     });
+  }
+
+  function renderSvgAttachment(document, figure, attachment) {
+    const image = document.createElement("img");
+    image.src = attachment.src;
+    image.alt = attachment.alt;
+    image.decoding = "async";
+    figure.append(image);
+    return { status: "rendered" };
   }
 
   function render(container, sources) {

@@ -1,0 +1,177 @@
+<article class="project-document" data-project-document-id="portfolio-interview-agent">
+<h1 id="project-document-portfolio-interview-agent-portfolio-interview-agent">Portfolio Interview Agent</h1>
+<blockquote><p>GitHub Pages에 배포한 정적 포트폴리오와 검증된 지식 번들을 바탕으로 프로젝트·기술·경험·가치관을 질문하고, ngrok을 거쳐 생성한 답변의 근거를 같은 화면에서 확인하는 AI 인터뷰 서비스</p></blockquote>
+<h2 id="project-section-overview">프로젝트 개요</h2>
+<p>포트폴리오는 순서대로 읽는 문서만으로도 완전해야 하지만, 면접관이 궁금한 지점은 역할·설계 판단·한계처럼 사람마다 다릅니다. 이 프로젝트는 일반 포트폴리오 탐색을 본체로 유지하면서, 질문에 맞는 공개 근거를 찾아 private host의 LLM이 답변을 구성하는 선택형 인터뷰 경험을 추가했습니다. 정적 화면은 GitHub Pages에서 제공하고 AI 요청만 ngrok HTTPS endpoint를 통해 Node gateway로 전달합니다.</p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">구분</th>
+<th scope="col">내용</th>
+</tr></thead><tbody>
+<tr>
+<td>적용 대상</td>
+<td>기술 포트폴리오를 검토하는 채용 담당자·면접관</td>
+</tr>
+<tr>
+<td>입력</td>
+<td>자연어 질문, 최근 대화, 현재 보고 있는 공개 페이지 문맥</td>
+</tr>
+<tr>
+<td>활용 정보</td>
+<td>공개 후보 경력·프로젝트·설계 원칙과 검토된 지식 projection</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>3–6문장의 근거 기반 답변, 공개 source, 후속 질문, 실행 trace</td>
+</tr>
+<tr>
+<td>배포 환경</td>
+<td>GitHub Pages frontend → ngrok HTTPS → Node gateway → private Ollama</td>
+</tr>
+</tbody></table></div>
+<h2 id="project-section-architecture">읽기와 질문을 함께 두는 화면</h2>
+<p>기본 경로는 <code>Landing → Selected work → Project → Claim/source record → Results &amp; limits</code>입니다. AI 인터뷰는 이 경로를 대신하지 않고, 현재 페이지에서 바로 질문한 뒤 답변과 근거 기록을 연결하는 보조 경로입니다.</p>
+<p>데스크톱에서는 대화, 실행 단계, 근거 Inspector를 하나의 workspace에서 보고, 모바일에서도 답변 아래에서 source를 확인할 수 있습니다. 사용자는 모델이 오프라인이어도 포트폴리오 본문과 프로젝트 상세 페이지를 그대로 읽을 수 있습니다.</p>
+<h2 id="project-section-retrieval">질문에서 근거가 있는 답변까지</h2>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">단계</th>
+<th scope="col">처리 내용</th>
+</tr></thead><tbody>
+<tr>
+<td>문맥 준비</td>
+<td>익명 session의 최근 4문답, 오래된 대화 요약·관련 episode, 현재 페이지 문맥 결합</td>
+</tr>
+<tr>
+<td>질의 분류</td>
+<td>질문의 프로젝트·기술·역할·평가·한계 의도를 규칙으로 분류</td>
+</tr>
+<tr>
+<td>근거 검색</td>
+<td>큐레이션된 lexical seed와 typed relation 1-hop으로 공개 후보 탐색</td>
+</tr>
+<tr>
+<td>선택형 dense 검색</td>
+<td>BGE-M3 query embedding 1회와 exact cosine, RRF를 shadow·hybrid 모드에서 사용</td>
+</tr>
+<tr>
+<td>답변 생성</td>
+<td>private Ollama가 선택된 evidence와 answer plan 범위 안에서 답변 생성</td>
+</tr>
+<tr>
+<td>근거 검증</td>
+<td>실제로 검색된 allowlist source ID만 사용자 응답에 연결</td>
+</tr>
+</tbody></table></div>
+<p>질문과 현재 페이지 문맥은 브라우저가 보내지만, 검색 결과·system prompt·모델 설정·source allowlist는 서버가 소유합니다. 브라우저가 임의 제목이나 비공개 ID를 보내더라도 서버가 공개 project와 knowledge record에서 다시 계산합니다.</p>
+<h2 id="project-section-evidence">공개 projection과 근거 계보</h2>
+<p>원본 이력서·경력기술서·프로젝트 문서와 Personal Wiki를 그대로 배포하지 않습니다. 공개할 주장과 원본 section binding을 <code>knowledge/publication.json</code>에 선언하고, 빌드가 실제 section·신뢰 상태·digest를 확인한 뒤 <code>data/knowledge.json</code>을 생성합니다.</p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">계층</th>
+<th scope="col">역할</th>
+</tr></thead><tbody>
+<tr>
+<td>원본 문서</td>
+<td>경력 사실, 프로젝트 설계와 현재 판단의 권위</td>
+</tr>
+<tr>
+<td>공개 projection 선언</td>
+<td>공개할 node·요약·관계와 원본 section binding 선택</td>
+</tr>
+<tr>
+<td>빌드·감사</td>
+<td>source 존재, 최소 신뢰 상태, 참조 정합성, 절대 경로·비공개 locator 누출 검사</td>
+</tr>
+<tr>
+<td>공개 지식 번들</td>
+<td>browser·local fallback·gateway가 공유하는 allowlist 근거</td>
+</tr>
+<tr>
+<td>답변 source</td>
+<td>선택된 node ID를 프로젝트의 claim/source record로 연결</td>
+</tr>
+</tbody></table></div>
+<p>관계 그래프는 관련 근거를 찾기 위한 탐색 경로입니다. 관계가 있다는 사실만으로 새로운 경력 사실을 만들지 않으며, 답변에는 실제로 회수된 evidence만 전달합니다.</p>
+<h2 id="project-section-runtime">배포 환경과 레이턴시 최적화</h2>
+<p>사용자가 접속하는 서비스 경계는 GitHub Pages와 ngrok입니다. GitHub Pages는 정적 HTML·CSS·JavaScript와 공개 지식만 제공하고, 질문은 <code>ngrok HTTPS → Node gateway → Ollama</code> 순서로 전달됩니다. <code>127.0.0.1</code>은 외부 사용자가 접속하는 주소가 아니라 private host 안에서 gateway와 Ollama를 연결하는 loopback 경계입니다. ngrok Traffic Policy는 streaming chat endpoint 이외의 경로를 차단하고, gateway는 origin·입력 크기·동시 inference·timeout을 다시 제한합니다.</p>
+<p>로컬 모델의 긴 prefill과 생성 시간이 전체 응답의 주된 병목이므로, 모든 질문을 무리하게 캐시하지 않고 재사용 안전성이 확인된 단계만 줄였습니다.</p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">최적화</th>
+<th scope="col">적용 방식</th>
+</tr></thead><tbody>
+<tr>
+<td>준비 답변</td>
+<td>사람 검토를 마친 소개 질문의 exact alias만 public bundle digest와 source allowlist를 재검증한 뒤 모델 호출 없이 반환</td>
+</tr>
+<tr>
+<td>준비 후속 질문</td>
+<td>예상 질문·답변 조합에는 검토된 follow-up을 미리 연결해 추가 생성을 생략</td>
+</tr>
+<tr>
+<td>동적 follow-up cache</td>
+<td>자유 질의의 후속 질문만 SHA-256 key와 browser session bounded LRU 최대 24개로 재사용</td>
+</tr>
+<tr>
+<td>사전 계산 검색 자산</td>
+<td>공개 knowledge projection과 BGE-M3 embedding index를 build 시 생성하고 digest가 일치할 때만 사용</td>
+</tr>
+<tr>
+<td>적응형 출력 예산</td>
+<td>질문 복잡도에 따라 compact·standard·deep 상한을 선택해 불필요한 output 생성을 제한</td>
+</tr>
+<tr>
+<td>스트리밍 UX</td>
+<td><code>memory → classify → retrieve → connect → generate → ground</code> trace와 token을 순차 표시해 대기 상태를 설명</td>
+</tr>
+</tbody></table></div>
+<p>의미가 비슷하다는 이유만으로 임의 답변을 재사용하는 semantic answer cache는 두지 않았습니다. 일반 질문은 계속 retrieval과 LLM 생성을 거치며, 준비 답변도 digest나 공개 근거 검증에 실패하면 정상 모델 경로로 돌아갑니다. 이 최적화는 모델 자체의 추론 속도를 과장하지 않고, 반복 가능한 입력의 모델 호출과 후속 질문 생성을 줄이는 데 목적이 있습니다.</p>
+<p>ngrok·gateway·Ollama가 연결되지 않거나 timeout이 발생하면 browser는 같은 공개 지식 번들을 사용하는 결정적 fallback으로 전환합니다. 잘못된 요청, 인증, rate limit 같은 오류는 fallback으로 숨기지 않습니다. 토큰 일부가 이미 전송된 뒤 연결이 끊기면 다른 provider의 답변을 뒤에 붙이지 않아 두 문장이 섞이지 않게 했습니다.</p>
+<h2 id="project-section-memory">대화 메모리와 현재 화면 문맥</h2>
+<p>익명 session은 최근 4개의 user/assistant 교환을 원문 그대로 유지합니다. 더 오래된 교환은 결정적 rolling summary와 검색 가능한 episode로 분리하고, 현재 질문과 관련된 과거 detail만 다시 불러옵니다.</p>
+<p>페이지 문맥은 project·knowledge index·evidence detail·landing으로 제한합니다. client가 보낸 값은 신뢰하지 않고 서버의 공개 record에서 제목과 연관 node를 다시 만들며, 검색을 돕는 내부 text는 model prompt에 필요한 공개 projection으로만 전달합니다.</p>
+<h2 id="project-document-portfolio-interview-agent-실행-상태와-관측">실행 상태와 관측</h2>
+<p>SSE 응답은 <code>memory → classify → retrieve → connect → generate → ground</code> 단계를 표시하고 생성 token을 실시간으로 전달합니다. 사용자는 최종 문장뿐 아니라 어느 단계가 실행 중인지, 어떤 retrieval mode가 실제로 적용됐는지 확인할 수 있습니다.</p>
+<p>Langfuse exporter는 선택형 관측 경로로 구성했습니다. credential이 완전할 때만 켜지고, 질문·답변을 export하기 전에 이메일·휴대전화·Bearer token·secret 패턴을 마스킹합니다. exporter 실패는 답변 생성을 막지 않으며, 외부 관측 환경의 privacy 검토가 끝났다고 주장하지 않습니다.</p>
+<h2 id="project-section-implementation">주요 구현</h2>
+<ul><li>일반 포트폴리오와 project·knowledge·evidence detail route</li><li>공개 knowledge graph projection과 source digest 검증</li><li>질문 의도 분류, lexical seed 검색, typed relation 1-hop 확장</li><li>optional CPU BGE-M3 dense retrieval과 reciprocal-rank fusion</li><li>ngrok HTTPS·Node gateway·private Ollama를 잇는 JSON/SSE 생성 경로와 source allowlist 검증</li><li>익명 session의 recent turns·rolling summary·episode recall</li><li>server-owned page context 검증과 follow-up query 보강</li><li>network·ngrok·gateway·Ollama 장애에 한정된 deterministic browser fallback</li><li>exact prepared response와 bounded follow-up cache를 통한 반복 생성 비용 절감</li><li>정적 allowlist만 복사하는 GitHub Pages release bundle</li><li>선택형 Langfuse trace와 export 직전 민감정보 마스킹</li></ul>
+<h2 id="project-document-portfolio-interview-agent-기술-구성">기술 구성</h2>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">영역</th>
+<th scope="col">구성</th>
+</tr></thead><tbody>
+<tr>
+<td>Frontend</td>
+<td>정적 HTML, CSS, ES modules, Mermaid renderer</td>
+</tr>
+<tr>
+<td>Public delivery</td>
+<td>GitHub Pages, ngrok HTTPS, API-only Traffic Policy</td>
+</tr>
+<tr>
+<td>AI gateway</td>
+<td>Node.js HTTP server, SSE, origin·body·동시성 제한</td>
+</tr>
+<tr>
+<td>생성</td>
+<td>Ollama, private-hosted LLM, schema constrained response</td>
+</tr>
+<tr>
+<td>검색</td>
+<td>curated lexical search, typed graph, optional BGE-M3 exact cosine·RRF</td>
+</tr>
+<tr>
+<td>지식</td>
+<td>source-bound public projection, immutable node ID, provenance digest</td>
+</tr>
+<tr>
+<td>메모리</td>
+<td>recent turns, rolling summary, bounded episodic recall</td>
+</tr>
+<tr>
+<td>레이턴시</td>
+<td>prepared-direct exact response, prepared follow-up, bounded browser LRU, adaptive output budget</td>
+</tr>
+<tr>
+<td>관측</td>
+<td>구조화 trace, token·latency·retrieval mode, optional Langfuse</td>
+</tr>
+</tbody></table></div>
+</article>

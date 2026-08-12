@@ -97,8 +97,17 @@ export async function loadPortfolioContent() {
     fetchResource(paths.site),
     fetchResource(paths.projects)
   ]);
+  const documentHtml = await Promise.all(projects.map((project) => (
+    fetchResource(project.documentHtmlPath, "text")
+  )));
 
-  return { site, projects };
+  return {
+    site,
+    projects: projects.map((project, index) => ({
+      ...project,
+      documentHtml: documentHtml[index]
+    }))
+  };
 }
 
 export async function loadPortfolioKnowledge({ site, projects }) {

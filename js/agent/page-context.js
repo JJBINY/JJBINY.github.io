@@ -5,20 +5,7 @@ const ROUTE_TYPES = Object.freeze({
   evidence: "evidence-detail"
 });
 
-const LANDING_SECTIONS = new Map([
-  ["profile", "Profile"],
-  ["experience", "Experience"],
-  ["work", "Selected work"],
-  ["approach", "Approach"],
-  ["interview", "AI interview"]
-]);
-
-const PROJECT_TABS = new Map([
-  ["overview", "요약"],
-  ["architecture", "구조와 흐름"],
-  ["evidence", "근거 기록"],
-  ["limits", "결과와 한계"]
-]);
+const LANDING_CONTEXT = Object.freeze({ id: "portfolio", title: "전체 포트폴리오" });
 
 const KNOWLEDGE_CATEGORIES = new Map([
   ["projects", {
@@ -43,17 +30,6 @@ const KNOWLEDGE_CATEGORIES = new Map([
   }]
 ]);
 
-const PROJECT_ARCHITECTURE_KINDS = new Set([
-  "architecture-decision",
-  "implementation",
-  "deployment",
-  "platform-capability",
-  "knowledge-model",
-  "document-ai",
-  "knowledge-system",
-  "safety-architecture"
-]);
-
 const MAX_KNOWLEDGE_NODE_IDS = 32;
 
 export const PAGE_CONTEXT_ROUTE_TYPES = ROUTE_TYPES;
@@ -74,7 +50,6 @@ function parseHash(hash) {
     return {
       type: "project",
       entityId: parts[1] ?? "",
-      tab: PROJECT_TABS.has(parts[2]) ? parts[2] : "overview",
       recordId: parts[3] === "record" ? parts.slice(4).join("/") : ""
     };
   }
@@ -95,7 +70,7 @@ function parseHash(hash) {
 
   return {
     type: "landing",
-    entityId: LANDING_SECTIONS.has(raw) ? raw : "profile"
+    entityId: LANDING_CONTEXT.id
   };
 }
 
@@ -146,26 +121,17 @@ function explicitProjectNodeIds(project, knowledgeNodesById) {
   ));
 }
 
-function projectKnowledgeNodeIds(project, tab, knowledgeNodesById) {
+function projectKnowledgeNodeIds(project, knowledgeNodesById) {
   const explicitIds = explicitProjectNodeIds(project, knowledgeNodesById);
+  const rootIds = typeof project?.knowledgeNodeId === "string"
+    && isAllowlistedEntity(knowledgeNodesById, project.knowledgeNodeId)
+    ? [project.knowledgeNodeId]
+    : [];
   const derivedIds = nodeIdsMatching(
     knowledgeNodesById,
     (node) => belongsToProject(node, project.id)
   );
-  const allIds = [...new Set([...explicitIds, ...derivedIds])];
-
-  if (tab === "architecture") {
-    return allIds
-      .filter((id) => PROJECT_ARCHITECTURE_KINDS.has(knowledgeNodesById.get(id)?.kind))
-      .slice(0, MAX_KNOWLEDGE_NODE_IDS);
-  }
-
-  if (tab === "limits") {
-    const limitId = "limitation.explicit-claim-boundaries";
-    return isAllowlistedEntity(knowledgeNodesById, limitId) ? [limitId] : [];
-  }
-
-  return allIds.slice(0, MAX_KNOWLEDGE_NODE_IDS);
+  return [...new Set([...rootIds, ...explicitIds, ...derivedIds])].slice(0, MAX_KNOWLEDGE_NODE_IDS);
 }
 
 /**
@@ -195,12 +161,11 @@ export function resolvePageContext({
       });
     }
     const project = projectsById.get(route.entityId);
-    const tabTitle = PROJECT_TABS.get(route.tab);
     return freezeContext({
       routeType: ROUTE_TYPES.project,
       entityId: project.id,
-      title: `${project.title} · ${tabTitle}`,
-      knowledgeNodeIds: projectKnowledgeNodeIds(project, route.tab, knowledgeNodesById)
+      title: project.title,
+      knowledgeNodeIds: projectKnowledgeNodeIds(project, knowledgeNodesById)
     });
   }
 
@@ -228,14 +193,13 @@ export function resolvePageContext({
     });
   }
 
-  const title = LANDING_SECTIONS.get(route.entityId);
   return freezeContext({
     routeType: ROUTE_TYPES.landing,
-    entityId: route.entityId,
-    title,
+    entityId: LANDING_CONTEXT.id,
+    title: LANDING_CONTEXT.title,
     knowledgeNodeIds: nodeIdsMatching(
       knowledgeNodesById,
-      (node) => node?.source?.href === `#${route.entityId}`
+      (node) => ["profile", "project", "personal-project", "capability"].includes(node?.kind)
     )
   });
 }

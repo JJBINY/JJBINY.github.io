@@ -8,6 +8,7 @@ const INTENT_RULES = [
   { intent: "retrieval", terms: ["검색", "rag", "bm25", "임베딩", "bge", "rerank", "리랭크", "opensearch"] },
   { intent: "llmops", terms: ["llmops", "gateway", "게이트웨이", "litellm", "vllm", "bedrock", "모델 서빙"] },
   { intent: "deployment", terms: ["배포", "폐쇄망", "air gap", "로컬 llm", "ollama", "kubernetes", "docker"] },
+  { intent: "safety", terms: ["실행 권한", "조작 권한", "자동 승격", "컴퓨터 조작"] },
   { intent: "reliability", terms: ["근거", "출처", "인용", "trace", "트레이스", "hitl", "승인", "신뢰", "검증", "실패"] },
   { intent: "routing", terms: ["라우팅", "workflow", "워크플로", "react", "fallback", "폴백", "계획", "도구 호출"] },
   { intent: "architecture", terms: ["구조", "아키텍처", "멀티", "에이전트", "오케스트레이션", "책임", "경계"] },
@@ -15,7 +16,7 @@ const INTENT_RULES = [
   { intent: "experience", terms: ["담당", "역할", "기여", "경험", "책임", "무엇을 했", "맡"] },
   { intent: "values", terms: ["가치관", "성격", "강점", "약점", "일하는 방식", "원칙", "중요하게"] },
   { intent: "evidence", terms: ["성과", "수치", "특허", "대회", "결과", "증명"] },
-  { intent: "project", terms: ["프로젝트", "철강", "뷰티", "상담", "만들", "포트폴리오"] },
+  { intent: "project", terms: ["프로젝트", "철강", "멀티모달", "하네스", "인터뷰", "만들", "포트폴리오"] },
   { intent: "profile", terms: ["누구", "소개", "엔지니어", "자기소개"] }
 ];
 
@@ -194,7 +195,14 @@ export function retrieveKnowledge(question, knowledge, maxItems = 5) {
     if (!current || match.score > current.score) combined.set(match.entry.id, match);
   }
 
-  const relevant = [...combined.values()].sort(compareMatches).slice(0, maxItems);
+  const relevant = limitGoldMatches(
+    [...combined.values()].sort(compareMatches),
+    {
+      intent,
+      maxItems,
+      preferProjectRoots: shouldPrioritizeProjectRoots(question, intent)
+    }
+  );
   const primary = relevant[0];
   const fallback = bundle.nodes.find((entry) => entry.id === "profile.applied-ai-engineer")
     ?? bundle.nodes.find((entry) => entry.id === "profile-summary");
@@ -212,4 +220,35 @@ export function retrieveKnowledge(question, knowledge, maxItems = 5) {
       edgeCount: bundle.edges.length
     }
   };
+}
+
+export function limitGoldMatches(matches, { intent = "general", maxItems = 5, preferProjectRoots = false } = {}) {
+  const projectFirst = preferProjectRoots
+    ? [
+        ...matches.filter(({ entry }) => ["project", "personal-project"].includes(entry.kind)),
+        ...matches.filter(({ entry }) => !["project", "personal-project"].includes(entry.kind))
+      ]
+    : matches;
+  const selected = [];
+  const goldTypes = new Set();
+  const goldLimit = intent === "project" ? 1 : 2;
+  let goldCount = 0;
+
+  for (const match of projectFirst) {
+    const goldType = match.entry.goldType;
+    if (goldType) {
+      if (goldCount >= goldLimit || goldTypes.has(goldType)) continue;
+      goldCount += 1;
+      goldTypes.add(goldType);
+    }
+    selected.push(match);
+    if (selected.length >= maxItems) break;
+  }
+
+  return selected;
+}
+
+function shouldPrioritizeProjectRoots(question, intent) {
+  if (intent !== "project") return false;
+  return !/(어려|난점|실패|배운|교훈|한계|약점|다시|왜|판단 변화)/.test(normalize(question));
 }
