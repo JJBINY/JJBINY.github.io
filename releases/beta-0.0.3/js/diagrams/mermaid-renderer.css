@@ -1,0 +1,132 @@
+.mermaid-diagram {
+  --mermaid-min-width: 0;
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.mermaid-diagram__canvas {
+  inline-size: 100%;
+  overflow: visible;
+  overscroll-behavior-inline: contain;
+  padding: 0;
+  scrollbar-width: thin;
+}
+
+.mermaid-diagram__canvas > svg {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: var(--mermaid-min-width);
+  block-size: auto;
+  max-block-size: 42rem;
+  margin-inline: auto;
+  font-family: "Pretendard Variable", Pretendard, Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.mermaid-diagram__canvas > svg[data-motion-profile="deployment-sequence"] .mermaid-motion-step {
+  animation: deployment-sequence-reveal 520ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
+  animation-delay: calc(420ms + var(--diagram-motion-order, 0) * 110ms);
+}
+
+.mermaid-diagram__status,
+.mermaid-diagram__fallback > p {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  color: #5c6b82;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.mermaid-diagram__status::before {
+  content: "";
+  display: inline-block;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  margin-inline-end: 0.55rem;
+  border-radius: 999px;
+  background: #2764ff;
+  box-shadow: 0 0 0 0.3rem rgba(39, 100, 255, 0.12);
+  animation: mermaid-renderer-pulse 1.4s ease-in-out infinite;
+}
+
+.mermaid-diagram__source {
+  border-block-start: 1px solid rgba(139, 168, 214, 0.24);
+}
+
+.mermaid-diagram__source summary {
+  padding: 0.8rem 1.1rem;
+  color: #52627a;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.mermaid-diagram__source pre,
+.mermaid-diagram__fallback pre {
+  max-block-size: 22rem;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow: auto;
+  border-block-start: 1px solid rgba(139, 168, 214, 0.2);
+  background: #111a2a;
+  color: #dce7f8;
+  font: 500 0.78rem/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.mermaid-diagram[data-mermaid-state="fallback"] {
+  border-color: rgba(183, 128, 66, 0.34);
+  background: #fffaf2;
+}
+
+@keyframes mermaid-renderer-pulse {
+  50% { opacity: 0.45; }
+}
+
+@keyframes deployment-sequence-reveal {
+  from {
+    opacity: 0.2;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 42rem) {
+  .mermaid-diagram {
+    --mermaid-min-width: 0;
+  }
+
+  .mermaid-diagram__canvas {
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .mermaid-diagram__canvas > svg {
+    min-inline-size: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mermaid-diagram__status::before,
+  .mermaid-diagram__canvas > svg[data-motion-profile="deployment-sequence"] .mermaid-motion-step {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .mermaid-diagram {
+    border: 1px solid CanvasText;
+    background: Canvas;
+    box-shadow: none;
+  }
+}

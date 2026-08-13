@@ -1,0 +1,1116 @@
+[
+  {
+    "id": "steel-domain-agent",
+    "number": "01",
+    "label": "SELECTED CASE · INDUSTRIAL AGENTIC RAG",
+    "title": "Steel Domain AI Agent",
+    "subtitle": "공식 문서·현장 경험·설비 상태를 근거 계약으로 연결한 철강 제조 AI 시스템",
+    "description": "PDF 작업표준과 현장 노하우, Digital Twin 상태를 서로 다른 권위의 지식원으로 구조화하고 질문 해석부터 전문 Agent 실행, 근거 채택, 최종 답변까지 하나의 검증 가능한 흐름으로 연결했습니다.",
+    "agentPrompts": [
+      "질의 이해와 HITL이 실행 계획보다 먼저 필요한 이유를 설명해주세요.",
+      "메뉴얼·노하우·Digital Twin Agent의 판단 경계는 어떻게 다른가요?",
+      "근거 원장과 Finalizer가 인용을 검증하는 과정을 설명해주세요."
+    ],
+    "knowledgeNodeId": "project.industrial-multi-tool-agent",
+    "tags": [
+      "LANGGRAPH",
+      "MCP",
+      "HYBRID RAG",
+      "NL2SQL",
+      "LANGFUSE"
+    ],
+    "scope": [
+      "질문 의미 모델과 TaskGraph·ActionGraph 실행 계약 설계",
+      "메뉴얼·노하우·Digital Twin 전문 Agent와 도구 경계 구현",
+      "PDF·표·그림·현장 사례의 source-bound 전처리",
+      "근거 원장, 인용 일관성 검증과 실행 추적 구현"
+    ],
+    "resultLabel": "CONFIRMED SCOPE",
+    "result": "질문 해석, 작업 계획, 전문 Agent 실행, 근거 관리와 최종 답변 작성 구조를 저장소와 테스트 자산에서 확인했습니다.",
+    "note": "운영 사용자 수, 실제 트래픽과 정확도·비용 절감 수치는 공개 근거만으로 확정하지 않습니다.",
+    "diagrams": [
+      {
+        "id": "system-architecture",
+        "type": "svg",
+        "visualKind": "operational-circuit",
+        "diagramGrammar": "architecture",
+        "motionProfile": "request-to-evidence",
+        "src": "assets/project-diagrams/steel-system-architecture.svg",
+        "label": "SYSTEM VIEW · END TO END",
+        "title": "질문에서 근거 연결 답변까지의 전체 시스템",
+        "description": "질의 이해가 SemanticRequest와 Semantic TaskGraph를 만들고 계획 컴파일러가 ActionGraph로 변환한 뒤 전문 Agent의 근거가 최종 답변으로 수렴합니다.",
+        "question": "서로 다른 지식 권위를 어떻게 하나의 답변 흐름으로 조정하는가?",
+        "takeaway": "Agent는 지식원별 판단을 맡고, 실행 순서와 근거 채택은 별도의 런타임 계약이 통제합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "의미 해석",
+            "body": "질의 이해가 대상·목적·조건을 SemanticRequest로 정리합니다."
+          },
+          {
+            "step": "2",
+            "title": "계획과 실행",
+            "body": "Semantic TaskGraph를 계획 컴파일러에서 ActionGraph로 바꾸고 Executor / Coordinator가 전문 Agent를 조정합니다."
+          },
+          {
+            "step": "3",
+            "title": "근거와 답변",
+            "body": "task·source·claim이 연결된 근거만 채택해 최종 응답을 만듭니다."
+          }
+        ],
+        "scopeNote": "배포 인스턴스와 네트워크 세부를 생략한 포트폴리오용 설명 모델입니다.",
+        "alt": "질의 이해, SemanticRequest, Semantic TaskGraph, 계획 컴파일러, ActionGraph, 전문 Agent, 근거 원장과 최종 답변 흐름",
+        "caption": "질의 이해 모듈, 의미·실행 산출물과 근거 채택 책임을 분리한 전체 구조"
+      },
+      {
+        "id": "unstructured-preprocessing",
+        "type": "svg",
+        "visualKind": "dual-source-rail",
+        "diagramGrammar": "data-flow",
+        "motionProfile": "source-to-publication",
+        "src": "assets/project-diagrams/steel-unstructured-preprocessing.svg",
+        "label": "KNOWLEDGE FLOW · PREPROCESSING",
+        "title": "작업표준과 현장 노하우의 source-bound 전처리",
+        "description": "작업표준과 현장 사례를 개별 전처리한 뒤 canonical model에서 결합하고 Passage와 Source Fragment로 분기해 검수된 bundle로 출판합니다.",
+        "question": "검색 표현을 풍부하게 만들면서 실제 인용 위치는 어떻게 보존하는가?",
+        "takeaway": "검색용 표현은 recall을 위해 확장하되 최종 인용은 원문 locator를 가진 Fragment에서만 확정합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "원천별 구조화",
+            "body": "PDF는 layout·OCR·D2T로, 노하우는 사례·조건 binding으로 정규화합니다."
+          },
+          {
+            "step": "2",
+            "title": "출판 검증",
+            "body": "검수 상태·revision·source digest가 유효한 canonical node만 공개 projection으로 보냅니다."
+          },
+          {
+            "step": "3",
+            "title": "검색 projection",
+            "body": "의미 검색을 위한 Passage를 canonical node에서 파생합니다."
+          },
+          {
+            "step": "4",
+            "title": "원문 locator",
+            "body": "행·셀·번호·page·bbox는 Source Fragment로 별도 보존합니다."
+          }
+        ],
+        "scopeNote": "실제 업무 문서와 원문 데이터는 포함하지 않은 처리 계약 그림입니다.",
+        "alt": "작업표준 PDF와 현장 노하우를 구조화하고 Passage와 Source Fragment로 나누는 전처리 흐름",
+        "caption": "검색 recall과 인용 정확성을 서로 다른 표현으로 관리"
+      },
+      {
+        "id": "tool-agent-orchestrator",
+        "type": "svg",
+        "visualKind": "responsibility-swimlanes",
+        "diagramGrammar": "swimlane",
+        "motionProfile": "authority-handoff",
+        "src": "assets/project-diagrams/steel-tool-agent-orchestrator.svg",
+        "label": "RESPONSIBILITY · AGENT SYSTEM",
+        "title": "조회 도구에서 전문 Agent와 Orchestrator로 확장",
+        "description": "질의 이해와 Orchestrator, 조회 도구, 전문 Agent, 근거 원장을 swimlane 데이터 흐름으로 분리합니다.",
+        "question": "도구가 여러 개인 구조와 멀티 Agent 구조는 무엇이 다른가?",
+        "takeaway": "Agent는 임무 안에서 검색 계획과 후보 검증을 소유하지만 다른 지식원의 권위나 전체 실행 순서는 소유하지 않습니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "도구",
+            "body": "검색·원문 조회·설비 상태 조회처럼 결정적인 기능을 제공합니다."
+          },
+          {
+            "step": "2",
+            "title": "전문 Agent",
+            "body": "typed mission을 도구 계획으로 바꾸고 근거 후보를 제안합니다."
+          },
+          {
+            "step": "3",
+            "title": "Orchestrator",
+            "body": "dependency·budget·fan-out/fan-in과 실패를 조정합니다."
+          },
+          {
+            "step": "4",
+            "title": "근거 채택",
+            "body": "Agent의 evidence proposal을 source·task·locator와 결합하고 Ledger가 claim과 citation을 채택합니다."
+          }
+        ],
+        "scopeNote": "Orchestrator는 단일 클래스명이 아니라 runtime·compiler·coordinator 책임을 묶은 설명 용어입니다.",
+        "alt": "사용자 질의에서 질의 이해와 SemanticRequest, Orchestrator, 조회 도구, 전문 Agent, 근거 원장으로 이어지는 swimlane",
+        "caption": "typed mission과 evidence proposal의 전달 방향까지 구분한 책임별 데이터 흐름"
+      },
+      {
+        "id": "e2e-agent-loop",
+        "type": "svg",
+        "visualKind": "request-state-machine",
+        "diagramGrammar": "state",
+        "motionProfile": "guarded-request-lifecycle",
+        "src": "assets/project-diagrams/steel-e2e-agent-loop.svg",
+        "label": "RUNTIME · E2E AGENT LOOP",
+        "title": "질의 이해·HITL·실행 계약·근거 채택의 요청 수명주기",
+        "description": "질의 이해와 HITL 재진입, Semantic TaskGraph–ActionGraph 변환, 근거 채택, Answer IR 검증까지의 상태를 보여줍니다.",
+        "question": "모호성, 병렬 실행과 근거 부족을 어떻게 명시적인 상태로 다루는가?",
+        "takeaway": "중요한 모호성은 질의 이해로 재진입시키고 의미 작업과 실행 계약을 분리한 뒤 채택된 근거만 최종화합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Understand",
+            "body": "원질의와 대화 맥락을 보존한 구조화 요청을 만듭니다."
+          },
+          {
+            "step": "2",
+            "title": "Plan & execute",
+            "body": "의미 작업을 dependency와 budget이 있는 실행 그래프로 컴파일합니다."
+          },
+          {
+            "step": "3",
+            "title": "Accept evidence",
+            "body": "source locator와 task binding을 통과한 결과만 원장에 기록합니다."
+          },
+          {
+            "step": "4",
+            "title": "Finalize",
+            "body": "답변·인용·입력 digest를 검증해 가이던스나 리포트를 확정합니다."
+          }
+        ],
+        "scopeNote": "전문 Agent 내부 검색 알고리즘보다 요청 전체의 상태 전이를 설명합니다.",
+        "alt": "질의 이해, HITL, TaskGraph, ActionGraph, Agent 실행, 근거 원장과 답변 최종화 루프",
+        "caption": "자유로운 대화가 아니라 typed handoff와 종료 조건으로 구성한 E2E Agent loop"
+      }
+    ],
+    "sections": [
+      {
+        "id": "overview",
+        "documentHeading": "프로젝트 개요",
+        "eyebrow": "01 · PROBLEM & ROLE",
+        "title": "공식 절차만으로 끝나지 않는 제조 현장 질문",
+        "summary": "공식 메뉴얼, 현장 사례와 현재 설비 상태를 같은 답변에서 사용하되 각 자료의 권위와 적용 범위를 잃지 않는 것이 핵심 문제였습니다.",
+        "paragraphs": [
+          "자연어 질문과 대화 맥락을 받아 설비·공정 절차 확인, 문제 원인 탐색, 조치 가이던스와 운영 분석을 수행합니다.",
+          "저는 질문 해석, 작업 계획, 전문 Agent 실행, 근거 검증과 최종 답변 작성이 이어지는 전체 전달 흐름을 설계·구현했습니다."
+        ],
+        "facts": [
+          {
+            "label": "INPUT",
+            "value": "자연어 질문과 대화 맥락"
+          },
+          {
+            "label": "KNOWLEDGE",
+            "value": "공식 메뉴얼 · 작업 노하우 · Digital Twin"
+          },
+          {
+            "label": "OUTPUT",
+            "value": "출처가 연결된 가이던스 또는 분석 리포트"
+          }
+        ],
+        "evidenceNodeIds": [
+          "project.industrial-multi-tool-agent"
+        ]
+      },
+      {
+        "id": "architecture",
+        "documentHeading": "전체 시스템 아키텍처",
+        "eyebrow": "02 · SYSTEM ARCHITECTURE",
+        "title": "의미 해석·실행 조정·도메인 판단을 한 모듈에 모으지 않았습니다.",
+        "summary": "Query Understanding은 사용자 의미를, compiler와 Coordinator는 실행 계약을, Domain Agent는 제한된 임무의 지식 선택을 소유합니다.",
+        "diagramIds": [
+          "system-architecture"
+        ],
+        "designDetails": [
+          "Conversation Runtime은 turn·session·progress·HITL 재개를 관리합니다.",
+          "Task Evidence Ledger는 답변 문체가 아니라 task·source·claim 결속과 근거 자격을 관리합니다."
+        ],
+        "evidenceNodeIds": [
+          "architecture.llm-runtime-responsibility",
+          "architecture.domain-agent-orchestration"
+        ]
+      },
+      {
+        "id": "preprocessing",
+        "documentHeading": "비정형 지식 전처리",
+        "eyebrow": "03 · KNOWLEDGE PREPARATION",
+        "title": "검색 가능한 문서와 인용 가능한 문서를 분리했습니다.",
+        "summary": "Document–Chunk–Element의 의미 구조, 검색 Passage와 원문 Source Fragment가 서로 다른 역할을 맡습니다.",
+        "diagramIds": [
+          "unstructured-preprocessing"
+        ],
+        "bullets": [
+          "작업표준 PDF의 번호·절·표·그림 구조 복원",
+          "현장 노하우의 공정·설비·현상·조치·적용 조건 binding",
+          "Digital Twin 결과의 설비·지표·시점·dataset 계약 검증"
+        ],
+        "evidenceNodeIds": [
+          "steel.preprocessing-source-lineage",
+          "reliability.provenance-gated-answer"
+        ]
+      },
+      {
+        "id": "orchestration",
+        "documentHeading": "도구·Agent·Orchestrator 구조",
+        "eyebrow": "04 · TOOL / AGENT / ORCHESTRATOR",
+        "title": "독립적인 판단 책임이 있을 때만 Agent로 확장했습니다.",
+        "summary": "조회 기능은 도구로, 임무별 검색 계획과 후보 검증은 전문 Agent로, dependency와 실패 조정은 Orchestrator로 구분했습니다.",
+        "diagramIds": [
+          "tool-agent-orchestrator"
+        ],
+        "evidenceNodeIds": [
+          "architecture.mcp-as-adapter",
+          "architecture.single-backend-tool-boundaries",
+          "architecture.domain-agent-orchestration"
+        ]
+      },
+      {
+        "id": "evidence",
+        "documentHeading": "E2E Agent Loop",
+        "eyebrow": "05 · EXECUTION & EVIDENCE",
+        "title": "TaskGraph의 의미와 ActionGraph의 실행 편의를 분리했습니다.",
+        "summary": "실행 최적화가 사용자 질문의 의미를 덮어쓰지 않도록 의미 작업 관계와 capability·dependency·budget을 가진 실행 그래프를 별도로 관리합니다.",
+        "diagramIds": [
+          "e2e-agent-loop"
+        ],
+        "designDetails": [
+          "결과를 바꾸는 모호성만 선택지와 함께 HITL로 확인합니다.",
+          "검색 결과 없음, 조회 실패와 근거 부족을 서로 다른 종료 상태로 보존합니다.",
+          "accepted evidence ID와 ledger가 일치할 때만 인용 가능한 답변을 확정합니다."
+        ],
+        "evidenceNodeIds": [
+          "workflow.schema-validated-agent",
+          "hitl.durable-resume",
+          "reliability.named-failure-states",
+          "reliability.provenance-gated-answer"
+        ]
+      },
+      {
+        "id": "implementation",
+        "documentHeading": "주요 구현",
+        "eyebrow": "06 · IMPLEMENTATION",
+        "title": "도메인 도구부터 평가와 관측까지 하나의 전달 경로로 구현했습니다.",
+        "bullets": [
+          "TaskGraph·ActionGraph·Coordinator",
+          "메뉴얼·노하우·Digital Twin Agent",
+          "NL2SQL QuerySpec와 source locator",
+          "Runtime API·MCP·웹 인터페이스",
+          "근거 커버리지와 답변 품질을 분리한 회귀 평가",
+          "Langfuse·구조화 로그·progress event"
+        ],
+        "evidenceNodeIds": [
+          "data.nl2sql-query-spec",
+          "evaluation.coverage-and-quality",
+          "evaluation.audit-the-evaluator"
+        ]
+      }
+    ],
+    "technologies": [
+      {
+        "label": "RUNTIME",
+        "items": [
+          "TaskGraph",
+          "ActionGraph",
+          "Coordinator",
+          "LangGraph"
+        ]
+      },
+      {
+        "label": "DOMAIN",
+        "items": [
+          "Manual Agent",
+          "Knowhow Agent",
+          "Digital Twin Agent",
+          "NL2SQL"
+        ]
+      },
+      {
+        "label": "DELIVERY",
+        "items": [
+          "Runtime API",
+          "MCP",
+          "Langfuse",
+          "Structured logs"
+        ]
+      }
+    ],
+    "documentHtmlPath": "data/project-documents/steel-domain-agent.html"
+  },
+  {
+    "id": "multimodal-document-intelligence",
+    "number": "02",
+    "label": "SELECTED CASE · MULTIMODAL RAG",
+    "title": "Multimodal RAG Search",
+    "subtitle": "본문·표·그림·문서 구조를 검색하고 원문 위치까지 복원하는 문서 처리 시스템",
+    "description": "PDF의 의미 구조를 Document–Chunk–Element로 보존하고 표·그림을 문맥이 있는 검색 표현으로 바꾸며 Passage 검색 결과를 실제 Fragment와 locator까지 연결했습니다.",
+    "agentPrompts": [
+      "검색 Passage에서 정확한 원문 Fragment를 어떻게 복원하나요?",
+      "Document–Chunk–Element 계층을 유지한 이유를 설명해주세요.",
+      "Data-to-Text가 검색 recall과 인용 정확성에 미친 영향을 설명해주세요."
+    ],
+    "knowledgeNodeId": "project.multimodal-rag-search",
+    "tags": [
+      "DOCLING",
+      "OCR",
+      "VLM",
+      "LANGGRAPH",
+      "OPENSEARCH"
+    ],
+    "scope": [
+      "Document–Chunk–Element identity와 원문 좌표 설계",
+      "layout 순서와 주제 경계를 이용한 Semantic Chunking",
+      "구조 기반 문맥 선택과 Data-to-Text",
+      "Passage–Fragment 검색·복원·인용 계약"
+    ],
+    "resultLabel": "CONFIRMED SCOPE",
+    "result": "문서 처리 흐름, 계층 identity, D2T, 저장소·검색엔진 연결과 다문서 배치 실행 기록을 확인했습니다.",
+    "note": "처리 완료 기록을 표·그림 설명의 사실성이나 검색 정확도로 해석하지 않습니다.",
+    "diagrams": [
+      {
+        "id": "system-architecture",
+        "type": "svg",
+        "visualKind": "document-conveyor",
+        "diagramGrammar": "architecture",
+        "motionProfile": "document-pipeline",
+        "src": "assets/project-diagrams/multimodal-system-architecture.svg",
+        "label": "SYSTEM VIEW · DOCUMENT PIPELINE",
+        "title": "원본 문서에서 검색 색인까지의 전체 구조",
+        "description": "PipelineGraph가 분할·분석·색인 단계를 연결하고 오류와 처리 상태를 전달합니다.",
+        "question": "문서 처리 단계와 의미 데이터 구조의 책임은 어떻게 나뉘는가?",
+        "takeaway": "그래프는 단계를 연결하고, 품질의 핵심은 의미 경계·identity·source lineage를 보존하는 데이터 계약입니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Chunk",
+            "body": "파일 유형·OCR·layout을 통해 의미 조각과 시각 요소를 만듭니다."
+          },
+          {
+            "step": "2",
+            "title": "Analyze",
+            "body": "요소를 분류하고 문맥이 있는 설명과 메타데이터를 보강합니다."
+          },
+          {
+            "step": "3",
+            "title": "Index",
+            "body": "검증된 identity와 locator를 포함한 검색 표현을 저장합니다."
+          }
+        ],
+        "scopeNote": "외부 저장소의 실제 주소와 배포 수량을 생략한 처리 구조입니다.",
+        "alt": "Multimodal RAG의 API, PipelineGraph, Chunking, Analysis, Indexing과 저장소 연결",
+        "caption": "처리 순서와 데이터 identity를 분리한 전체 문서 파이프라인"
+      },
+      {
+        "id": "identity-model",
+        "type": "svg",
+        "visualKind": "identity-relationship-model",
+        "diagramGrammar": "relationship",
+        "motionProfile": "identity-lineage",
+        "src": "assets/project-diagrams/multimodal-identity-model.svg",
+        "label": "DATA MODEL · IDENTITY",
+        "title": "Document–Chunk–Element 계층과 파생 표현",
+        "description": "처리 단계가 달라도 동일한 문서·의미 조각·원본 요소를 다시 찾는 식별 모델입니다.",
+        "question": "검색 표현과 원문 요소를 어떻게 같은 identity로 연결하는가?",
+        "takeaway": "D2T 설명과 Passage는 canonical Element에서 파생되며 원본을 대체하지 않습니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Document",
+            "body": "원본 파일·버전·전체 메타데이터의 경계입니다."
+          },
+          {
+            "step": "2",
+            "title": "Chunk",
+            "body": "주제와 문맥이 응집된 순서 있는 의미 단위입니다."
+          },
+          {
+            "step": "3",
+            "title": "Element",
+            "body": "텍스트·표·그림과 파생 설명이 연결되는 최소 처리 단위입니다."
+          }
+        ],
+        "scopeNote": "Passage와 Fragment는 계층을 대체하지 않는 검색·인용 projection입니다.",
+        "alt": "Document가 Chunk를, Chunk가 Element를 소유하고 Passage와 Fragment가 파생되는 identity 모델",
+        "caption": "모델 교체와 재처리에도 유지되는 canonical identity"
+      },
+      {
+        "id": "document-to-retrieval",
+        "type": "svg",
+        "visualKind": "bipartite-derivation",
+        "diagramGrammar": "derivation",
+        "motionProfile": "document-derivation",
+        "src": "assets/project-diagrams/multimodal-document-to-retrieval.svg",
+        "label": "CONTENT FLOW · SEMANTIC + D2T",
+        "title": "Semantic Chunking과 구조 기반 Data-to-Text",
+        "description": "Layout/OCR와 Semantic Chunking으로 canonical Element를 만들고 텍스트·표·그림 각각에서 검색 Passage와 원문 Fragment를 파생합니다.",
+        "question": "이미지 한 장의 설명이 문서 전체의 의미를 잃지 않게 하려면?",
+        "takeaway": "Passage는 검색 표현으로, Fragment는 page·row/span·bbox 원문 locator로 분리하면서 둘 모두 canonical identity에 연결합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Order",
+            "body": "layout의 텍스트·이미지 순서를 보존하고 noise를 분리합니다."
+          },
+          {
+            "step": "2",
+            "title": "Context",
+            "body": "상위 제목·캡션·인접 문장 중 관련 정보를 선택합니다."
+          },
+          {
+            "step": "3",
+            "title": "Materialize",
+            "body": "설명을 원본 Element에 연결하고 Passage·Fragment를 파생합니다."
+          }
+        ],
+        "scopeNote": "모델 fallback은 처리 지속 경로이며 의미 분할과 같은 품질을 보장하지 않습니다.",
+        "alt": "텍스트 block, 표 행, 그림에서 Semantic Chunk·Element·DerivedDescription을 거쳐 Passage와 Fragment로 이어지는 양분 파생 흐름",
+        "caption": "원본 요소별 검색 projection과 정확한 locator를 함께 보존하는 bipartite 파생"
+      },
+      {
+        "id": "precision-rag",
+        "type": "svg",
+        "visualKind": "evidence-convergence-graph",
+        "diagramGrammar": "data-flow",
+        "motionProfile": "evidence-convergence",
+        "src": "assets/project-diagrams/multimodal-precision-rag-flow.svg",
+        "label": "RETRIEVAL · PRECISION RAG",
+        "title": "Passage 후보에서 canonical node와 Fragment 복원",
+        "description": "lexical·dense Passage 후보를 canonical node 단위로 축약하고 bounded best-first 그래프 탐색으로 원문 Fragment를 확정해 RAG Context와 근거 응답을 만듭니다.",
+        "question": "검색 recall을 위한 표현과 사용자가 확인할 인용을 어떻게 분리하는가?",
+        "takeaway": "Passage는 후보를 찾고 canonical node는 문맥을 복원하며 Fragment는 인용 위치를 증명하고 마지막 RAG Context가 근거 연결 응답을 생성합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Retrieve",
+            "body": "검색 역할별 lexical·semantic Passage 후보를 찾습니다."
+          },
+          {
+            "step": "2",
+            "title": "Collapse",
+            "body": "같은 node의 여러 Passage가 독립 투표하지 않도록 축약합니다."
+          },
+          {
+            "step": "3",
+            "title": "Hydrate & cite",
+            "body": "stable ID로 원문 계층을 복원하고 Fragment locator를 연결합니다."
+          }
+        ],
+        "scopeNote": "이 계약은 원래 문서 처리 구조를 실제 도메인 검색에 재사용하며 구체화한 범위를 포함합니다.",
+        "alt": "질의 분석, Passage 순위와 다중 seed 그래프 탐색, canonical node 복원, exact Fragment, RAG Context와 근거 연결 응답 흐름",
+        "caption": "검색 projection에서 source-bound 인용과 근거 연결 답변까지 이어지는 정밀 RAG"
+      }
+    ],
+    "sections": [
+      {
+        "id": "overview",
+        "documentHeading": "프로젝트 개요",
+        "eyebrow": "01 · PROBLEM & ROLE",
+        "title": "본문 밖에 있는 표·그림·구조도 검색 가능한 정보로 만들었습니다.",
+        "summary": "기술 문서의 의미를 파일 단위 텍스트로 평탄화하지 않고 구조·시각 요소·원문 위치를 함께 보존합니다.",
+        "paragraphs": [
+          "PDF·이미지·텍스트 문서를 받아 본문, 표, 그림, 캡션, 장·절과 페이지 위치를 처리합니다.",
+          "저는 의미 분할, 계층 identity, D2T와 정밀 검색·인용 연결을 주요 설계 대상으로 삼았습니다."
+        ],
+        "facts": [
+          {
+            "label": "INPUT",
+            "value": "PDF · 이미지 · 텍스트"
+          },
+          {
+            "label": "MODEL",
+            "value": "Document → Chunk → Element"
+          },
+          {
+            "label": "OUTPUT",
+            "value": "검색 Passage + 원문 Fragment locator"
+          }
+        ],
+        "evidenceNodeIds": [
+          "project.multimodal-rag-search"
+        ]
+      },
+      {
+        "id": "architecture",
+        "documentHeading": "전체 시스템 아키텍처",
+        "eyebrow": "02 · PIPELINE",
+        "title": "단계 연결 그래프와 의미 데이터 계약을 구분했습니다.",
+        "summary": "PipelineGraph는 실행 순서와 오류 전달을 관리하고, identity와 lineage는 각 처리 단계가 같은 원본을 다시 찾게 합니다.",
+        "diagramIds": [
+          "system-architecture"
+        ],
+        "evidenceNodeIds": [
+          "reliability.pipeline-partial-reexecution",
+          "project.multimodal-rag-search"
+        ]
+      },
+      {
+        "id": "identity",
+        "documentHeading": "Document–Chunk–Element 구조",
+        "eyebrow": "03 · DOCUMENT MODEL",
+        "title": "문서·의미 조각·시각 요소의 stable identity를 보존했습니다.",
+        "summary": "표·그림의 생성 설명도 독립 문장이 아니라 원본 Element의 파생 표현으로 연결됩니다.",
+        "diagramIds": [
+          "identity-model"
+        ],
+        "evidenceNodeIds": [
+          "document.hierarchical-indexing",
+          "document.multimodal-context-preservation"
+        ]
+      },
+      {
+        "id": "d2t",
+        "documentHeading": "의미 분할과 Data-to-Text",
+        "eyebrow": "04 · SEMANTIC CHUNKING & D2T",
+        "title": "시각 요소를 문서 전체가 아니라 관련 구조 문맥과 결합했습니다.",
+        "summary": "상위 제목·캡션·인접 문장·OCR·layout 정보를 조립하고 필요한 문맥만 선택해 D2T 설명을 만듭니다.",
+        "diagramIds": [
+          "document-to-retrieval"
+        ],
+        "designDetails": [
+          "header·footer·page number 같은 noise 후보를 별도 분리합니다.",
+          "모델 실패 시 text element fallback을 사용하지만 같은 품질로 간주하지 않습니다."
+        ],
+        "evidenceNodeIds": [
+          "document.semantic-chunking",
+          "document.contextual-data-to-text",
+          "document.multimodal-context-preservation"
+        ]
+      },
+      {
+        "id": "evidence",
+        "documentHeading": "정확한 검색과 인용 생성",
+        "eyebrow": "05 · RETRIEVAL & CITATION",
+        "title": "Passage는 검색하고 Fragment는 인용합니다.",
+        "summary": "검색 projection 수가 많은 node가 과대 투표하지 않도록 canonical node 단위로 축약한 뒤 실제 원문 locator를 복원합니다.",
+        "diagramIds": [
+          "precision-rag"
+        ],
+        "evidenceNodeIds": [
+          "document.passage-fragment-retrieval",
+          "document.hierarchical-indexing"
+        ]
+      },
+      {
+        "id": "implementation",
+        "documentHeading": "주요 구현",
+        "eyebrow": "06 · IMPLEMENTATION",
+        "title": "문서 처리와 외부 저장소 연결을 재실행 가능한 단계로 구현했습니다.",
+        "bullets": [
+          "FastAPI·LangGraph PipelineGraph",
+          "Docling·OCR·layout·object detection",
+          "VLM·D2T·StructuralContextBuilder",
+          "text·image vector와 OpenSearch",
+          "S3 호환 객체 저장소",
+          "오류 상태·retry·부분 재실행"
+        ],
+        "evidenceNodeIds": [
+          "reliability.pipeline-partial-reexecution"
+        ]
+      }
+    ],
+    "technologies": [
+      {
+        "label": "PIPELINE",
+        "items": [
+          "FastAPI",
+          "LangGraph",
+          "Docling"
+        ]
+      },
+      {
+        "label": "MULTIMODAL",
+        "items": [
+          "OCR",
+          "VLM",
+          "D2T",
+          "Semantic Chunking"
+        ]
+      },
+      {
+        "label": "SEARCH",
+        "items": [
+          "OpenSearch",
+          "BM25",
+          "Dense vector",
+          "S3-compatible storage"
+        ]
+      }
+    ],
+    "documentHtmlPath": "data/project-documents/multimodal-document-intelligence.html"
+  },
+  {
+    "id": "personal-agent-harness",
+    "number": "03",
+    "label": "PERSONAL R&D · AGENT INFRASTRUCTURE",
+    "title": "Personal Agent Harness",
+    "subtitle": "검토된 개인 지식과 반복 가능한 절차를 여러 AI Agent가 공유하는 로컬 협업 시스템",
+    "description": "대화와 함께 사라지던 판단을 Personal Wiki에, 반복 가능한 실행 절차를 Skill에 축적하고 manifest·reconcile·policy로 Codex·Claude Code·Gemini 환경에 안전하게 반영합니다.",
+    "agentPrompts": [
+      "Wiki와 Skill이 각각 어떤 지식과 실행 권한을 소유하나요?",
+      "여러 Agent 환경의 capability 차이를 어떻게 reconcile하나요?",
+      "과거 대화를 그대로 복사하지 않고 맥락을 재사용하는 방법은 무엇인가요?"
+    ],
+    "knowledgeNodeId": "project.personal-agent-harness",
+    "tags": [
+      "CODEX",
+      "MCP",
+      "PERSONAL WIKI",
+      "SKILLS",
+      "PROVENANCE"
+    ],
+    "scope": [
+      "Wiki 등록·조회·신뢰 상태와 Outcome loop",
+      "작업 신호 기반 Skill trigger와 조합",
+      "단일 manifest와 Agent별 capability projection",
+      "status·안전한 reconcile·데이터 접근 정책"
+    ],
+    "resultLabel": "CURRENT INVENTORY",
+    "result": "현재 manifest에서 Agent 3개, Skill 49개, MCP 도구 8개와 데이터 소스 8개를 확인했습니다.",
+    "note": "전체 패키지의 과거 통합 검증 수치를 이번 재실행 결과로 표현하지 않습니다.",
+    "diagrams": [
+      {
+        "id": "system-architecture",
+        "type": "svg",
+        "visualKind": "capability-control-plane",
+        "diagramGrammar": "architecture",
+        "motionProfile": "capability-projection",
+        "src": "assets/project-diagrams/harness-system-architecture.svg",
+        "label": "SYSTEM VIEW · PERSONAL HARNESS",
+        "title": "정본 저장소에서 Agent별 실행 환경까지",
+        "description": "Wiki·Skill·manifest와 Harness Core가 Agent별 지원 형식으로 기능을 투영하고 차이를 점검합니다.",
+        "question": "여러 Agent가 같은 판단과 절차를 공유하면서 제품별 차이는 어떻게 유지하는가?",
+        "takeaway": "정본은 하나로 관리하되 각 Agent가 실제 지원하는 capability만 adapter를 통해 투영합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Canonical sources",
+            "body": "Wiki·Skill·manifest가 지식·절차·설치 권한을 나눠 소유합니다."
+          },
+          {
+            "step": "2",
+            "title": "Harness Core",
+            "body": "등록을 검증하고 대상 Agent별 기능 집합을 계산합니다."
+          },
+          {
+            "step": "3",
+            "title": "Projection",
+            "body": "reconcile과 status가 실제 환경의 연결과 차이를 관리합니다."
+          }
+        ],
+        "scopeNote": "Agent 제품마다 동일한 파일 구조를 강제하지 않는 capability projection입니다.",
+        "alt": "Personal Wiki, Skill, manifest, Harness Core와 Codex·Claude Code·Gemini 설정 흐름",
+        "caption": "단일 정본과 Agent별 비대칭성을 함께 관리하는 하네스"
+      },
+      {
+        "id": "context-skill-loop",
+        "type": "svg",
+        "visualKind": "knowledge-flywheel",
+        "diagramGrammar": "state",
+        "motionProfile": "reviewed-context-loop",
+        "src": "assets/project-diagrams/harness-context-skill-loop.svg",
+        "label": "KNOWLEDGE LOOP · WIKI + SKILL",
+        "title": "검토된 맥락만 실행 경로에 진입하는 Wiki–Skill 루프",
+        "description": "Wiki Task Preflight가 지식 상태를 판별해 REVIEWED+만 Skill 실행 경로로 보내고 DRAFT는 발견 후보로 기록한 뒤 종료합니다.",
+        "question": "과거 대화를 거대한 prompt로 복사하지 않고 어떻게 다음 작업에 재사용하는가?",
+        "takeaway": "Wiki는 판단 이유를 제공하지만 REVIEWED+ 상태만 실행 힌트가 되며 DRAFT는 실행 권한 없이 발견 후보로 격리됩니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Capture",
+            "body": "대화·결정·사례를 observation·draft로 수집합니다."
+          },
+          {
+            "step": "2",
+            "title": "Gate & select",
+            "body": "지식 상태를 판별해 REVIEWED+만 선택하고 DRAFT는 발견 후보함에서 종료합니다."
+          },
+          {
+            "step": "3",
+            "title": "Execute & learn",
+            "body": "검증된 Skill을 실행하고 helpful·unused·defect 결과를 남깁니다."
+          }
+        ],
+        "scopeNote": "검색된 지식은 실행 권한이 아니며 manifest·지원·trigger 조건을 별도로 통과해야 합니다.",
+        "alt": "Wiki Task Preflight의 지식 상태 결정에서 REVIEWED+는 Skill 실행으로, DRAFT는 실행 권한 없는 발견 후보함으로 갈라지는 루프",
+        "caption": "검토된 맥락과 발견 후보의 권한을 분리한 Wiki–Skill 운영 루프"
+      },
+      {
+        "id": "skill-family-routing",
+        "type": "svg",
+        "visualKind": "skill-constellation",
+        "diagramGrammar": "data-flow",
+        "motionProfile": "skill-routing",
+        "src": "assets/project-diagrams/harness-skill-family-routing.svg",
+        "label": "ROUTING · SKILL FAMILIES",
+        "title": "작업 신호에서 검증된 Skill 산출물까지",
+        "description": "요청의 intent·risk·artifact 신호로 필요한 Skill만 선택해 DAG로 조합하고 manifest·test·review 경계를 통과한 산출물만 반환합니다.",
+        "question": "모든 지침을 항상 넣지 않고도 일관된 작업 방식을 어떻게 재사용하는가?",
+        "takeaway": "현재 과제에 필요한 Skill만 순서화하고 manifest와 검증 경계를 통과한 결과만 검증된 산출물로 승격합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "Match",
+            "body": "명시적 호출과 작업 유형·위험·산출물 신호를 판별합니다."
+          },
+          {
+            "step": "2",
+            "title": "Route",
+            "body": "용어·코드·문서·데이터·운영 Skill군 중 필요한 것만 고릅니다."
+          },
+          {
+            "step": "3",
+            "title": "Compose",
+            "body": "필요한 순서로 실행하고 검증된 산출물로 수렴합니다."
+          }
+        ],
+        "scopeNote": "Skill 개수 자체보다 반복된 문제를 안전한 절차로 바꾸는 기준을 설명합니다.",
+        "alt": "작업 요청을 Skill Router가 공개 경계, 코드 설계, 다이어그램 Skill DAG로 조합하고 검증 경계를 거쳐 산출하는 흐름",
+        "caption": "Skill 선택과 실행 순서 뒤에 산출물 검증 경계를 둔 routing"
+      }
+    ],
+    "sections": [
+      {
+        "id": "overview",
+        "documentHeading": "프로젝트 개요",
+        "eyebrow": "01 · PROBLEM & ROLE",
+        "title": "좋은 판단이 대화 종료와 함께 사라지는 문제를 다뤘습니다.",
+        "summary": "검토된 개인 맥락과 반복 가능한 절차를 축적해 다음 Agent가 같은 용어·설계·검증 기준에서 시작하게 합니다.",
+        "paragraphs": [
+          "대화와 프로젝트의 결정·교정·사례를 바로 규칙으로 승격하지 않고 검토 상태를 거쳐 재사용합니다.",
+          "동시에 Codex·Claude Code·Gemini의 지원 차이를 인정하며 하나의 manifest에서 기능을 관리합니다."
+        ],
+        "facts": [
+          {
+            "label": "AGENTS",
+            "value": "Codex · Claude Code · Gemini"
+          },
+          {
+            "label": "SKILLS",
+            "value": "49 canonical procedures"
+          },
+          {
+            "label": "INTEGRATIONS",
+            "value": "8 MCP tools · 8 data sources"
+          }
+        ],
+        "evidenceNodeIds": [
+          "project.personal-agent-harness"
+        ]
+      },
+      {
+        "id": "architecture",
+        "documentHeading": "전체 시스템 아키텍처",
+        "eyebrow": "02 · SYSTEM ARCHITECTURE",
+        "title": "지식·절차·설치 권한과 Agent별 projection을 나눴습니다.",
+        "summary": "Wiki에 도구가 언급됐다는 이유만으로 설치되거나 외부 write 권한을 얻지 않습니다.",
+        "diagramIds": [
+          "system-architecture"
+        ],
+        "evidenceNodeIds": [
+          "harness.single-source-configuration",
+          "harness.policy-as-configuration",
+          "harness.knowledge-not-execution-authority"
+        ]
+      },
+      {
+        "id": "wiki-skill",
+        "documentHeading": "Wiki–Skill 협업 루프",
+        "eyebrow": "03 · COLLABORATION MEMORY",
+        "title": "Wiki는 이유를, Skill은 실행 순서를 기억합니다.",
+        "summary": "작업 전 사전 조회는 현재 과제에 맞는 맥락만 선택하고 구조화된 skill_refs는 실제 설치·지원·trigger 조건을 확인합니다.",
+        "diagramIds": [
+          "context-skill-loop"
+        ],
+        "evidenceNodeIds": [
+          "harness.wiki-skill-loop",
+          "harness.knowledge-preflight-ledger",
+          "harness.trust-state-and-file-authority"
+        ]
+      },
+      {
+        "id": "routing",
+        "documentHeading": "Skill군과 상황별 Trigger",
+        "eyebrow": "04 · SKILL TRIGGERS",
+        "title": "모든 절차를 넣지 않고 작업 신호에 맞는 Skill군만 사용합니다.",
+        "summary": "용어·글쓰기, 코드 설계, 시각화·문서, 데이터·모델링, 운영·통합 신호를 서로 다른 절차 묶음으로 라우팅합니다.",
+        "diagramIds": [
+          "skill-family-routing"
+        ],
+        "evidenceNodeIds": [
+          "harness.trigger-routing"
+        ]
+      },
+      {
+        "id": "evidence",
+        "documentHeading": "AI와의 협업 방식",
+        "eyebrow": "05 · RECONCILE & AUTHORITY",
+        "title": "적용 전에 계획을 보여주고 충돌은 자동으로 덮어쓰지 않습니다.",
+        "summary": "manifest 검증, 현재 상태 비교, 변경 계획, 안전한 적용과 사후 점검을 분리해 source authority를 보존합니다.",
+        "designDetails": [
+          "Skill 원본은 복사보다 link projection을 사용합니다.",
+          "MCP 설정은 Agent별 adapter가 각 제품의 지원 형식으로 변환합니다.",
+          "private token·인증 상태·원시 이벤트와 재현 가능한 설정을 분리합니다."
+        ],
+        "evidenceNodeIds": [
+          "harness.reconcile-safety",
+          "harness.policy-as-configuration"
+        ]
+      },
+      {
+        "id": "implementation",
+        "documentHeading": "주요 구현",
+        "eyebrow": "06 · IMPLEMENTATION",
+        "title": "상태 감사와 안전한 설정 반영에 같은 manifest 계약을 사용합니다.",
+        "bullets": [
+          "Agent·Skill·MCP·data source manifest",
+          "schema·path·capability validation",
+          "status와 reconcile dry-run·apply",
+          "file lock·atomic write·change detection",
+          "Personal Wiki·Semantic Engine·Work Toolbox"
+        ],
+        "evidenceNodeIds": [
+          "harness.reconcile-safety",
+          "capability.decision-ledger"
+        ]
+      }
+    ],
+    "technologies": [
+      {
+        "label": "AGENTS",
+        "items": [
+          "Codex",
+          "Claude Code",
+          "Gemini"
+        ]
+      },
+      {
+        "label": "KNOWLEDGE",
+        "items": [
+          "Personal Wiki",
+          "Semantic Engine",
+          "Provenance ledger"
+        ]
+      },
+      {
+        "label": "OPERATIONS",
+        "items": [
+          "Manifest",
+          "Reconcile",
+          "MCP adapters",
+          "Status audit"
+        ]
+      }
+    ],
+    "documentHtmlPath": "data/project-documents/personal-agent-harness.html"
+  },
+  {
+    "id": "portfolio-interview-agent",
+    "number": "04",
+    "label": "PERSONAL R&D · INTERACTIVE PORTFOLIO",
+    "title": "Portfolio Interview Agent",
+    "subtitle": "GitHub Pages와 ngrok gateway로 검증된 근거를 질문 가능한 인터페이스에 연결한 서비스",
+    "description": "정적 포트폴리오는 GitHub Pages에서 제공하고 AI 요청만 ngrok을 거쳐 private Node gateway·Ollama로 전달합니다. 현재 페이지·대화 문맥에 맞는 공개 근거와 agent-only 판단 요약을 안전하게 활용하도록 구성했습니다.",
+    "agentPrompts": [
+      "공개 근거와 agent-only 회고 지식을 어떻게 분리했나요?",
+      "페이지 문맥과 전역 프로젝트 검색의 균형은 어떻게 맞췄나요?",
+      "ngrok 배포와 캐시를 어떻게 구성해 응답 지연을 줄였나요?"
+    ],
+    "knowledgeNodeId": "project.portfolio-interview-agent",
+    "tags": [
+      "GITHUB PAGES",
+      "NGROK",
+      "RAG",
+      "KNOWLEDGE GRAPH",
+      "SSE",
+      "PROVENANCE"
+    ],
+    "scope": [
+      "source-bound public projection과 공개/agent-only 경계",
+      "lexical·typed graph·optional CPU dense retrieval",
+      "ngrok·Ollama SSE·source allowlist·장애 fallback",
+      "prepared-direct·bounded LRU·adaptive response budget",
+      "익명 session memory와 server-owned page context"
+    ],
+    "resultLabel": "CURRENT BETA SCOPE",
+    "result": "GitHub Pages, ngrok streaming gateway, private Ollama 질문 생성, 공개 근거 검증과 제한된 캐시를 하나의 beta 서비스로 연결했습니다.",
+    "note": "Langfuse 연결은 선택형 개발 상태이며 공개 운영의 privacy 검토 완료로 표현하지 않습니다.",
+    "diagrams": [
+      {
+        "id": "interview-runtime",
+        "type": "mermaid",
+        "visualKind": "deployment-sequence",
+        "diagramGrammar": "sequence",
+        "motionProfile": "delivery-grounding",
+        "label": "SYSTEM FLOW · PORTFOLIO INTERVIEW",
+        "title": "질문에서 공개 근거가 연결된 답변까지",
+        "description": "GitHub Pages, ngrok gateway, private Ollama, public·agent-only evidence와 source 검증의 경계를 보여줍니다.",
+        "question": "비공개 회고를 답변에 활용하면서 공개 source 범위를 어떻게 지키는가?",
+        "takeaway": "모델은 두 visibility의 요약 근거를 사용할 수 있지만 사용자가 열 수 있는 citation은 public allowlist에서만 확정합니다.",
+        "readingGuide": [
+          {
+            "step": "1",
+            "title": "검증된 문맥",
+            "body": "route ID를 공개 catalog에서 다시 계산합니다."
+          },
+          {
+            "step": "2",
+            "title": "분리된 검색",
+            "body": "public과 server-only summary의 visibility를 유지합니다."
+          },
+          {
+            "step": "3",
+            "title": "격리된 생성",
+            "body": "ngrok은 API 요청만 전달하고 private Ollama가 선택된 evidence 안에서 답합니다."
+          },
+          {
+            "step": "4",
+            "title": "공개 검증",
+            "body": "public source ID만 citation으로 반환합니다."
+          }
+        ],
+        "scopeNote": "회고 원문·locator·링크는 browser와 응답에 포함하지 않습니다.",
+        "alt": "GitHub Pages의 질문과 page context가 ngrok, public·agent-only 검색, private Ollama 생성과 public source allowlist를 통과하는 흐름",
+        "caption": "답변에 활용하는 근거와 사용자에게 공개하는 source를 분리",
+        "source": "sequenceDiagram\n  autonumber\n  box Public delivery\n    participant U as Visitor · GitHub Pages\n    participant N as ngrok HTTPS\n  end\n  box Private host\n    participant G as Node Gateway\n    participant R as Grounded Retrieval\n    participant L as Private Ollama\n  end\n  U->>N: question · session · page hint\n  N->>G: chat API only\n  G->>R: server-owned query context\n  R->>R: public evidence search\n  R->>R: agent-only summary search\n  Note right of R: no agent-only body · locator · link\n  R->>L: bounded prompt · no private locator\n  L-->>R: answer draft\n  R->>R: public source allowlist\n  R-->>G: answer + public citations\n  G-->>N: SSE token · stage events\n  N-->>U: grounded response + trace"
+      }
+    ],
+    "sections": [
+      {
+        "id": "overview",
+        "documentHeading": "프로젝트 개요",
+        "eyebrow": "01 · PRODUCT BOUNDARY",
+        "title": "AI 데모가 아니라 질문 가능한 포트폴리오를 만들었습니다.",
+        "summary": "Landing → Selected work → Project → Claim/source record → Results & limits는 모델 없이 완전하고 AI는 현재 지점을 더 깊게 탐색하는 선택 기능입니다.",
+        "paragraphs": [
+          "대상은 기술 포트폴리오를 검토하는 채용 담당자와 면접관입니다.",
+          "답변은 자연어 질문, 최근 대화와 검증된 현재 페이지 문맥을 사용하며 3–6문장, 공개 source, 후속 질문과 실행 trace를 반환합니다."
+        ],
+        "facts": [
+          {
+            "label": "CORE",
+            "value": "Static portfolio on GitHub Pages"
+          },
+          {
+            "label": "OPTIONAL",
+            "value": "ngrok + private Node gateway · Ollama"
+          },
+          {
+            "label": "OUTPUT",
+            "value": "Grounded answer · sources · trace"
+          }
+        ],
+        "evidenceNodeIds": [
+          "project.portfolio-interview-agent"
+        ]
+      },
+      {
+        "id": "architecture",
+        "documentHeading": "읽기와 질문을 함께 두는 화면",
+        "eyebrow": "02 · INTERACTION & RUNTIME",
+        "title": "GitHub Pages와 ngrok AI runtime을 독립된 실패 경계로 뒀습니다.",
+        "summary": "ngrok·gateway·모델이 중단돼도 정적 본문은 읽을 수 있고 browser가 secret·prompt·비공개 source를 소유하지 않습니다.",
+        "diagramIds": [
+          "interview-runtime"
+        ],
+        "evidenceNodeIds": [
+          "portfolio-agent.local-first-runtime"
+        ]
+      },
+      {
+        "id": "retrieval",
+        "documentHeading": "질문에서 근거가 있는 답변까지",
+        "eyebrow": "03 · RETRIEVAL",
+        "title": "작은 corpus에 맞는 lexical+graph를 기본으로 유지했습니다.",
+        "summary": "curated lexical seed와 typed relation 1-hop을 기본으로 하고 BGE-M3 exact cosine·RRF는 shadow·hybrid opt-in 경로로 평가합니다.",
+        "designDetails": [
+          "query plan은 기본적으로 사실 범위의 초안이며, 검토된 exact alias만 digest와 source 검증 후 준비 답변으로 전달합니다.",
+          "public embedding index는 bundle·text·model digest가 모두 일치할 때만 사용합니다.",
+          "낮은 confidence에서는 source를 연결하지 않습니다."
+        ],
+        "evidenceNodeIds": [
+          "portfolio-agent.source-validated-retrieval"
+        ]
+      },
+      {
+        "id": "evidence",
+        "documentHeading": "공개 projection과 근거 계보",
+        "eyebrow": "04 · PUBLIC / AGENT-ONLY",
+        "title": "포트폴리오·설계는 공개하고 회고는 재서술한 답변 근거로만 사용합니다.",
+        "summary": "source-bound build가 section과 digest를 검증하며 agent-only bundle은 서버에만 존재하고 public citation으로 승격되지 않습니다.",
+        "evidenceNodeIds": [
+          "portfolio-agent.public-agent-only-boundary",
+          "portfolio-agent.public-release-allowlist"
+        ]
+      },
+      {
+        "id": "runtime",
+        "documentHeading": "배포 환경과 레이턴시 최적화",
+        "eyebrow": "05 · DEPLOYMENT & LATENCY",
+        "title": "ngrok 배포와 검증 가능한 캐시로 반복 생성 비용을 줄였습니다.",
+        "summary": "GitHub Pages → ngrok → gateway → Ollama 경계를 유지하고 exact prepared response·prepared follow-up·bounded browser LRU·사전 계산 검색 자산을 제한적으로 사용합니다.",
+        "evidenceNodeIds": [
+          "portfolio-agent.resilient-offline-fallback",
+          "portfolio-agent.local-first-runtime",
+          "portfolio-agent.latency-optimization"
+        ]
+      },
+      {
+        "id": "memory",
+        "documentHeading": "대화 메모리와 현재 화면 문맥",
+        "eyebrow": "06 · MEMORY & OBSERVABILITY",
+        "title": "최근 대화·요약·episode와 현재 화면 문맥의 권위를 제한했습니다.",
+        "summary": "최근 4문답은 원문으로, 오래된 대화는 rolling summary와 관련 episode로 사용하며 route는 서버의 public catalog에서 다시 계산합니다.",
+        "designDetails": [
+          "SSE는 memory → classify → retrieve → connect → generate → ground 단계를 노출합니다.",
+          "선택형 Langfuse exporter는 credential 누락이나 export 실패가 답변 경로를 막지 않게 합니다."
+        ],
+        "evidenceNodeIds": [
+          "portfolio-agent.contextual-session-memory"
+        ]
+      },
+      {
+        "id": "implementation",
+        "documentHeading": "주요 구현",
+        "eyebrow": "07 · IMPLEMENTATION",
+        "title": "공개 build·검색·생성·메모리·관측 경계를 하나의 서비스로 연결했습니다.",
+        "bullets": [
+          "정적 HTML·CSS·ES modules와 project/evidence route",
+          "source-bound knowledge projection과 digest audit",
+          "lexical·typed graph·optional BGE-M3 retrieval",
+          "GitHub Pages·ngrok·Node gateway·Ollama JSON/SSE와 source allowlist",
+          "exact prepared response·prepared follow-up·bounded browser LRU",
+          "recent·summary·episode session memory",
+          "deterministic browser fallback와 Pages allowlist"
+        ],
+        "evidenceNodeIds": [
+          "portfolio-agent.public-release-allowlist",
+          "portfolio-agent.source-validated-retrieval"
+        ]
+      }
+    ],
+    "technologies": [
+      {
+        "label": "FRONTEND",
+        "items": [
+          "Static HTML",
+          "CSS",
+          "ES modules",
+          "Mermaid"
+        ]
+      },
+      {
+        "label": "AI RUNTIME",
+        "items": [
+          "ngrok",
+          "Node.js",
+          "Ollama",
+          "SSE",
+          "BGE-M3"
+        ]
+      },
+      {
+        "label": "KNOWLEDGE",
+        "items": [
+          "Lexical retrieval",
+          "Typed graph",
+          "Provenance digest",
+          "Session memory"
+        ]
+      }
+    ],
+    "documentHtmlPath": "data/project-documents/portfolio-interview-agent.html"
+  }
+]
