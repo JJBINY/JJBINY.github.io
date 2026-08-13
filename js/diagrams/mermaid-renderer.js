@@ -12,6 +12,7 @@ const BLOCKED_SVG_ELEMENTS = [
   "video",
   "canvas"
 ];
+const MOTION_PROFILES = new Set(["deployment-sequence"]);
 
 let diagramSequence = 0;
 let mermaidLoader;
@@ -40,6 +41,7 @@ export async function renderMermaid(targetElement, source, options = {}) {
     await waitForDocumentFonts(ownerDocument);
     const { svg } = await mermaid.render(diagramId, normalizedSource);
     const svgElement = parseAndSanitizeSvg(ownerDocument, svg, label);
+    applyMotionProfile(svgElement, options.motionProfile);
     const canvas = ownerDocument.createElement("div");
     canvas.className = "mermaid-diagram__canvas";
     canvas.append(svgElement);
@@ -101,6 +103,7 @@ export async function renderMermaidBlocks(root = globalThis.document) {
       const result = await renderMermaid(block, source, {
         id: block.dataset.mermaidId,
         label: block.dataset.mermaidLabel,
+        motionProfile: block.dataset.mermaidMotionProfile,
         showSource: block.dataset.mermaidShowSource === "true"
       });
       results.push(result);
@@ -119,6 +122,20 @@ export async function renderMermaidBlocks(root = globalThis.document) {
   }
 
   return results;
+}
+
+function applyMotionProfile(svg, requestedProfile) {
+  const profile = typeof requestedProfile === "string" ? requestedProfile.trim() : "";
+  if (!MOTION_PROFILES.has(profile)) return;
+
+  svg.dataset.motionProfile = profile;
+  const messages = [...svg.querySelectorAll(
+    ".messageLine0, .messageLine1, .messageText, .sequenceNumber"
+  )];
+  messages.forEach((element, index) => {
+    element.classList.add("mermaid-motion-step");
+    element.style.setProperty("--diagram-motion-order", String(index));
+  });
 }
 
 export function normalizeMermaidSource(source) {

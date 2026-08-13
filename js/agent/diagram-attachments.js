@@ -95,6 +95,7 @@ function createTrustedAttachment(project, diagram) {
     readingGuide,
     scopeNote: diagram.scopeNote.trim(),
     type: diagram.type,
+    visualKind: isNonEmptyString(diagram.visualKind) ? diagram.visualKind.trim() : diagram.type,
     ...(diagram.type === "svg"
       ? { src: diagram.src.trim(), alt: (diagram.alt ?? diagram.title).trim() }
       : { source: diagram.source.trim() })
@@ -152,6 +153,11 @@ export function resolveDiagramAttachments(sources, catalog, limit = MAX_ATTACHME
   }
 
   return attachments;
+}
+
+export function resolveDiagramAttachmentById(id, catalog) {
+  if (!isNonEmptyString(id) || !catalog || typeof catalog !== "object") return null;
+  return Object.hasOwn(catalog, id) ? catalog[id] : null;
 }
 
 function createElement(ownerDocument, tagName, className, text) {
@@ -320,7 +326,8 @@ export function initializeDiagramAttachments({
       ? renderSvgAttachment(ownerDocument, figure, attachment)
       : renderDiagram(figure, attachment.source, {
         id: `attachment-${attachment.projectId}-${attachment.diagramId}`,
-        label: attachment.title
+        label: attachment.title,
+        motionProfile: attachment.visualKind
       });
     void Promise.resolve(renderResult).then((result) => {
       if (currentSequence !== renderSequence || !figure.isConnected) return;
@@ -342,6 +349,10 @@ export function initializeDiagramAttachments({
     image.src = attachment.src;
     image.alt = attachment.alt;
     image.decoding = "async";
+    image.addEventListener("load", () => {
+      const scrollHost = figure.parentElement;
+      if (scrollHost) scrollHost.scrollLeft = 0;
+    }, { once: true });
     figure.append(image);
     return { status: "rendered" };
   }
@@ -385,8 +396,16 @@ export function initializeDiagramAttachments({
     return attachments;
   }
 
+  function openById(id, opener) {
+    const attachment = resolveDiagramAttachmentById(id, catalog);
+    if (!attachment) return false;
+    openAttachment(attachment, opener);
+    return true;
+  }
+
   return Object.freeze({
     render,
+    openById,
     close: focusManager.close,
     isOpen: () => dialog.open,
     catalog

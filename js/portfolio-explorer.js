@@ -365,7 +365,8 @@ function renderProjectArchitecture(panel, project, renderDiagram) {
     panel.append(article);
     renderDiagram(figure, diagram.source, {
       id: `${project.id}-${diagram.id}`,
-      label: diagram.title
+      label: diagram.title,
+      motionProfile: diagram.visualKind
     });
   });
 
@@ -449,8 +450,31 @@ function appendTextList(root, items, className = "project-story-list") {
   root.append(list);
 }
 
-function appendProjectDiagram(root, project, diagram, renderDiagram) {
+function makeDiagramInteractive(figure, attachmentId, label, openDiagram) {
+  if (typeof openDiagram !== "function") return;
+  figure.classList.add("is-diagram-opener");
+  figure.tabIndex = 0;
+  figure.setAttribute("role", "button");
+  figure.setAttribute("aria-haspopup", "dialog");
+  figure.setAttribute("aria-controls", "diagram-attachment-dialog");
+  figure.setAttribute("aria-label", `${label} 확대해서 검토`);
+
+  const affordance = createElement("span", "diagram-open-affordance", "확대해서 검토");
+  affordance.setAttribute("aria-hidden", "true");
+  figure.append(affordance);
+
+  const open = () => openDiagram(attachmentId, figure);
+  figure.addEventListener("click", open);
+  figure.addEventListener("keydown", (event) => {
+    if (!["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    open();
+  });
+}
+
+function appendProjectDiagram(root, project, diagram, renderDiagram, openDiagram) {
   const article = createElement("article", "project-story-diagram");
+  article.dataset.diagramKind = diagram.visualKind ?? diagram.type;
   const header = createElement("header", "project-story-diagram__header");
   header.append(
     createElement("p", "detail-kicker", diagram.label),
@@ -471,21 +495,33 @@ function appendProjectDiagram(root, project, diagram, renderDiagram) {
       : "mermaid-surface mermaid-surface--architecture"
   );
   figure.dataset.diagramId = `${project.id}-${diagram.id}`;
+  figure.dataset.diagramKind = diagram.visualKind ?? diagram.type;
   figure.setAttribute("aria-label", diagram.alt ?? diagram.title);
   if (diagram.type === "svg") {
+    const motionLabel = (diagram.visualKind ?? "animated diagram").replaceAll("-", " ");
+    const motion = createElement("span", "project-svg-surface__motion", `${motionLabel} · LIVE`);
+    motion.setAttribute("aria-hidden", "true");
     const image = document.createElement("img");
     image.src = diagram.src;
     image.alt = diagram.alt;
     image.loading = "lazy";
     image.decoding = "async";
-    figure.append(image);
+    image.addEventListener("load", () => figure.classList.add("is-ready"), { once: true });
+    figure.append(motion, image);
   } else {
     renderDiagram(figure, diagram.source, {
       id: `${project.id}-${diagram.id}`,
-      label: diagram.title
+      label: diagram.title,
+      motionProfile: diagram.visualKind
     });
   }
   figure.append(createElement("figcaption", "diagram-caption", diagram.caption ?? diagram.description));
+  makeDiagramInteractive(
+    figure,
+    `${project.id}/${diagram.id}`,
+    diagram.alt ?? diagram.title,
+    openDiagram
+  );
 
   const guide = createElement("ol", "project-diagram-guide");
   diagram.readingGuide.forEach((step) => {
@@ -560,7 +596,13 @@ function renderProjectStorySection(root, project, section, evidence, context) {
   const diagramById = new Map(project.diagrams.map((diagram) => [diagram.id, diagram]));
   (section.diagramIds ?? []).forEach((diagramId) => {
     const diagram = diagramById.get(diagramId);
-    if (diagram) appendProjectDiagram(article, project, diagram, context.renderDiagram);
+    if (diagram) appendProjectDiagram(
+      article,
+      project,
+      diagram,
+      context.renderDiagram,
+      context.openDiagram
+    );
   });
 
   const sectionEvidence = (section.evidenceNodeIds ?? [])
@@ -599,7 +641,7 @@ function parseProjectDocument(project) {
   return article;
 }
 
-function insertDocumentMermaid(article, project, renderDiagram) {
+function insertDocumentMermaid(article, project, renderDiagram, openDiagram) {
   const diagram = project.diagrams.find(({ type }) => type === "mermaid");
   if (!diagram) return;
   const section = project.sections.find(({ diagramIds }) => diagramIds?.includes(diagram.id));
@@ -613,7 +655,33 @@ function insertDocumentMermaid(article, project, renderDiagram) {
   heading.insertAdjacentElement("afterend", figure);
   renderDiagram(canvas, diagram.source, {
     id: `${project.id}-${diagram.id}`,
-    label: diagram.alt ?? diagram.title
+    label: diagram.alt ?? diagram.title,
+    motionProfile: diagram.visualKind
+  });
+  makeDiagramInteractive(
+    figure,
+    `${project.id}/${diagram.id}`,
+    diagram.alt ?? diagram.title,
+    openDiagram
+  );
+}
+
+function enhanceDocumentDiagramFigures(article, project, openDiagram) {
+  const diagramBySource = new Map(
+    project.diagrams
+      .filter(({ type, src }) => type === "svg" && typeof src === "string")
+      .map((diagram) => [diagram.src, diagram])
+  );
+  article.querySelectorAll("figure.project-document__figure > img[src]").forEach((image) => {
+    const diagram = diagramBySource.get(image.getAttribute("src"));
+    const figure = image.closest("figure");
+    if (!diagram || !figure) return;
+    makeDiagramInteractive(
+      figure,
+      `${project.id}/${diagram.id}`,
+      diagram.alt ?? diagram.title,
+      openDiagram
+    );
   });
 }
 
@@ -651,7 +719,8 @@ function renderProjectDocument(root, project, activeSection, context) {
   content.append(toolbar, paper);
   layout.append(toc, content);
   root.append(layout);
-  insertDocumentMermaid(article, project, context.renderDiagram);
+  insertDocumentMermaid(article, project, context.renderDiagram, context.openDiagram);
+  enhanceDocumentDiagramFigures(article, project, context.openDiagram);
   enhanceProjectDocument(article, project);
   window.requestAnimationFrame(() => {
     const activeLink = toc.querySelector("[aria-current='page']");
@@ -981,7 +1050,12 @@ function fallbackDiagramRenderer(target, source) {
   target.append(pre);
 }
 
-export function initializePortfolioExplorer({ projects, knowledge, renderDiagram = fallbackDiagramRenderer }) {
+export function initializePortfolioExplorer({
+  projects,
+  knowledge,
+  renderDiagram = fallbackDiagramRenderer,
+  openDiagram = null
+}) {
   const detailRoot = document.querySelector("[data-portfolio-detail]");
   const landingSections = [...document.querySelectorAll("[data-landing-section]")];
   const nodes = knowledge?.nodes ?? [];
@@ -991,7 +1065,8 @@ export function initializePortfolioExplorer({ projects, knowledge, renderDiagram
     nodes,
     edges,
     nodeById: new Map(nodes.map((node) => [node.id, node])),
-    renderDiagram
+    renderDiagram,
+    openDiagram
   };
   let lastRouteKey = null;
 

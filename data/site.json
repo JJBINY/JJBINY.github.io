@@ -1,7 +1,7 @@
 {
-  "version": "beta:0.0.2",
+  "version": "beta:0.0.3",
   "release": {
-    "releasedAt": "2026-08-13T04:49:05+09:00",
+    "releasedAt": "2026-08-13T13:14:52+09:00",
     "timeZone": "Asia/Seoul"
   },
   "runtime": {
@@ -16,7 +16,7 @@
     "initials": "JK",
     "role": "APPLIED AI ENGINEER",
     "status": "AI AGENT · DOCUMENT AI · RAG",
-    "eyebrow": "PORTFOLIO · beta:0.0.2",
+    "eyebrow": "PORTFOLIO · beta:0.0.3",
     "headline": [
       "복잡한 현장 지식을",
       "검증 가능한 AI 시스템으로."

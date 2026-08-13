@@ -171,9 +171,9 @@ const STEEL_TRAJECTORY_VIEWBOX = Object.freeze({ width: 440, height: 1240 });
 
 const STEEL_NODES = Object.freeze([
   { id: "question", stage: 0, x: 120, y: 24, w: 200, h: 76, kind: "terminal", tag: "INPUT", label: "사용자 질의", meta: "원질의 · 대화 맥락" },
-  { id: "understand", stage: 1, x: 120, y: 124, w: 200, h: 76, tag: "SEMANTIC", label: "Query Understanding", meta: "index · graph · slots" },
-  { id: "ambiguity", stage: 2, cx: 220, cy: 264, rx: 100, ry: 48, kind: "diamond", tag: "GATE", label: "중요한 모호성?", meta: "라인 · 시간 범위" },
-  { id: "hitl", stage: 2, x: 24, y: 336, w: 184, h: 76, kind: "optional", tag: "HUMAN", label: "HITL 질문 · 응답", meta: "typed choice" },
+  { id: "understand", stage: 1, x: 120, y: 124, w: 200, h: 76, tag: "SEMANTIC", label: "질의 이해", meta: "색인 · 그래프 · slot" },
+  { id: "ambiguity", stage: 2, cx: 220, cy: 264, rx: 100, ry: 48, kind: "diamond", tag: "GATE", label: "모호성?", meta: "결과 영향 여부" },
+  { id: "hitl", stage: 2, x: 24, y: 336, w: 184, h: 76, kind: "optional", tag: "HUMAN", label: "HITL 질문 · 응답", meta: "라인 · 시간 범위 선택" },
   { id: "plan", stage: 3, x: 120, y: 440, w: 200, h: 76, kind: "core", tag: "PLAN", label: "Action Plan DAG", meta: "binding · dependency" },
   { id: "orchestrator", stage: 4, x: 120, y: 540, w: 200, h: 76, kind: "core", tag: "RUNTIME", label: "Orchestrator", meta: "fan-out · fan-in" },
   { id: "manual", stage: 4, x: 20, y: 660, w: 188, h: 76, tag: "AGENT", label: "메뉴얼 Agent", meta: "검색 · Fragment" },
@@ -753,11 +753,12 @@ function decorateDocumentTables(article) {
 }
 
 function appendSvgText(group, node) {
-  const tag = createSvgElement("text", { x: node.kind === "diamond" ? node.cx : node.x + 16, y: node.kind === "diamond" ? node.cy - 12 : node.y + 21, class: "execution-node__tag" });
+  const centered = node.kind === "diamond";
+  const tag = createSvgElement("text", { x: centered ? node.cx : node.x + 16, y: centered ? node.cy - 20 : node.y + 21, class: "execution-node__tag", "text-anchor": centered ? "middle" : "start" });
   tag.textContent = node.tag;
-  const label = createSvgElement("text", { x: node.kind === "diamond" ? node.cx : node.x + 16, y: node.kind === "diamond" ? node.cy + 8 : node.y + 45, class: "execution-node__label", "text-anchor": node.kind === "diamond" ? "middle" : "start" });
+  const label = createSvgElement("text", { x: centered ? node.cx : node.x + 16, y: centered ? node.cy + 3 : node.y + 45, class: "execution-node__label", "text-anchor": centered ? "middle" : "start" });
   label.textContent = node.label;
-  const meta = createSvgElement("text", { x: node.kind === "diamond" ? node.cx : node.x + 16, y: node.kind === "diamond" ? node.cy + 28 : node.y + 64, class: "execution-node__meta", "text-anchor": node.kind === "diamond" ? "middle" : "start" });
+  const meta = createSvgElement("text", { x: centered ? node.cx : node.x + 16, y: centered ? node.cy + 23 : node.y + 64, class: "execution-node__meta", "text-anchor": centered ? "middle" : "start" });
   meta.textContent = node.meta;
   group.append(tag, label, meta);
 }

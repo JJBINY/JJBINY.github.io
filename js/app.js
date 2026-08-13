@@ -79,7 +79,7 @@ function renderProfile(site) {
     stats,
     approachCopy,
     principles,
-    version = "beta:0.0.2",
+    version = "beta:0.0.3",
     release = {},
     runtime = {}
   } = site;
@@ -369,6 +369,10 @@ function initializeAgent({
   let finalTrace = null;
   let activeTraceId = null;
   let activeInlineTrace = null;
+  let traceClockTimer = null;
+  let traceRenderFrame = 0;
+  let traceStartedAt = 0;
+  let streamedAnswerCharacters = 0;
   const traceNodes = new Map();
   const queuedTraceNodes = new Set();
   let traceTransitionVersion = 0;
@@ -380,20 +384,20 @@ function initializeAgent({
     message: "포트폴리오의 프로젝트와 설계 판단을 질문해보세요."
   });
   const traceDefinitions = [
-    ["memory", "01", "Memory", "최근 대화와 관련 있는 과거 detail을 불러옵니다."],
-    ["classify", "02", "Classify", "질문의 의도와 공개 범위를 판별합니다."],
-    ["retrieve", "03", "Retrieve", "공개 지식 번들에서 어휘 seed를 찾습니다."],
-    ["connect", "04", "Connect", "허용된 relation을 따라 연관 근거를 확장합니다."],
-    ["generate", "05", "Generate", "선택된 근거 안에서 답변을 생성합니다."],
-    ["ground", "06", "Source check", "근거 ID와 공개 범위 allowlist를 검증합니다."]
+    ["memory", "01", "Context", "최근 대화와 현재 페이지 힌트를 검색 문맥으로 정리합니다."],
+    ["classify", "02", "Intent", "질문 유형, 지칭 대상과 공개 범위를 판별합니다."],
+    ["retrieve", "03", "Retrieval", "어휘·dense 후보를 결합해 답변 근거 seed를 선택합니다."],
+    ["connect", "04", "Evidence graph", "허용된 relation을 따라 관련 근거와 claim 경로를 연결합니다."],
+    ["generate", "05", "Synthesis", "선택된 근거와 답변 계획 안에서 문장을 스트리밍합니다."],
+    ["ground", "06", "Source check", "공개 source allowlist와 인용 결속을 최종 검증합니다."]
   ];
   const traceTransitionDuration = Object.freeze({
-    memory: 1000,
-    classify: 1200,
-    retrieve: 2600,
-    connect: 1800,
-    generate: 1000,
-    ground: 1200
+    memory: 900,
+    classify: 1100,
+    retrieve: 1800,
+    connect: 1300,
+    generate: 1400,
+    ground: 900
   });
 
   providerBadge.textContent = agentService.providerLabel;
@@ -520,6 +524,99 @@ function initializeAgent({
     return traceDefinitions.find(([id]) => id === nodeId);
   }
 
+  function traceActivity(nodeId, state) {
+    const output = state.output ?? {};
+    if (nodeId === "memory") {
+      return output.recentExchangeCount !== undefined
+        ? `최근 ${output.recentExchangeCount}턴과 회상 detail ${output.recalledEpisodeCount ?? 0}건을 정렬하고 페이지 힌트를 결합했습니다.`
+        : "최근 대화 → 장기 기억 후보 → 현재 프로젝트 힌트 순으로 검색 문맥을 구성하고 있습니다.";
+    }
+    if (nodeId === "classify") {
+      return output.intent
+        ? `의도 ${output.intent} · 범위 ${output.queryScope?.kind ?? output.queryScope ?? "global"}로 분류했습니다.`
+        : "질문의 목적, 명시 프로젝트, 현재 페이지 지시어와 답변 상세도 신호를 분류하고 있습니다.";
+    }
+    if (nodeId === "retrieve") {
+      const seedCount = output.seeds?.length;
+      return Number.isFinite(seedCount)
+        ? `어휘·dense 후보를 결합하고 중복을 축약해 ${seedCount}개의 seed 근거를 선택했습니다.`
+        : "어휘 seed 검색 → BGE-M3 후보 검색 → RRF 결합 → 상위 공개 근거 선택을 수행하고 있습니다.";
+    }
+    if (nodeId === "connect") {
+      const pathCount = output.paths?.length;
+      return Number.isFinite(pathCount)
+        ? `${pathCount}개의 허용 relation 경로를 claim 후보와 연결했습니다.`
+        : "seed에서 1-hop 관계를 확장하고 중복 경로와 비공개 source 노출 가능성을 제거하고 있습니다.";
+    }
+    if (nodeId === "generate") {
+      if (state.status === "complete") {
+        return output.generationMode === "prepared-cache"
+          ? "검토된 준비 답변을 공개 근거와 다시 결속해 반환했습니다. 모델 추론은 실행하지 않았습니다."
+          : `${output.outputTokens ?? "—"} tokens을 생성하고 응답 깊이와 출력 상한을 기록했습니다.`;
+      }
+      if (streamedAnswerCharacters > 0) {
+        return `첫 토큰을 수신했습니다. 근거 범위 안에서 답변 문장을 스트리밍 중이며 현재 ${streamedAnswerCharacters.toLocaleString()}자를 전달했습니다.`;
+      }
+      return "선택 근거와 답변 계획을 bounded prompt로 구성했습니다. 로컬 AI의 첫 응답 토큰을 기다리고 있습니다.";
+    }
+    if (nodeId === "ground") {
+      const sourceCount = output.sourceIds?.length;
+      return Number.isFinite(sourceCount)
+        ? `${sourceCount}개의 공개 source ID와 인용 위치를 검증하고 후속 질문 모드를 확정했습니다.`
+        : "답변의 source ID를 공개 allowlist와 대조하고 인용·후속 질문 결속을 확인하고 있습니다.";
+    }
+    return state.detail ?? "현재 작업을 수행하고 있습니다.";
+  }
+
+  function traceProgressState() {
+    const completed = traceDefinitions.filter(([id]) => ["complete", "fallback", "skipped"].includes(traceNodes.get(id)?.status)).length;
+    const runningIndex = traceDefinitions.findIndex(([id]) => traceNodes.get(id)?.status === "running");
+    const currentIndex = runningIndex >= 0 ? runningIndex : Math.min(completed, traceDefinitions.length - 1);
+    const progress = finalTrace
+      ? 100
+      : Math.min(96, ((completed + (runningIndex >= 0 ? 0.42 : 0.08)) / traceDefinitions.length) * 100);
+    return { completed, currentIndex, progress };
+  }
+
+  function appendWorkingVisual(root, nodeId, status) {
+    const visual = createElement("span", `trace-working-mark${nodeId === "generate" ? " trace-working-mark--generate" : ""}`);
+    visual.setAttribute("aria-hidden", "true");
+    visual.dataset.status = status;
+    visual.append(document.createElement("i"), document.createElement("i"), document.createElement("i"));
+    root.append(visual);
+  }
+
+  function renderPendingResponse(bodyElement, label = "에이전트가 응답을 생성하고 있습니다.") {
+    const shell = createElement("span", "response-generating");
+    const visual = createElement("span", "response-generating__visual");
+    visual.setAttribute("aria-hidden", "true");
+    visual.append(document.createElement("i"), document.createElement("i"), document.createElement("i"));
+    shell.append(visual, createElement("span", "response-generating__label", label));
+    bodyElement.replaceChildren(shell);
+  }
+
+  function scheduleTraceRender() {
+    if (traceRenderFrame) return;
+    traceRenderFrame = requestAnimationFrame(() => {
+      traceRenderFrame = 0;
+      renderLiveTrace();
+      renderInlineTrace();
+    });
+  }
+
+  function startTraceClock() {
+    traceStartedAt = Date.now();
+    if (traceClockTimer) window.clearInterval(traceClockTimer);
+    traceClockTimer = window.setInterval(scheduleTraceRender, 500);
+  }
+
+  function stopTraceClock() {
+    if (traceClockTimer) window.clearInterval(traceClockTimer);
+    traceClockTimer = null;
+    if (traceRenderFrame) cancelAnimationFrame(traceRenderFrame);
+    traceRenderFrame = 0;
+  }
+
   function traceStageFacts(nodeId, state) {
     const output = state.output ?? {};
     if (nodeId === "memory") {
@@ -592,7 +689,8 @@ function initializeAgent({
     }
     const [id, state] = current;
     const definition = traceDefinition(id) ?? [id, "—", id, "실행 중입니다."];
-    count.textContent = definition[1];
+    const progressState = traceProgressState();
+    count.textContent = `${progressState.currentIndex + 1} / ${traceDefinitions.length}`;
     status.textContent = ["error", "cancelled"].includes(state.status)
       ? `실행 ${traceStatusLabel(state.status).toLocaleLowerCase()}`
       : `${definition[2]} ${state.status === "running" ? "실행 중" : "완료"}`;
@@ -600,13 +698,21 @@ function initializeAgent({
     const list = createElement("ol", "message-live-trace__steps");
     const item = createElement("li", "");
     item.dataset.status = state.status;
+    item.dataset.traceNode = id;
+    const progress = createElement("div", "message-live-trace__progress");
+    const progressBar = document.createElement("i");
+    progressBar.style.setProperty("--trace-progress-scale", String(progressState.progress / 100));
+    progress.append(progressBar);
     const heading = createElement("div", "message-live-trace__current");
+    appendWorkingVisual(heading, id, state.status);
     heading.append(
-      createElement("span", "", definition[1]),
+      createElement("span", "message-live-trace__index", definition[1]),
       createElement("strong", "", definition[2]),
-      createElement("em", "", Number.isFinite(state.elapsedMs) ? `${state.elapsedMs} ms` : traceStatusLabel(state.status))
+      createElement("em", "", state.status === "running" && traceStartedAt
+        ? `${Math.max(0, Math.round((Date.now() - traceStartedAt) / 1000))}s`
+        : Number.isFinite(state.elapsedMs) ? `${state.elapsedMs} ms` : traceStatusLabel(state.status))
     );
-    item.append(heading, createElement("p", "", state.detail ?? definition[3]));
+    item.append(progress, heading, createElement("p", "", traceActivity(id, state)));
     list.append(item);
     content.append(list);
   }
@@ -666,9 +772,10 @@ function initializeAgent({
       applyTraceEvent(payload);
       if (payload.status === "running") {
         const requestedDelay = payload.output?.presentationDelayMs;
+        const stageDuration = traceTransitionDuration[payload.node] ?? 1000;
         const delay = Number.isFinite(requestedDelay)
-          ? Math.max(0, Math.min(3_000, requestedDelay))
-          : traceTransitionDuration[payload.node] ?? 1000;
+          ? Math.max(stageDuration, Math.min(3_000, requestedDelay))
+          : stageDuration;
         await waitForTraceTransition(delay, version);
       }
     });
@@ -686,6 +793,8 @@ function initializeAgent({
 
   function renderLiveTrace() {
     traceRoot.replaceChildren();
+
+    const progressState = traceProgressState();
 
     const summary = createElement("header", "live-trace__summary");
     const signal = createElement("span", "live-trace__signal");
@@ -706,6 +815,36 @@ function initializeAgent({
         `${activeTraceId ? `TRACE ${activeTraceId.slice(0, 8)} · ` : ""}${traceEvents} EVENTS`
       )
     );
+
+    const progress = createElement("section", "live-trace__progress");
+    const progressHeader = createElement("div", "live-trace__progress-header");
+    progressHeader.append(
+      createElement("strong", "", finalTrace ? "응답 경로 완료" : `파이프라인 ${progressState.currentIndex + 1} / ${traceDefinitions.length}`),
+      createElement("span", "", `${Math.round(progressState.progress)}%`)
+    );
+    const progressTrack = createElement("div", "live-trace__progress-track");
+    const progressFill = document.createElement("i");
+    progressFill.style.setProperty("--trace-progress-scale", String(progressState.progress / 100));
+    progressTrack.append(progressFill);
+    progress.append(progressHeader, progressTrack);
+
+    const runningEntry = [...traceNodes.entries()].find(([, state]) => state.status === "running");
+    if (runningEntry) {
+      const [nodeId, state] = runningEntry;
+      const definition = traceDefinition(nodeId) ?? [nodeId, "—", nodeId, state.detail];
+      const now = createElement("section", "trace-now");
+      now.dataset.traceNode = nodeId;
+      now.dataset.status = state.status;
+      appendWorkingVisual(now, nodeId, state.status);
+      const copy = createElement("div", "trace-now__copy");
+      copy.append(
+        createElement("span", "mono", `NOW · ${definition[1]}`),
+        createElement("strong", "", definition[2]),
+        createElement("p", "", traceActivity(nodeId, state))
+      );
+      now.append(copy);
+      progress.append(now);
+    }
 
     const list = createElement("div", "live-trace__nodes");
     traceDefinitions.forEach(([id, index, label, caption]) => {
@@ -729,13 +868,14 @@ function initializeAgent({
         status
       );
       content.append(header, createElement("p", "", state.detail ?? caption));
+      if (state.status === "running") content.append(createElement("p", "trace-node__activity", traceActivity(id, state)));
       appendTraceFacts(content, id, state);
 
       node.append(rail, content);
       list.append(node);
     });
 
-    traceRoot.append(summary, list);
+    traceRoot.append(summary, progress, list);
 
     if (finalTrace) {
       const metrics = createElement("section", "live-trace__metrics");
@@ -775,6 +915,8 @@ function initializeAgent({
     finalTrace = null;
     activeTraceId = null;
     activeInlineTrace = null;
+    streamedAnswerCharacters = 0;
+    stopTraceClock();
     traceEventCount.textContent = "0";
     renderLiveTrace();
   }
@@ -1083,7 +1225,7 @@ function initializeAgent({
     diagramAttachments?.render(attachmentsElement, sources);
 
     if (pending) {
-      bodyElement.textContent = "AI가 답변을 생성하고 있습니다.";
+      renderPendingResponse(bodyElement);
       traceElement.hidden = false;
       traceElement.dataset.autoToggle = "true";
       traceElement.open = true;
@@ -1282,6 +1424,7 @@ function initializeAgent({
 
     const pending = appendMessage({ role: "assistant", pending: true });
     activeInlineTrace = pending.trace;
+    startTraceClock();
     renderInlineTrace();
     let streamed = "";
     const pageContext = currentContext();
@@ -1307,10 +1450,12 @@ function initializeAgent({
       const responsePromise = agentService.ask(question, (token) => {
         if (controller.signal.aborted || requestVersion !== conversationVersion) return;
         streamed += token;
+        streamedAnswerCharacters = streamed.length;
         pending.body.textContent = streamed;
         pending.article.classList.remove("is-pending");
         updatePeekPreview({ role: "AI", status: "ANSWERING", message: streamed });
         scrollToLatest();
+        scheduleTraceRender();
       }, controller.signal, handleAgentEvent, pageContext, { cachedFollowUps });
       const response = await responsePromise;
 
@@ -1418,6 +1563,7 @@ function initializeAgent({
     } finally {
       if (activeController === controller) {
         activeController = null;
+        stopTraceClock();
         setBusy(false);
         if (!workspace.hidden && workspace.dataset.mode !== "peek") input.focus();
         scrollToLatest();
@@ -1576,9 +1722,16 @@ async function main() {
     console.error("Portfolio evidence could not be loaded:", error);
   }
 
+  const diagramAttachments = initializeDiagramAttachments({
+    projects: portfolioContent.projects,
+    dialog: $("[data-diagram-dialog]"),
+    renderDiagram: renderMermaid,
+    fallbackFocus: () => $("[data-agent-input]")
+  });
   const explorer = initializePortfolioExplorer({
     projects: portfolioContent.projects,
     knowledge,
+    openDiagram: diagramAttachments.openById,
     renderDiagram(target, source, options) {
       void renderMermaid(target, source, options);
     }
@@ -1597,12 +1750,6 @@ async function main() {
       knowledge: agentContent.knowledge,
       projects: portfolioContent.projects,
       systemPrompt: agentContent.systemPrompt
-    });
-    const diagramAttachments = initializeDiagramAttachments({
-      projects: portfolioContent.projects,
-      dialog: $("[data-diagram-dialog]"),
-      renderDiagram: renderMermaid,
-      fallbackFocus: () => $("[data-agent-input]")
     });
     initializeAgent({
       agentService,

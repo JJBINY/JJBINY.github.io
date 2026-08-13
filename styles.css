@@ -6471,6 +6471,28 @@ body.has-diagram-dialog {
   max-height: 52rem;
 }
 
+.is-diagram-opener {
+  position: relative;
+  cursor: zoom-in;
+  outline: none;
+}
+
+.is-diagram-opener:focus-visible {
+  box-shadow: 0 0 0 1px rgba(20, 119, 101, 0.5), 0 0 0 4px rgba(20, 119, 101, 0.12);
+}
+
+.diagram-open-affordance {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  z-index: 2;
+  color: var(--blue-deep);
+  background: transparent;
+  font: 700 0.66rem/1.2 var(--font-mono);
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
 .diagram-lightbox__error {
   max-width: 34rem;
   margin: 0;
@@ -6629,8 +6651,16 @@ body.has-diagram-dialog {
   }
 
   .diagram-lightbox__host {
+    display: block;
     min-height: 20rem;
     padding: 0.65rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    place-items: initial;
+  }
+
+  .diagram-lightbox__figure {
+    min-width: 60rem;
   }
 
   .diagram-lightbox__narrative {
@@ -6687,7 +6717,7 @@ body.has-diagram-dialog {
   }
 }
 
-/* beta:0.0.2 · case-study journey and evidence semantics */
+/* beta:0.0.3 · case-study journey and evidence semantics */
 .site-runtime {
   display: inline-flex;
   align-items: center;
