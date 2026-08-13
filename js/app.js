@@ -11,6 +11,7 @@ import { createFollowUpCache, createFollowUpCacheKey } from "./agent/follow-up-c
 import { createConversationSessionStore } from "./agent/conversation-session.js";
 import { renderMermaid } from "./diagrams/mermaid-renderer.js";
 import { formatReleaseStamp } from "./release-stamp.js";
+import { renderMarkdown } from "./markdown.js";
 import {
   initializePortfolioExplorer,
   projectDetailRoute,
@@ -1400,7 +1401,8 @@ function initializeAgent({
     roleLabel.textContent = role === "user" ? "YOU" : "PORTFOLIO AI";
     if (avatar) avatar.hidden = role === "user";
     time.textContent = formatTime();
-    bodyElement.textContent = body;
+    if (role === "assistant") renderMarkdown(bodyElement, body);
+    else bodyElement.textContent = body;
 
     renderMessageSources(sourcesElement, sources);
     diagramAttachments?.render(attachmentsElement, sources);
@@ -1602,7 +1604,7 @@ function initializeAgent({
         const step = backlog > 600 ? 8 : backlog > 240 ? 6 : backlog > 80 ? 4 : 2;
         displayedCharacters = Math.min(received.length, displayedCharacters + step);
         pending.article.classList.remove("is-pending");
-        pending.body.textContent = received.slice(0, displayedCharacters);
+        renderMarkdown(pending.body, received.slice(0, displayedCharacters));
       }
       if (sourceComplete && displayedCharacters >= received.length) return resolveFinished();
       if (backlog > 0) scheduleFrame();
@@ -1793,7 +1795,7 @@ function initializeAgent({
 
       if (controller.signal.aborted || requestVersion !== conversationVersion) return;
       pending.article.classList.remove("is-pending");
-      if (pending.body.textContent !== response.answer) pending.body.textContent = response.answer;
+      renderMarkdown(pending.body, response.answer);
       updatePeekPreview({ role: "AI", status: "ANSWER READY", message: response.answer });
 
       renderMessageSources(pending.sources, response.sources);
