@@ -1,0 +1,215 @@
+<article class="project-document" data-project-document-id="steel-domain-agent">
+<h1 id="project-document-steel-domain-agent-steel-domain-ai-agent">Steel Domain AI Agent</h1>
+<blockquote><p>철강 제조 현장의 공식 문서, 작업 경험, 설비 상태를 연결해 근거가 있는 가이던스와 분석 리포트를 제공하는 AI 시스템</p></blockquote>
+<h2 id="project-section-overview">프로젝트 개요</h2>
+<p>철강 제조 현장의 질문은 공식 절차만으로 해결되지 않는 경우가 많습니다. PDF 작업표준과 표·그림, 현장 노하우, 현재 설비 상태를 서로 다른 방식으로 구조화하고, 하나의 질문 흐름에서 필요한 근거를 찾아 최종 답변으로 정리하는 시스템을 구축했습니다.</p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">구분</th>
+<th scope="col">내용</th>
+</tr></thead><tbody>
+<tr>
+<td>적용 대상</td>
+<td>설비·공정 절차 확인, 문제 원인 탐색, 조치 가이던스, 운영 분석</td>
+</tr>
+<tr>
+<td>입력</td>
+<td>사용자의 자연어 질문과 대화 맥락</td>
+</tr>
+<tr>
+<td>활용 정보</td>
+<td>공식 메뉴얼, 작업 노하우, Digital Twin 상태·분석</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>출처가 연결된 가이던스 또는 분석 리포트</td>
+</tr>
+<tr>
+<td>주요 구현</td>
+<td>질문 해석, 작업 계획, 전문 Agent 실행, 근거 검증, 최종 답변 작성</td>
+</tr>
+</tbody></table></div>
+<h2 id="project-section-architecture">전체 시스템 아키텍처</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/steel-system-architecture.svg" alt="Steel Domain AI Agent 전체 시스템 아키텍처" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>Steel Domain AI Agent 전체 시스템 아키텍처</figcaption>
+</figure>
+<p><em>설명 모델 — 현재 저장소의 구성요소와 근거 흐름을 포트폴리오용으로 단순화한 그림</em></p>
+<p>이 그림은 질문이 들어온 뒤 필요한 작업을 정하고, 여러 지식원에서 근거를 수집한 다음 하나의 답변으로 만드는 전체 흐름을 보여줍니다. Agent는 시스템 전체가 아니라 공식 문서, 현장 경험, 설비 상태를 각각 담당하는 전문 실행 구성요소입니다.</p>
+<h3 id="project-document-steel-domain-agent-주요-구성요소">주요 구성요소</h3>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">구성요소</th>
+<th scope="col">역할</th>
+</tr></thead><tbody>
+<tr>
+<td>질문 해석</td>
+<td>질문의 대상, 목적, 조건, 대화 맥락 파악</td>
+</tr>
+<tr>
+<td>작업 구조</td>
+<td>답변에 필요한 정보와 작업 관계 표현</td>
+</tr>
+<tr>
+<td>실행 계획 변환</td>
+<td>작업 구조를 실제 실행 순서와 병렬 작업으로 변환</td>
+</tr>
+<tr>
+<td>실행 조정</td>
+<td>Agent 호출, 실행 순서, 병렬 처리, 실패와 재시도 관리</td>
+</tr>
+<tr>
+<td>전문 Agent</td>
+<td>담당 지식원 검색과 결과 해석</td>
+</tr>
+<tr>
+<td>근거 저장소</td>
+<td>출처, 위치, 적용 조건이 연결된 근거 보관</td>
+</tr>
+<tr>
+<td>답변 작성</td>
+<td>채택된 근거를 인용 가능한 가이던스·리포트로 구성</td>
+</tr>
+</tbody></table></div>
+<h3 id="project-document-steel-domain-agent-활용-지식">활용 지식</h3>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">지식원</th>
+<th scope="col">제공 정보</th>
+</tr></thead><tbody>
+<tr>
+<td>공식 메뉴얼</td>
+<td>작업 절차, 규정, 설비 설명</td>
+</tr>
+<tr>
+<td>작업 노하우</td>
+<td>현장 사례와 문제 해결 경험</td>
+</tr>
+<tr>
+<td>Digital Twin</td>
+<td>설비·공정의 현재 상태와 분석 결과</td>
+</tr>
+</tbody></table></div>
+<p>설비, 공정, 현상, 조치 사이의 관계는 도메인 지식 체계로 관리합니다. 이 관계 정보는 질문을 이해하고 필요한 지식원을 선택하는 데 사용하며, 최종 답변의 출처는 실제 메뉴얼·노하우·Digital Twin 결과에 연결합니다.</p>
+<h2 id="project-section-preprocessing">비정형 지식 전처리</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/steel-unstructured-preprocessing.svg" alt="작업표준 PDF와 현장 노하우를 검색·인용 가능한 지식으로 만드는 흐름" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>작업표준 PDF와 현장 노하우를 검색·인용 가능한 지식으로 만드는 흐름</figcaption>
+</figure>
+<p><em>PDF와 노하우 원천을 각각 구조화한 뒤 검색용 Passage와 인용용 Source Fragment를 분리하는 흐름.</em></p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">원천</th>
+<th scope="col">전처리</th>
+<th scope="col">시스템에서 사용하는 형태</th>
+</tr></thead><tbody>
+<tr>
+<td>작업표준 PDF</td>
+<td>OCR·layout 분석, 표·그림 Data-to-Text, 번호·절 구조 복원</td>
+<td>Document–Chunk–Element, 검색 Passage, page·bbox가 있는 Source Fragment</td>
+</tr>
+<tr>
+<td>현장 노하우</td>
+<td>행·사례 단위 정규화, 공정·설비·현상·조치 binding</td>
+<td>source-bound 사례, 적용 범위, 관계 강도와 검수 상태</td>
+</tr>
+<tr>
+<td>Digital Twin</td>
+<td>설비·지표·시간 범위 binding과 조회 계약 검증</td>
+<td>시점과 dataset이 붙은 typed artifact</td>
+</tr>
+</tbody></table></div>
+<p>검색 본문에는 의미와 검색에 필요한 표현을 두고, 원문 행·셀·번호·좌표는 별도 locator로 보존했습니다. 이 분리로 검색 recall을 높이기 위한 표현이 실제 인용 위치를 대신하지 않도록 했습니다.</p>
+<h2 id="project-section-orchestration">도구·Agent·Orchestrator 구조</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/steel-tool-agent-orchestrator.svg" alt="지식 조회 도구가 전문 Agent와 전체 실행 Orchestrator로 확장되는 구조" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>지식 조회 도구가 전문 Agent와 전체 실행 Orchestrator로 확장되는 구조</figcaption>
+</figure>
+<p><em>도구, 전문 Agent, Orchestrator가 소유하는 판단 범위를 분리한 흐름.</em></p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">계층</th>
+<th scope="col">담당 범위</th>
+</tr></thead><tbody>
+<tr>
+<td>조회 도구</td>
+<td>문서 검색, 원문 위치 조회, 노하우 검색, 설비 상태 조회</td>
+</tr>
+<tr>
+<td>전문 Agent</td>
+<td>임무에 맞는 검색 계획, 도구 호출, 후보 검증, 근거 제안</td>
+</tr>
+<tr>
+<td>Orchestrator</td>
+<td>사용자 질의의 작업 계획, Agent 선택, fan-out/fan-in, 실패 처리</td>
+</tr>
+<tr>
+<td>근거 원장·답변 계층</td>
+<td>출처와 작업이 결합된 근거 채택, 인용 가능한 최종 응답 생성</td>
+</tr>
+</tbody></table></div>
+<p>단일 검색 도구에서 시작한 구조를 Search Agent의 계획·해석 경계로 확장하고, 다시 메뉴얼·노하우·Digital Twin Agent를 조정하는 전체 시스템으로 결합했습니다. 코드에서는 이 역할이 Conversation Runtime, Query Understanding, compiler, Executor/Coordinator로 나뉘며, 포트폴리오에서는 이 조정 책임을 Orchestrator로 설명합니다.</p>
+<h2 id="project-section-evidence">E2E Agent Loop</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/steel-e2e-agent-loop.svg" alt="질의 이해부터 HITL 계획 Agent 호출 근거 채택 최종 응답까지의 E2E 루프" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>질의 이해부터 HITL 계획 Agent 호출 근거 채택 최종 응답까지의 E2E 루프</figcaption>
+</figure>
+<p><em>한 요청이 질의 이해, HITL, 계획, Agent 실행, 근거 채택, 최종화로 이어지는 전체 흐름.</em></p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">단계</th>
+<th scope="col">처리 내용</th>
+</tr></thead><tbody>
+<tr>
+<td>질의 이해</td>
+<td>원문과 대화 맥락 보존, 용어·도메인 grounding, 구조화된 Semantic Request 생성</td>
+</tr>
+<tr>
+<td>HITL</td>
+<td>설비·문서 범위처럼 결과를 바꾸는 모호성만 선택지와 함께 확인하고 같은 질의 이해 경로로 재진입</td>
+</tr>
+<tr>
+<td>계획</td>
+<td>의미 작업 관계를 TaskGraph로 표현하고 capability·dependency·budget이 있는 ActionGraph로 컴파일</td>
+</tr>
+<tr>
+<td>Agent 실행</td>
+<td>메뉴얼·노하우·Digital Twin 임무를 제한된 병렬성으로 실행하고 typed receipt 수집</td>
+</tr>
+<tr>
+<td>근거 채택</td>
+<td>task binding, source locator, 적용 범위를 통과한 결과만 accepted evidence로 기록</td>
+</tr>
+<tr>
+<td>최종 응답</td>
+<td>답변 계획, Answer IR, 인용과 입력 digest 검증을 거친 가이던스·리포트 생성</td>
+</tr>
+</tbody></table></div>
+<p>검색 결과가 없거나 답변에 사용할 근거가 부족한 경우에는 제한된 횟수의 재검색을 수행합니다. 이후에도 중요한 모호성이 남으면 사용자 확인이 필요한 항목으로 분리합니다.</p>
+<h2 id="project-section-implementation">주요 구현</h2>
+<ul><li>질문 의미 모델과 대화 맥락 처리</li><li>PDF·표·그림·현장 사례의 source-bound 전처리</li><li>검색용 Passage와 인용용 Source Fragment 분리</li><li>의미 기반 작업 구조(TaskGraph)</li><li>실행 계획(ActionGraph)과 실행기</li><li>공식 문서·현장 경험·설비 상태 Agent</li><li>Agent 실행 조정과 병렬 결과 통합</li><li>출처·주장·적용 범위를 보존하는 근거 저장소</li><li>절차 순서와 조건을 반영한 답변 구성</li><li>Runtime API, MCP 도구, 웹 인터페이스 통합</li><li>실행 추적과 진행 상태 제공</li></ul>
+<h2 id="project-document-steel-domain-agent-기술-구성">기술 구성</h2>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">영역</th>
+<th scope="col">구성</th>
+</tr></thead><tbody>
+<tr>
+<td>실행 구조</td>
+<td>TaskGraph, ActionGraph, Coordinator</td>
+</tr>
+<tr>
+<td>도메인 기능</td>
+<td>메뉴얼·노하우·Digital Twin Agent 및 도구</td>
+</tr>
+<tr>
+<td>서비스 연결</td>
+<td>Runtime API, MCP</td>
+</tr>
+<tr>
+<td>지식 연결</td>
+<td>도메인 지식 체계, 검색 정책</td>
+</tr>
+<tr>
+<td>답변 품질</td>
+<td>근거 스키마, 주장 유형, 인용 일관성 검증</td>
+</tr>
+<tr>
+<td>실행 추적</td>
+<td>Langfuse, 구조화 로그, 진행 이벤트</td>
+</tr>
+</tbody></table></div>
+</article>

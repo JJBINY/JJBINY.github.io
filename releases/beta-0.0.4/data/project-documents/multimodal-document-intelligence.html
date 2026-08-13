@@ -1,0 +1,197 @@
+<article class="project-document" data-project-document-id="multimodal-document-intelligence">
+<h1 id="project-document-multimodal-document-intelligence-multimodal-rag-search">Multimodal RAG Search</h1>
+<blockquote><p>PDF의 본문, 표, 그림, 문서 구조를 검색 가능한 정보로 변환하고 원문 위치와 함께 저장하는 멀티모달 문서 처리 시스템</p></blockquote>
+<h2 id="project-section-overview">프로젝트 개요</h2>
+<p>기술 문서와 보고서의 핵심 정보는 본문뿐 아니라 표, 그림, 캡션, 장·절 구조에도 포함됩니다. 이 프로젝트는 원본 문서를 Document–Chunk–Element 구조로 보존하고, 표·그림을 문서 문맥이 있는 텍스트로 변환하며, 검색 결과를 실제 행과 페이지 위치까지 다시 연결하는 RAG 기반을 구현했습니다.</p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">구분</th>
+<th scope="col">내용</th>
+</tr></thead><tbody>
+<tr>
+<td>적용 대상</td>
+<td>PDF, 이미지, 텍스트 기반 기술 문서와 보고서</td>
+</tr>
+<tr>
+<td>입력</td>
+<td>원본 파일, 저장 위치, 문서 처리 옵션</td>
+</tr>
+<tr>
+<td>처리 정보</td>
+<td>본문, 표, 그림, 캡션, 장·절, 페이지 위치</td>
+</tr>
+<tr>
+<td>출력</td>
+<td>문서 구조 데이터, 표·그림 설명, 검색용 Passage, 원문 Fragment와 locator</td>
+</tr>
+<tr>
+<td>주요 구현</td>
+<td>의미 기반 문서 분할, Document–Chunk–Element identity, D2T, 정밀 검색과 인용 연결</td>
+</tr>
+</tbody></table></div>
+<h2 id="project-section-architecture">전체 시스템 아키텍처</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/multimodal-system-architecture.svg" alt="Multimodal RAG Search 전체 시스템 아키텍처" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>Multimodal RAG Search 전체 시스템 아키텍처</figcaption>
+</figure>
+<p><em>설명 모델 — 현재 저장소의 처리 단계와 외부 저장소 연결을 포트폴리오용으로 단순화한 그림</em></p>
+<p>전체 파이프라인(PipelineGraph)이 문서 분할, 내용 분석, 검색 색인 단계를 순서대로 연결합니다. 앞 단계에서 오류가 발생하면 뒤 단계를 중단하고, 오류가 발생한 위치와 처리 상태를 결과에 남깁니다.</p>
+<p>PipelineGraph와 IndexingGraph는 처리 단계를 연결하는 지원 구조입니다. 이 프로젝트에서 더 중요한 설계 대상은 문서의 의미 경계와 원문 위치를 잃지 않는 데이터 구조, 시각 요소를 검색 가능한 표현으로 바꾸는 D2T, 검색 후보와 실제 인용 근거를 분리하는 방식입니다.</p>
+<h3 id="project-document-multimodal-document-intelligence-처리-단계">처리 단계</h3>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">단계</th>
+<th scope="col">주요 처리</th>
+<th scope="col">결과</th>
+</tr></thead><tbody>
+<tr>
+<td>문서 분할</td>
+<td>파일 유형 판별, PDF 해석, OCR, 레이아웃 분석, 요소 추출</td>
+<td>문서 조각과 표·그림 요소</td>
+</tr>
+<tr>
+<td>내용 분석</td>
+<td>요소 분류, 표·그림 설명 생성, 요약, 정보 보강</td>
+<td>검색 가능한 설명과 메타데이터</td>
+</tr>
+<tr>
+<td>검색 색인</td>
+<td>텍스트·이미지 벡터 생성, 색인 요청 검증, 저장</td>
+<td>문서·조각·요소 단위 검색 색인</td>
+</tr>
+</tbody></table></div>
+<h2 id="project-section-identity">Document–Chunk–Element 구조</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/multimodal-identity-model.svg" alt="Document Chunk Element 식별 모델" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>Document Chunk Element 식별 모델</figcaption>
+</figure>
+<p><em>처리 단계가 달라도 같은 원본·Chunk·Element를 참조하기 위한 계층 identity 모델.</em></p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">단위</th>
+<th scope="col">의미</th>
+<th scope="col">보존 정보</th>
+</tr></thead><tbody>
+<tr>
+<td>문서(Document)</td>
+<td>원본 파일 전체</td>
+<td>원본 위치, 파일 유형, 전체 메타데이터</td>
+</tr>
+<tr>
+<td>문서 조각(Chunk)</td>
+<td>주제와 문맥이 응집된 의미 단위</td>
+<td>문서 ID, 순서, 장·절, 관련 이미지</td>
+</tr>
+<tr>
+<td>문서 요소(Element)</td>
+<td>텍스트, 표, 그림 또는 파생 설명의 최소 처리 단위</td>
+<td>Chunk ID, modality, 유형, 페이지, bbox, 순서</td>
+</tr>
+<tr>
+<td>Passage</td>
+<td>Document·Chunk·Element에서 파생한 검색 projection</td>
+<td>검색 역할, semantic text, 반환할 canonical node ID</td>
+</tr>
+<tr>
+<td>Fragment</td>
+<td>원문의 행·셀·문장 span·이미지 crop</td>
+<td>source element ID, page, bbox 또는 행 위치</td>
+</tr>
+</tbody></table></div>
+<p>Document는 여러 Chunk를, Chunk는 여러 Element를 소유합니다. 계층 식별자는 처리·분석·검색 단계가 같은 대상을 다시 찾게 하는 기준입니다. 표·그림에서 생성한 설명도 독립 문장이 아니라 원본 Element의 파생 표현으로 연결합니다.</p>
+<p>Passage와 Fragment는 Document–Chunk–Element를 대체하지 않습니다. Passage는 recall을 위한 검색 표현이고, Fragment는 최종 인용 위치를 찾기 위한 source-bound 단위입니다.</p>
+<h2 id="project-section-d2t">의미 분할과 Data-to-Text</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/multimodal-document-to-retrieval.svg" alt="원본 문서에서 의미 구조 Passage Fragment까지의 처리 흐름" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>원본 문서에서 의미 구조 Passage Fragment까지의 처리 흐름</figcaption>
+</figure>
+<p><em>layout·OCR Element를 semantic chunking하고 시각 Element에 D2T를 결합한 뒤 검색과 인용 표현으로 나누는 흐름.</em></p>
+<p>표와 그림을 검색하려면 시각 정보를 텍스트로 바꾸는 과정(D2T)이 필요합니다. 이미지 한 장만 분석하면 문서의 주제를 잃을 수 있으므로, 다음 정보를 함께 사용합니다.</p>
+<ul><li>현재 장·절과 상위 제목</li><li>그림·표의 캡션</li><li>같은 페이지의 인접 문장</li><li>OCR과 레이아웃 분석 결과</li><li>원본 문서·페이지·요소 식별자</li></ul>
+<p>구조 정보 조립기(StructuralContextBuilder)가 주변 문맥을 구성하고, 문맥 선택기(Context Selector)가 관련 정보의 우선순위를 정합니다. 생성된 설명은 응답 파서와 요소 연결 단계를 거쳐 원본 표·그림에 결합됩니다.</p>
+<p>Semantic Chunking은 layout에서 나온 텍스트와 이미지의 원래 순서를 유지하면서 주제 경계로 묶고, header·footer·page number 같은 noise 후보를 분리합니다. 모델 호출이 실패하면 text element 단위 fallback으로 처리하되, 이 경로가 의미 분할과 같은 품질이라고 가정하지 않습니다.</p>
+<h2 id="project-section-evidence">정확한 검색과 인용 생성</h2>
+<figure class="project-document__figure">
+<img src="assets/project-diagrams/multimodal-precision-rag-flow.svg" alt="Passage 검색에서 canonical node와 Fragment를 복원해 응답을 만드는 흐름" width="960" height="600" loading="lazy" decoding="async">
+<figcaption>Passage 검색에서 canonical node와 Fragment를 복원해 응답을 만드는 흐름</figcaption>
+</figure>
+<p><em>Passage는 후보 검색, Document·Chunk·Element는 답변 내용, Fragment는 인용 위치를 담당.</em></p>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">단계</th>
+<th scope="col">처리</th>
+</tr></thead><tbody>
+<tr>
+<td>질의 분석</td>
+<td>검색할 문서 범위, 도메인, 필요한 Element 유형과 검색 역할 결정</td>
+</tr>
+<tr>
+<td>Passage 검색</td>
+<td>lexical(BM25)과 semantic(dense) 후보를 독립적으로 찾음</td>
+</tr>
+<tr>
+<td>후보 축약</td>
+<td>같은 canonical node에서 파생된 Passage가 여러 번 독립 투표하지 않도록 node별 축약</td>
+</tr>
+<tr>
+<td>내용 복원</td>
+<td>stable ID로 원래 Document·Chunk·Element와 상위 문맥을 hydrate</td>
+</tr>
+<tr>
+<td>인용 위치</td>
+<td>Source Fragment에서 원문 행·span·page+bbox locator 선택</td>
+</tr>
+<tr>
+<td>RAG 생성</td>
+<td>원문 내용, D2T 설명, lineage를 구분해 context를 구성하고 citation과 함께 응답 생성</td>
+</tr>
+</tbody></table></div>
+<p>Passage–Fragment 분리는 Multimodal RAG의 문서 구조를 Steel 메뉴얼 Search Agent에 적용하면서 더 구체화됐습니다. 따라서 원래 멀티모달 처리 저장소의 기능과, 그 구조를 실제 도메인 검색에 재사용하며 확장한 검색 계약을 구분해서 설명합니다.</p>
+<h3 id="project-document-multimodal-document-intelligence-외부-시스템-연결">외부 시스템 연결</h3>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">연결 모듈</th>
+<th scope="col">역할</th>
+</tr></thead><tbody>
+<tr>
+<td>저장소 연결(StorageAgent)</td>
+<td>원본과 중간 처리 결과의 저장·조회</td>
+</tr>
+<tr>
+<td>식별자 관리(IdentityAgent)</td>
+<td>문서·조각·요소의 일관된 식별자 관리</td>
+</tr>
+<tr>
+<td>검색엔진 연결(OpenSearchAgent)</td>
+<td>색인 생성, 일괄 저장, 결과 확인</td>
+</tr>
+</tbody></table></div>
+<p>이 모듈들은 외부 시스템과 통신하는 역할을 담당합니다. 문서 처리 순서와 오류 전달은 Agent가 아니라 전체 파이프라인이 관리합니다.</p>
+<h2 id="project-section-implementation">주요 구현</h2>
+<ul><li>PDF·이미지·텍스트 유형별 처리 경로</li><li>문서 해석, OCR, 레이아웃 분석, 요소 추출</li><li>Document–Chunk–Element 구조와 계층 식별자 관리</li><li>layout 순서와 주제 경계를 이용한 Semantic Chunking</li><li>표·그림 설명 생성과 구조 기반 문맥 선택</li><li>검색용 Passage와 원문 Fragment 분리</li><li>canonical node 단위 후보 축약과 source locator 복원</li><li>LangGraph 기반 전체 파이프라인과 단계별 상태 관리</li><li>원본 파일·페이지·요소 위치 보존과 OpenSearch 연결</li></ul>
+<h2 id="project-document-multimodal-document-intelligence-기술-구성">기술 구성</h2>
+<div class="project-document__table-wrap"><table><thead><tr>
+<th scope="col">영역</th>
+<th scope="col">구성</th>
+</tr></thead><tbody>
+<tr>
+<td>API·처리 흐름</td>
+<td>FastAPI, LangGraph</td>
+</tr>
+<tr>
+<td>문서 해석</td>
+<td>Docling, OCR, 레이아웃·객체 탐지</td>
+</tr>
+<tr>
+<td>멀티모달 분석</td>
+<td>시각 언어 모델(VLM), D2T, 구조 기반 문맥 구성</td>
+</tr>
+<tr>
+<td>검색 표현</td>
+<td>텍스트 벡터, 이미지 벡터</td>
+</tr>
+<tr>
+<td>저장·검색</td>
+<td>S3 호환 객체 저장소, OpenSearch</td>
+</tr>
+<tr>
+<td>데이터 구조</td>
+<td>Document–Chunk–Element, 단계별 처리 상태, 색인 데이터 구조</td>
+</tr>
+</tbody></table></div>
+</article>
